@@ -4,393 +4,212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070b20">
-<meta name="description" content="群星闪耀：探索人工智能与大语言模型的发展历史。">
-<title>群星闪耀｜AI 大模型发展史</title>
-
+<meta name="theme-color" content="#050510">
+<meta name="description" content="群星闪耀：赛博朋克风格的人工智能与大语言模型发展史。">
+<title>群星闪耀 | AI 大模型发展史</title>
 <style>
 :root {
-  color-scheme: dark;
-  --bg: #050817;
-  --panel: rgba(15, 24, 55, .76);
-  --line: rgba(145, 179, 255, .22);
-  --text: #eef4ff;
-  --muted: #aab8d7;
-  --blue: #82c8ff;
-  --purple: #b6a1ff;
+  --bg:#050510;
+  --panel:rgba(15,16,39,.86);
+  --cyan:#00f5ff;
+  --pink:#ff38c7;
+  --purple:#9870ff;
+  --text:#f1f5ff;
+  --muted:#a1a8c7;
+  --border:rgba(0,245,255,.24);
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--text);
-  font-family: system-ui, -apple-system, "Noto Sans SC",
-    "Microsoft YaHei", sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Noto Sans SC","Microsoft YaHei",sans-serif;
+  min-height:100vh;overflow-x:hidden
 }
-button, input, select { font: inherit; }
-button, select { cursor: pointer; }
-#space {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-.nebula {
-  position: fixed;
-  inset: -35%;
-  z-index: 0;
-  pointer-events: none;
+button,input,select{font:inherit}
+button,select{cursor:pointer}
+#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.nebula{
+  position:fixed;inset:-35%;z-index:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 25% 35%, rgba(66, 53, 160, .34), transparent 38%),
-    radial-gradient(ellipse at 75% 40%, rgba(15, 112, 170, .27), transparent 35%),
-    radial-gradient(ellipse at 55% 78%, rgba(120, 44, 155, .2), transparent 37%);
-  filter: blur(35px);
-  animation: nebulaFlow 28s ease-in-out infinite alternate;
+    radial-gradient(ellipse at 20% 30%,rgba(103,35,255,.25),transparent 38%),
+    radial-gradient(ellipse at 78% 38%,rgba(0,220,255,.20),transparent 35%),
+    radial-gradient(ellipse at 55% 75%,rgba(255,0,170,.14),transparent 40%);
+  filter:blur(38px);animation:nebula 25s ease-in-out infinite alternate
 }
-.nebula::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 70% 60%, rgba(30, 100, 180, .18), transparent 40%),
-    radial-gradient(ellipse at 30% 75%, rgba(75, 35, 130, .2), transparent 35%);
-  animation: nebulaFlow2 35s ease-in-out infinite alternate;
+.nebula:after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 65% 65%,rgba(0,255,220,.13),transparent 40%);
+  animation:nebula2 19s ease-in-out infinite alternate
 }
-@keyframes nebulaFlow {
-  0% { transform: translate(-3%, -2%) rotate(0deg) scale(1); }
-  50% { transform: translate(4%, 3%) rotate(8deg) scale(1.12); }
-  100% { transform: translate(-1%, 5%) rotate(-7deg) scale(1.05); }
+@keyframes nebula{from{transform:translate(-3%,-2%) rotate(0) scale(1)}to{transform:translate(4%,3%) rotate(9deg) scale(1.12)}}
+@keyframes nebula2{from{transform:translate(4%,-3%)}to{transform:translate(-5%,5%)}}
+.scanlines{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.10;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(120,160,255,.16) 4px)
 }
-@keyframes nebulaFlow2 {
-  from { transform: translate(3%, -4%) rotate(-8deg); }
-  to { transform: translate(-5%, 5%) rotate(10deg); }
+.page{position:relative;z-index:1;width:min(1080px,100%);margin:auto;padding:18px 18px 45px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:6px 0 18px}
+.brand{font-weight:900;letter-spacing:1px;font-size:17px}
+.brand .symbol{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:3px;font-weight:500;margin-top:4px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button,select,input{
+  color:var(--text);background:rgba(12,14,35,.95);
+  border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;min-height:42px;outline:none
 }
-.page {
-  position: relative;
-  z-index: 1;
-  width: min(1050px, 100%);
-  margin: auto;
-  padding: 18px 18px 55px;
+input:focus,select:focus,button:focus-visible{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,245,255,.12)}
+button{transition:transform .16s,background .2s,border-color .2s}
+button:active{transform:scale(.97)}
+.btn{border:1px solid rgba(0,245,255,.4)}
+.btn.active,.btn.primary{
+  color:#fff;background:linear-gradient(110deg,rgba(0,170,220,.22),rgba(157,51,255,.24));
+  border-color:var(--cyan);box-shadow:inset 0 0 14px rgba(0,245,255,.07),0 0 12px rgba(0,245,255,.08)
 }
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  padding: 8px 0 20px;
+select{max-width:100%}
+option{background:#111128}
+.hero{text-align:center;padding:clamp(36px,8vw,83px) 0 43px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 13px;
+  color:var(--cyan);font-size:11px;letter-spacing:2px;
+  border:1px solid rgba(0,245,255,.35);background:rgba(0,245,255,.045);
+  clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)
 }
-.brand {
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #e5eaff;
+.pulse{display:inline-block;width:7px;height:7px;background:var(--cyan);border-radius:50%;box-shadow:0 0 10px var(--cyan)}
+h1{
+  font-size:clamp(43px,10vw,82px);letter-spacing:5px;line-height:1.14;
+  margin:23px 0 15px;color:#fff;
+  text-shadow:0 0 12px rgba(0,245,255,.8),0 0 38px rgba(0,245,255,.3),4px 3px 0 rgba(255,56,199,.45)
 }
-.brand span { color: var(--blue); }
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+.subtitle{max-width:660px;margin:auto;color:#aeb8d8;font-size:14px;line-height:2}
+.hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:24px}
+.section-line{height:1px;margin:0 auto 30px;max-width:720px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent);opacity:.6}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:8px 0 38px}
+.stat{
+  text-align:center;padding:17px 8px;background:linear-gradient(140deg,rgba(17,23,53,.9),rgba(10,11,29,.9));
+  border:1px solid var(--border);position:relative;overflow:hidden
 }
-.btn, select, input {
-  color: var(--text);
-  background: rgba(17, 29, 64, .88);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 10px 12px;
-  min-height: 42px;
-  outline: none;
+.stat:before{content:"";position:absolute;top:0;left:0;width:35%;height:1px;background:var(--cyan);box-shadow:0 0 9px var(--cyan)}
+.stat strong{display:block;font-size:clamp(22px,5vw,34px);color:var(--cyan);text-shadow:0 0 14px rgba(0,245,255,.25)}
+.stat:nth-child(2) strong{color:var(--pink)}
+.stat:nth-child(3) strong{color:#b6a0ff}
+.stat span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:16px}
+.section-title{font-size:23px;margin:0;letter-spacing:1px}
+.section-title .hash{color:var(--cyan)}
+.section-desc{font-size:13px;color:var(--muted);line-height:1.8;margin:8px 0 20px}
+.panel{padding:17px;background:var(--panel);border:1px solid var(--border);box-shadow:0 0 35px rgba(0,0,0,.15)}
+.filters{display:grid;grid-template-columns:minmax(0,1fr) 145px 150px auto;gap:9px;margin-bottom:17px}
+.filters input,.filters select{width:100%;min-width:0}
+.result-line{font-size:12px;color:var(--cyan);margin:0 0 18px}
+.timeline{position:relative;padding-left:25px}
+.timeline:before{
+  content:"";position:absolute;top:4px;bottom:6px;left:6px;width:2px;
+  background:linear-gradient(var(--cyan),var(--purple),var(--pink),transparent);
+  box-shadow:0 0 10px rgba(0,245,255,.25)
 }
-.btn {
-  transition: background .2s, border-color .2s, transform .2s;
+.event{
+  position:relative;margin:0 0 17px;padding:17px;
+  background:linear-gradient(120deg,rgba(15,19,45,.96),rgba(12,12,31,.91));
+  border:1px solid rgba(145,156,220,.20);
+  transition:border-color .2s,transform .2s;
+  animation:rise .35s ease both
 }
-.btn:hover { border-color: #8fcaff; }
-.btn:active { transform: scale(.97); }
-.btn.primary {
-  background: linear-gradient(120deg, #294f9a, #6547a8);
-  border-color: rgba(177, 193, 255, .45);
+.event:before{
+  content:"";position:absolute;left:-25px;top:22px;width:9px;height:9px;
+  background:var(--cyan);border:2px solid #08111f;border-radius:50%;
+  box-shadow:0 0 11px var(--cyan)
 }
-.btn.active {
-  background: linear-gradient(120deg, #176b83, #394ba1);
-  border-color: #76e0ff;
+.event:hover{border-color:rgba(0,245,255,.55);transform:translateX(3px)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.event-top{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:9px}
+.year{font-size:20px;font-weight:850;color:var(--cyan);text-shadow:0 0 10px rgba(0,245,255,.2)}
+.tag{font-size:11px;padding:4px 8px;border:1px solid rgba(255,56,199,.35);color:#ff9ce5;background:rgba(255,56,199,.07)}
+.event h3{margin:0 0 9px;font-size:17px;line-height:1.6}
+.event p{margin:0;color:#b0bad7;font-size:13px;line-height:1.9}
+.importance{margin-top:12px;padding-top:10px;border-top:1px solid rgba(145,156,220,.13);color:#d1e8ff;font-size:12px;line-height:1.8}
+.empty{display:none;padding:32px 8px;text-align:center;color:var(--muted);font-size:14px}
+footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--border);text-align:center;color:#7782a8;font-size:12px;line-height:2}
+footer .footbrand{color:var(--cyan);letter-spacing:2px}
+@media(max-width:720px){
+  .page{padding:12px 12px 32px}
+  .topbar{align-items:flex-start}
+  .controls{width:100%}
+  .controls .btn{flex:1}
+  .controls select{flex:1;min-width:130px}
+  .hero{padding-top:36px}
+  h1{letter-spacing:3px}
+  .filters{grid-template-columns:1fr 1fr}
+  .filters input{grid-column:1/-1}
+  .filters button{width:100%}
+  .stats{gap:7px}
+  .stat{padding:13px 4px}
+  .panel{padding:12px}
+  .event{padding:14px}
+  .event:hover{transform:none}
 }
-select { max-width: 100%; }
-option { background: #101a38; }
-.hero {
-  text-align: center;
-  padding: clamp(35px, 8vw, 85px) 0 42px;
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
 }
-.eyebrow {
-  display: inline-block;
-  padding: 7px 13px;
-  border: 1px solid var(--line);
-  background: rgba(13, 26, 57, .64);
-  border-radius: 100px;
-  color: #b8d8ff;
-  font-size: 13px;
-  letter-spacing: 2px;
-}
-h1 {
-  font-size: clamp(36px, 8vw, 70px);
-  line-height: 1.15;
-  letter-spacing: 3px;
-  margin: 23px 0 17px;
-  background: linear-gradient(110deg, #fff, #8edbff 45%, #c3a5ff 80%, #fff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 45px rgba(103, 157, 255, .12);
-}
-.subtitle {
-  max-width: 650px;
-  margin: auto;
-  color: var(--muted);
-  line-height: 1.9;
-  font-size: 15px;
-}
-.hero-actions {
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin: 8px 0 36px;
-}
-.stat {
-  border: 1px solid var(--line);
-  background: rgba(10, 19, 46, .64);
-  border-radius: 16px;
-  text-align: center;
-  padding: 17px 8px;
-  backdrop-filter: blur(8px);
-}
-.stat strong {
-  display: block;
-  font-size: clamp(23px, 5vw, 34px);
-  color: #a8d9ff;
-}
-.stat span { color: var(--muted); font-size: 12px; }
-.section-title {
-  font-size: 24px;
-  margin: 0 0 8px;
-}
-.section-desc {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.8;
-  margin: 0 0 20px;
-}
-.panel {
-  border: 1px solid var(--line);
-  background: var(--panel);
-  border-radius: 18px;
-  padding: 17px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, .12);
-}
-.filters {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 145px 145px auto;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-.filters input { width: 100%; min-width: 0; }
-.filters select { width: 100%; min-width: 0; }
-.result-line {
-  color: var(--muted);
-  font-size: 13px;
-  margin: 0 0 18px;
-}
-.timeline {
-  position: relative;
-  padding-left: 27px;
-}
-.timeline::before {
-  content: "";
-  position: absolute;
-  top: 4px;
-  bottom: 8px;
-  left: 8px;
-  width: 2px;
-  background: linear-gradient(#72d9ff, #9e88ff, rgba(130, 200, 255, .08));
-}
-.event {
-  position: relative;
-  margin-bottom: 18px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  background: rgba(10, 18, 44, .78);
-  border-radius: 16px;
-  animation: cardIn .45s ease both;
-}
-.event::before {
-  content: "";
-  position: absolute;
-  left: -26px;
-  top: 23px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #9ddcff;
-  box-shadow: 0 0 13px #62bfff;
-}
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.event-top {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 9px;
-}
-.year {
-  color: #8ddaff;
-  font-size: 19px;
-  font-weight: 800;
-}
-.tag {
-  border: 1px solid rgba(154, 151, 255, .32);
-  color: #c4bbff;
-  background: rgba(91, 70, 157, .15);
-  border-radius: 50px;
-  font-size: 12px;
-  padding: 4px 9px;
-}
-.event h3 { margin: 0 0 9px; font-size: 18px; }
-.event p {
-  margin: 0;
-  color: #b7c4df;
-  line-height: 1.85;
-  font-size: 14px;
-}
-.event .importance {
-  margin-top: 12px;
-  padding-top: 11px;
-  border-top: 1px solid rgba(145, 179, 255, .13);
-  color: #d7e5ff;
-  font-size: 13px;
-  line-height: 1.8;
-}
-.empty {
-  display: none;
-  text-align: center;
-  color: var(--muted);
-  padding: 30px 8px;
-}
-footer {
-  margin-top: 38px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  text-align: center;
-  color: #8493b7;
-  font-size: 12px;
-  line-height: 1.9;
-}
-@media (max-width: 700px) {
-  .page { padding: 12px 13px 35px; }
-  .topbar { align-items: flex-start; }
-  .controls { width: 100%; }
-  .controls .btn { flex: 1; }
-  .filters { grid-template-columns: 1fr 1fr; }
-  .filters input { grid-column: 1 / -1; }
-  .filters .btn { width: 100%; }
-  .hero { padding-top: 37px; }
-  .stats { gap: 7px; }
-  .stat { padding: 13px 4px; }
-  .panel { padding: 13px; }
-  .event { padding: 15px; }
-}
-@media (prefers-reduced-motion: reduce) {
-*, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-  }
-}
-</style>
-</head>
+</radial-gradient(ellipse at 20% 30%,rgba(103,35,255,.25),transparent 38%),>
+</Enter file contents here>
+<radial-gradient(ellipse at 78% 38%,rgba(0,220,255,.20),transparent 35%),>
+<Enter file contents here radial-gradient(ellipse at 55% 75%,rgba(255,0,170,.14),transparent 40%);="nebula" aria-hidden="true"></Enter file contents here>
+<filter:blur(38px);animation:nebula 25s ease-in-out infinite alternate Enter file contents here="scanlines" aria-hidden="true"></Enter file contents here>
+<Enter file contents here Enter file contents here="space" aria-hidden="true"></background:radial-gradient(ellipse at 65% 65%,rgba(0,255,220,.13),transparent 40%);>
 
-<body>
-<div class="nebula" aria-hidden="true"></div>
-<canvas id="space" aria-hidden="true"></canvas>
+<Enter file contents here animation:nebula2 19s ease-in-out infinite alternate="page">
+  <Enter file contents here Enter file contents here="topbar">
+    <@keyframes nebula{from{transform:translate(-3%,-2%) rotate(0) scale(1)}to{transform:translate(4%,3%) rotate(9deg) scale(1.12)}} Enter file contents here="brand"><@keyframes nebula2{from{transform:translate(4%,-3%)}to{transform:translate(-5%,5%)}} Enter file contents here="symbol">Enter file contents here</Enter file contents here>background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(120,160,255,.16) 4at)rgba transparent Enter file contents here ellipse at 78% 38%, / rgba</transparent></Enter>
+    <file contents here ellipse at55% 75%,rgba transparent="controls">
+      <Enter file contents here filter blur px animation=nebula s infinite alternate Enter file contents here="meteorToggle" Enter file contents here="button" aria-pressed="true">Enter file contents here</Enter file contents here>
+      <background ellipse at65% 65%, <rgba transparent="nebula" aria-hidden="true"></Enter>="meteorDensity" aria-label=file contents here animation>
+        <<s infinite="scanlines" aria-hidden="true"></alternate> Enter file contents here="low"><Enter file="space" aria-hidden="true"></contents></here nebula from transform>
+        <<translate rotate="page"> scale to transform translate="normal"><rotate deg="topbar"></scale Enter file contents>
+        <<here from="brand"><transform translate="symbol">to</transform> translate <Enter>file contents here / Enter</file></contents> here Enter file contents="high" <here background="controls">>to bottom transparent transparent</<px px=Enter file="meteorToggle" contents="button" aria-pressed="true">heresmallEnter</file>>
+      </contents hereNEON AI ARCHIVE>
+    </<未来档案库 small="meteorDensity" aria-label=div>>
+  </Enter file contents here>
 
-<div class="page">
-  <header class="topbar">
-    <div class="brand">✦ 群星闪耀<span>· AI 宇宙</span></div>
-    <div class="controls">
-      <button class="btn active" id="meteorToggle" type="button"
-        aria-pressed="true">流星雨：开启</button>
-      <select id="meteorDensity" aria-label="选择流星密度">
-        <option value="low">稀疏流星</option>
-        <option value="normal">标准流星雨</option>
-        <option value="high" selected>密集流星雨</option>
-      </select>
-    </div>
-  </header>
+  <<Enter file="low">contents</here>>
+    <Enter file contents here <Enter file="normal">contents</here>="hero">
+      <Enter file contents here <Enter file="high" contents>here</Enter>="eyebrow"><file contents here Enter file contents here Enter="pulse"></file contents here Enter>file contents here div</class div Enter file>
+      <h1><contents here="hero"></h1>
+      <div class div Enter <file contents="eyebrow"><here canvas="pulse"></id> canvas Enter · file contents here</div>="subtitle">
+class Enter file contents<<h1>here</h1>>
+header class Enter file
+      </<contents here="subtitle">>
+      <div class span class ✦<span>="hero-actions">
+        <群星闪耀 small NEON AI ARCHIVE=未来档案库 small div Enter file contents here div="exploreBtn" <class Enter="hero-actions">="button">file contents here button</<class "btn active"=id type="exploreBtn" 流星雨：开启="button">button Enter</file>>
+        <contents here select id <"流星密度" Enter="btn" file="randomBtn" contents="button">here option</value>="btn" 稀疏流星 option Enter file="randomBtn" contents here option value="button">标准流星雨 option Enter file</<contents here="section-line"></option>>
+      </value selected 密集流星雨 option>
+    </<Enter file="stats" aria-label=contents>>
 
-  <main>
-    <section class="hero">
-      <div class="eyebrow">THE HISTORY OF ARTIFICIAL INTELLIGENCE</div>
-      <h1>群星闪耀</h1>
-      <p class="subtitle">
-从最初的人工智能构想到大语言模型的崛起。沿着时间的轨迹，
-探索那些照亮智能时代的思想、突破与创造。
-      </p>
-      <div class="hero-actions">
-        <button class="btn primary" id="exploreBtn" type="button">探索时间线 ↓</button>
-        <button class="btn" id="randomBtn" type="button">✧ 随机发现</button>
-      </div>
-    </section>
+    <here Enter file contents <here Enter="stat"><file>70+</contents><here>Enter</file></contents>="section-line"></here Enter file contents>
 
-    <section class="stats" aria-label="发展史概况">
-      <div class="stat"><strong>70+</strong><span>年 AI 探索历程</span></div>
-      <div class="stat"><strong>1950—至今</strong><span>跨越时代的演进</span></div>
-      <div class="stat"><strong>∞</strong><span>仍在延伸的未来</span></div>
-    </section>
+    <<here section="stat"><class>1950Enter</file><contents>here</div></class> span class span SYSTEM="stats" aria-label=<ONLINE AI="stat"><HISTORY>DATABASE</div><Enter>file</contents></here>>
+      <群星闪耀 Enter file contents here p class Enter="stat"><<file contents="history">>70+</here 穿越算法与智能的边界。 br Enter><<file contents="section-head">>here 从人工智能的初次构想到大语言模型的时代浪潮，解码每一次改变未来的技术跃迁。 Enter file</contents here Enter file></<h2 contents="section-title"><here div="hash">//</class> Enter file</h2>>
+      <contents here button class <"btn primary" id="section-desc">type</进入时间线>="stat"><↓ button Enter file>contents here button class</id type ⌁ 随机探索><<button Enter="panel">>file contents here Enter</<file contents="filters">></here Enter file contents>
+      <<here div="searchInput" class="search" div=Enter aria-label=file> contents here section class="stat"><<"发展史概览" Enter="yearFilter" aria-label=file>>contents here div class</<strong strong="all">span</年智能探索历程>><span div Enter file><contents here="1950">1950div</class></strong —2026 strong span></<跨越时代的技术演进 span="2000">2000div</Enter>>
+    </file contents here div>
 
-    <section id="history">
-      <h2 class="section-title">探索 AI 时间线</h2>
-      <p class="section-desc">
-搜索技术、年份或模型名称，或者按发展阶段筛选。
-每一个里程碑，都是智能历史中的一颗星。
-      </p>
+    <<class strong="2017">2017∞</strong> span 未来仍在持续加载 span div="history">
+      <<Enter file="2022">2022contents</here> Enter file contents here="section-head">
+        <section id Enter file>
+          <h2 <contents here="categoryFilter" aria-label=div>="section-title"><class Enter file contents <here Enter="hash">//</file contents here class>span class span AI</h2>
+          <历史数据库:Enter(--cyan);file:2contents here #08111p;border-radius:50%; class 检索技术节点，追踪大模型进化路径。 p Enter="section-desc">box-shadowfilecontentshere(--cyan)</Enter file contents here>
+        </Enter file contents here>
+      </div class Enter file>
 
-      <div class="panel">
-        <div class="filters">
-          <input id="searchInput" type="search"
-            placeholder="搜索：Transformer、GPT、深度学习……"
-            aria-label="搜索人工智能发展历史">
-          <select id="yearFilter" aria-label="按年份筛选">
-            <option value="all">全部年份</option>
-            <option value="1950">1950—1999</option>
-            <option value="2000">2000—2016</option>
-            <option value="2017">2017—2021</option>
-            <option value="2022">2022—至今</option>
-          </select>
-          <select id="categoryFilter" aria-label="按分类筛选">
-            <option value="all">全部分类</option>
-            <option value="idea">理论与思想</option>
-            <option value="learning">机器学习</option>
-            <option value="deep">深度学习</option>
-            <option value="llm">大语言模型</option>
-            <option value="multimodal">多模态与智能体</option>
-          </select>
-          <button class="btn" id="resetBtn" type="button">重置</button>
-        </div>
-        <p class="result-line" id="resultCount" aria-live="polite"></p>
-        <div class="timeline" id="timeline"></div>
-        <div class="empty" id="emptyState">没有找到相关记录，试试其他关键词。</div>
-      </div>
-    
+      <@keyframes contents{here{div:0;class:Enter(8file)}contents{here:1;input:id(0)}} type placeholder "⌕ 搜索 GPT、Transformer、年份……" "搜索历史"="panel">
+        <Enter file contents here .select{font-size:20id;font-weight:850;"按年份筛选":Enter(--cyan);text-shadow:0 0 10file contents(0,245,255,.2)}="filters">
+          <here option value 全部年份 .option{font-size:11Enter;file:4contents 8here;option:1value —1999 option(255,56,199,.35);Enter:#ff9ce5;file:contents(255,56,199,.07)}="searchInput" here option value —2016="search" .option h3{Enter:0 0 9file;font-size:17contents;line-height:1.6}=here option value —2021 aria-label=.option Enter{file:0;contents:#b0bad7;font-size:13here;line-height:1.9}>
+          <option value —至今 option .Enter{margin-top:12file;padding-top:10contents;border-top:1here Enter file(145,156,220,.13);contents:#d1e8ff;font-size:12here;line-height:1.8}="yearFilter" aria-label=select id "按分类筛选" Enter>
+            <.file{contents:here;option:32va 8Enter;text-align:file;contents:displayempty(--muted);font-size:14none} padding px px center="all">color{margin-top:38var;padding-top:20px;border-top:1Enter file contents(--border);text-align:here;footer:#7782a8;font-size:12px;line-height:2}</px px solid var>
+            <center .color{px:Enter(--cyan);letter-spacing:2file} contents here footer footbrand="1950">color var px Enter</.file{contents:12here 12Enter file · contents here page 32padding}>
+            <px px px Enter file contents here Enter="2000">file contents here Enter</.file .contents{here controls:1}>
+            <btn flex Enter file .contents here controls{select:1;min-width:130flex}="2017">px Enter file contents</here Enter file contents>
+            <here Enter file contents .here{grid-template-columns:1filters 1fr}="2022">fr Enter file 1950contents</.here filters{grid-column:1/-1}>
+          </input Enter file contents>
+          <.here filters{button:100%} width Enter file contents="categoryFilter" aria-label=here Enter file contents>
+            <.here{stat:13padding 4px} px Enter file contents here
