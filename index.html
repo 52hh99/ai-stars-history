@@ -1,105 +1,608 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#090d20">
-<title>群星闪耀 · AI发展史</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>群星闪耀 · AI 发展史</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#090d20;color:#f4f6ff;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}
-header{padding:28px 20px 24px;background:radial-gradient(ellipse at 50% 0%,#263b78 0%,#111632 48%,#090d20 100%);text-align:center;border-bottom:1px solid #273154}
-.tag{color:#9eafff;font-size:12px;letter-spacing:4px}
-h1{font-size:clamp(32px,9vw,52px);margin:14px 0 8px;letter-spacing:5px}
-.sub{color:#b6c1e6;font-size:14px;line-height:1.8}
-.wrap{max-width:760px;margin:auto;padding:20px 16px 50px}
-.search{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #303b62;background:#111832;color:white;font-size:16px;outline:none}
-.filters{display:flex;gap:8px;overflow-x:auto;padding:15px 0}
-button{cursor:pointer;font:inherit}
-.filter{flex-shrink:0;background:#131a35;border:1px solid #303b62;color:#c7d0f4;padding:9px 14px;border-radius:20px}
-.filter.active{background:#b9c5ff;color:#10152d;border-color:#b9c5ff}
-.intro{padding:16px;border:1px solid #303b62;background:linear-gradient(130deg,#141d3c,#101329);border-radius:18px;margin:8px 0 24px}
-.intro strong{color:#d5dcff}
-.intro p{font-size:14px;line-height:1.8;color:#b8c4e8;margin-bottom:0}
-.section-title{font-size:19px;margin:26px 0 18px}
-.timeline{border-left:2px solid #384773;margin-left:8px;padding-left:20px}
-.event{position:relative;margin:0 0 16px;padding:16px;border:1px solid #293456;background:#10162d;border-radius:16px}
-.event:before{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#a9baff;left:-27px;top:22px;box-shadow:0 0 14px #788fff}
-.year{color:#9fb0ff;font-weight:800;font-size:13px;letter-spacing:1px}
-.event h3{margin:7px 0;font-size:17px}
-.event p{margin:0;color:#b5c0e1;font-size:14px;line-height:1.8}
-.more{margin-top:12px;padding:10px 12px;width:100%;text-align:left;border:1px solid #303b62;border-radius:10px;background:#171f3d;color:#dbe1ff}
-.detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid #303b62;color:#d1d9f6;font-size:14px;line-height:1.9}
-.event.open .detail{display:block}
-.empty{color:#b5c0e1;text-align:center;padding:25px;display:none}
-footer{text-align:center;padding:24px;color:#7f8bb4;font-size:12px;line-height:1.8}
+  :root {
+    --bg: #070b18;
+    --panel: rgba(18, 26, 48, 0.78);
+    --panel-2: rgba(28, 38, 68, 0.92);
+    --line: rgba(120, 170, 255, 0.35);
+    --text: #eaf1ff;
+    --muted: #9fb0d0;
+    --accent: #6ea8fe;
+    --accent-2: #8b5cf6;
+    --gold: #f5c76b;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(110, 168, 254, 0.18), transparent 28%),
+      radial-gradient(circle at 85% 20%, rgba(139, 92, 246, 0.16), transparent 30%),
+      radial-gradient(circle at 50% 90%, rgba(245, 199, 107, 0.08), transparent 35%),
+      var(--bg);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.5px 1.5px at 85% 60%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1px 1px at 10% 85%, rgba(255,255,255,.45), transparent),
+      radial-gradient(1px 1px at 60% 45%, rgba(255,255,255,.35), transparent);
+    opacity: .55;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 34px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid rgba(110,168,254,.35);
+    border-radius: 999px;
+    color: #bcd2ff;
+    font-size: 13px;
+    background: rgba(110,168,254,.08);
+    margin-bottom: 16px;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 14px var(--gold);
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 54px);
+    letter-spacing: .04em;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 28px 0 42px;
+  }
+
+  .filter-btn {
+    appearance: none;
+    border: 1px solid rgba(140,170,230,.25);
+    background: rgba(18, 26, 48, 0.7);
+    color: var(--muted);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .25s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: rgba(110,168,254,.55);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .filter-btn.active {
+    color: #07101f;
+    background: linear-gradient(135deg, #9ec5ff, #c7b4ff);
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 8px 26px rgba(110,168,254,.22);
+  }
+
+  .timeline {
+    position: relative;
+    padding: 8px 0;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(110,168,254,.55) 8%,
+      rgba(139,92,246,.5) 50%,
+      rgba(245,199,107,.45) 92%,
+      transparent
+    );
+  }
+
+  .item {
+    position: relative;
+    width: 50%;
+    padding: 0 42px 34px 0;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: rise .55s ease forwards;
+  }
+
+  .item:nth-child(even) {
+    margin-left: 50%;
+    padding: 0 0 34px 42px;
+  }
+
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .item::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    right: -8px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #0b1224;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 5px rgba(110,168,254,.12), 0 0 18px rgba(110,168,254,.55);
+    z-index: 2;
+  }
+
+  .item:nth-child(even)::before {
+    right: auto;
+    left: -7px;
+  }
+
+  .card {
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(140,170,230,.2);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(145deg, rgba(24,34,60,.92), rgba(13,19,36,.88));
+    padding: 20px 20px 18px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.28);
+    transition: .28s ease;
+    overflow: hidden;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,.06), transparent 80%);
+    transform: translateX(-120%);
+    transition: .6s ease;
+    pointer-events: none;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(110,168,254,.55);
+    box-shadow: 0 24px 60px rgba(0,0,0,.38), 0 0 0 1px rgba(110,168,254,.12);
+  }
+
+  .card:hover::after { transform: translateX(120%); }
+
+  .year {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .card h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    line-height: 1.35;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 14px;
+  }
+
+  .tag {
+    font-size: 12px;
+    color: #bcd2ff;
+    border: 1px solid rgba(110,168,254,.22);
+    background: rgba(110,168,254,.08);
+    padding: 4px 9px;
+    border-radius: 999px;
+  }
+
+  .hint {
+    display: block;
+    margin-top: 14px;
+    color: rgba(159,176,208,.72);
+    font-size: 12px;
+  }
+
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 50px 0;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2,6,16,.72);
+    backdrop-filter: blur(10px);
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal {
+    width: min(640px, 100%);
+    max-height: 85vh;
+    overflow: auto;
+    border: 1px solid rgba(140,170,230,.3);
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(110,168,254,.16), transparent 38%),
+      linear-gradient(145deg, #151e36, #0b1122);
+    padding: 30px;
+    box-shadow: 0 30px 100px rgba(0,0,0,.6);
+    transform: translateY(18px) scale(.98);
+    opacity: 0;
+    transition: .3s ease;
+  }
+
+  .modal-backdrop.show .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .modal-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .modal-year {
+    color: var(--gold);
+    font-weight: 800;
+    letter-spacing: .08em;
+  }
+
+  .close-btn {
+    appearance: none;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.05);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+
+  .modal h3 {
+    margin: 0 0 14px;
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .modal .detail {
+    color: #c3d0e8;
+    line-height: 1.9;
+    font-size: 15px;
+    white-space: pre-line;
+  }
+
+  .modal .tags { margin-top: 20px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding-top: 38px; }
+
+    .timeline::before {
+      left: 10px;
+      transform: none;
+    }
+
+    .item,
+    .item:nth-child(even) {
+      width: 100%;
+      margin-left: 0;
+      padding: 0 0 26px 34px;
+    }
+
+    .item::before,
+    .item:nth-child(even)::before {
+      left: 3px;
+      right: auto;
+      top: 22px;
+    }
+
+    .card { padding: 18px; }
+    .modal { padding: 24px; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="tag">A JOURNEY THROUGH INTELLIGENCE</div>
-  <h1>群星闪耀</h1>
-  <div class="sub">AI 大模型发展史<br>从思想的萌芽，到智能时代的星河</div>
-</header>
-<main class="wrap">
-  <input id="search" class="search" placeholder="搜索年份、模型或关键词…" aria-label="搜索历史事件">
-  <div class="filters" id="filters">
-    <button class="filter active" data-era="全部">全部</button>
-    <button class="filter" data-era="萌芽">思想萌芽</button>
-    <button class="filter" data-era="学习">机器学习</button>
-    <button class="filter" data-era="深度">深度学习</button>
-    <button class="filter" data-era="大模型">大模型时代</button>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow"><span class="dot"></span> 从思想的萌芽，到智能时代的星河</div>
+      <h1>群星闪耀</h1>
+      <p class="subtitle">
+        AI 大模型发展史 · 点击每张历史卡片，查看改变人工智能方向的关键时刻。
+      </p>
+    </header>
+
+    <div class="toolbar" id="toolbar" aria-label="按类别筛选"></div>
+
+    <section class="timeline" id="timeline" aria-live="polite"></section>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <article class="modal">
+      <div class="modal-top">
+        <div class="modal-year" id="modalYear"></div>
+        <button class="close-btn" id="closeBtn" aria-label="关闭">×</button>
+      </div>
+      <h3 id="modalTitle"></h3>
+      <div class="detail" id="modalDetail"></div>
+      <div class="tags" id="modalTags"></div>
+    </article>
   </div>
-  <section class="intro">
-    <strong>✦ 每一颗星，都照亮了智能的未来</strong>
-    <p>探索人工智能的重要时刻。点击每张历史卡片，了解改变 AI 发展方向的技术突破。</p>
-  </section>
-  <div class="section-title">✧ 探索历史时间线</div>
-  <section class="timeline" id="timeline"></section>
-  <div class="empty" id="empty">没有找到相关事件，试试其他关键词吧。</div>
-</main>
-<footer>群星闪耀 · AI 发展探索计划<br>历史事件为科普摘要，持续更新中 ✦</footer>
+
 <script>
-const events=[
-{y:"1950",era:"萌芽",title:"图灵提出机器智能问题",desc:"艾伦·图灵发表关于机器与智能的经典思考。",detail:"图灵提出后来被称为“图灵测试”的思想实验，推动人们认真讨论机器能否表现出类似人类的智能。"},
-{y:"1956",era:"萌芽",title:"人工智能正式命名",desc:"达特茅斯研讨会成为 AI 学科的重要起点。",detail:"研究者开始把机器推理、学习和解决问题作为一个明确的研究领域，人工智能由此逐渐形成独立学科。"},
-{y:"1986",era:"学习",title:"反向传播推动神经网络",desc:"神经网络训练方法获得广泛关注。",detail:"反向传播让网络能够根据预测误差调整内部参数，成为后来深度神经网络训练的重要基础。"},
-{y:"1997",era:"学习",title:"深蓝战胜国际象棋冠军",desc:"计算机在国际象棋领域取得标志性胜利。",detail:"IBM 深蓝击败世界冠军加里·卡斯帕罗夫，展示了专用计算系统在复杂策略任务上的强大能力。"},
-{y:"2012",era:"深度",title:"AlexNet 引爆深度学习",desc:"图像识别领域迎来关键突破。",detail:"AlexNet 在 ImageNet 图像识别竞赛中取得显著成绩，推动深度神经网络、GPU 训练和大规模数据成为 AI 发展的重要方向。"},
-{y:"2016",era:"深度",title:"AlphaGo 战胜李世石",desc:"深度学习与强化学习震撼世界。",detail:"AlphaGo 将深度神经网络、搜索和强化学习结合，在围棋这一复杂领域取得突破，展示了 AI 解决高难度问题的新路径。"},
-{y:"2017",era:"大模型",title:"Transformer 架构诞生",desc:"注意力机制改变语言模型的发展。",detail:"论文《Attention Is All You Need》提出 Transformer 架构。它便于并行训练，成为后来许多大型语言模型的核心基础。"},
-{y:"2018",era:"大模型",title:"BERT 推动预训练语言模型",desc:"大规模文本预训练成为关键路线。",detail:"BERT 展示了通过海量文本预训练，再适配具体语言任务的有效性，推动自然语言处理快速发展。"},
-{y:"2020",era:"大模型",title:"GPT-3 展示少样本能力",desc:"大规模语言模型引发广泛关注。",detail:"GPT-3 展示了大型语言模型通过提示和少量示例完成多种任务的能力，让通用模型路线更加受到关注。"},
-{y:"2022",era:"大模型",title:"ChatGPT 走向大众",desc:"对话式 AI 进入公众视野。",detail:"ChatGPT 让更多人通过自然语言体验 AI 的写作、解释、总结和编程辅助能力，推动生成式 AI 普及。"},
-{y:"2023",era:"大模型",title:"多模态与智能助手加速",desc:"模型能力和应用生态快速扩展。",detail:"大语言模型、图像理解、工具调用与开发者生态持续发展，AI 助手逐渐进入学习和工作流程。"},
-{y:"2024+",era:"大模型",title:"推理、多模态与智能体探索",desc:"AI 持续向更复杂的任务发展。",detail:"研究和产品不断探索更强的推理能力、实时语音与视觉、工具使用及智能体工作流。不同模型的能力和表现各有差异。"}
-];
-let selected="全部";
-const timeline=document.getElementById("timeline");
-const search=document.getElementById("search");
-function render(){
- const q=search.value.trim().toLowerCase();
- const list=events.filter(e=>(selected==="全部"||e.era===selected)&&[e.y,e.title,e.desc,e.detail,e.era].join(" ").toLowerCase().includes(q));
- timeline.innerHTML=list.map((e,i)=>`<article class="event" data-index="${events.indexOf(e)}"><div class="year">${e.y}</div><h3>${e.title}</h3><p>${e.desc}</p><button class="more" aria-expanded="false">查看星辰档案　＋</button><div class="detail">${e.detail}</div></article>`).join("");
- document.getElementById("empty").style.display=list.length?"none":"block";
- timeline.querySelectorAll(".more").forEach(b=>b.addEventListener("click",()=>{
- const card=b.closest(".event");
- card.classList.toggle("open");
- const open=card.classList.contains("open");
- b.textContent=open?"收起档案　−":"查看星辰档案　＋";
- b.setAttribute("aria-expanded",String(open));
- }));
-}
-document.getElementById("filters").addEventListener("click",e=>{
- const b=e.target.closest("button[data-era]");
- if(!b)return;
- selected=b.dataset.era;
- document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));
- render();
-});
-search.addEventListener("input",render);
-render();
+  const events = [
+    {
+      year: "1950",
+      title: "图灵测试：机器能思考吗？",
+      category: "思想奠基",
+      summary: "艾伦·图灵提出“机器能思考吗？”这一问题，并构想以对话判断机器智能的方法。",
+      detail: "图灵在论文《计算机器与智能》中提出著名的“模仿游戏”，后来被称为图灵测试。它没有直接定义智能，而是给出一种可操作的外部判断方式，为人工智能学科埋下思想种子。",
+      tags: ["图灵", "图灵测试", "思想实验"]
+    },
+    {
+      year: "1956",
+      title: "达特茅斯会议：AI 正式命名",
+      category: "思想奠基",
+      summary: "约翰·麦卡锡等人发起达特茅斯研讨会，“人工智能”作为学科名称正式出现。",
+      detail: "达特茅斯夏季人工智能研究项目汇聚了早期研究者，讨论如何让机器使用语言、形成抽象概念并解决人类问题。它通常被视为人工智能学科诞生的标志。",
+      tags: ["达特茅斯", "AI 学科", "麦卡锡"]
+    },
+    {
+      year: "1986",
+      title: "反向传播推动神经网络训练",
+      category: "技术突破",
+      summary: "反向传播算法被系统化推广，为多层神经网络训练提供了关键方法。",
+      detail: "反向传播通过链式法则计算梯度，让多层神经网络能够根据误差调整权重。它成为深度学习的重要基础，影响了此后数十年的神经网络研究。",
+      tags: ["反向传播", "神经网络", "梯度"]
+    },
+    {
+      year: "1997",
+      title: "深蓝战胜国际象棋世界冠军",
+      category: "技术突破",
+      summary: "IBM 深蓝击败加里·卡斯帕罗夫，展示专用搜索与计算系统的强大能力。",
+      detail: "深蓝结合大规模并行计算、启发式搜索和国际象棋领域知识，在六局比赛中战胜世界冠军卡斯帕罗夫。它成为“专用智能系统”的标志性事件。",
+      tags: ["深蓝", "国际象棋", "IBM"]
+    },
+    {
+      year: "2012",
+      title: "AlexNet 引爆深度学习",
+      category: "技术突破",
+      summary: "AlexNet 在 ImageNet 图像识别竞赛中大幅领先，深度学习革命加速。",
+      detail: "AlexNet 使用卷积神经网络，并借助 GPU 训练，在 ImageNet 竞赛中显著降低错误率。它让学术界和产业界重新认识到深度神经网络的潜力。",
+      tags: ["AlexNet", "CNN", "ImageNet", "GPU"]
+    },
+    {
+      year: "2016",
+      title: "AlphaGo 战胜李世石",
+      category: "技术突破",
+      summary: "深度强化学习与搜索结合，AlphaGo 在围棋对局中战胜人类顶尖棋手。",
+      detail: "AlphaGo 结合深度神经网络、蒙特卡洛树搜索和强化学习，在复杂围棋领域取得突破。它展示了深度学习与强化学习结合解决高难度决策问题的潜力。",
+      tags: ["AlphaGo", "强化学习", "围棋"]
+    },
+    {
+      year: "2017",
+      title: "Transformer 架构诞生",
+      category: "范式变革",
+      summary: "《Attention Is All You Need》提出 Transformer，成为后续大模型的核心基础。",
+      detail: "Transformer 以自注意力机制为核心，摆脱了循环结构在并行计算上的限制。它后来成为 GPT、BERT 等大规模预训练模型的基础架构，深刻改变了自然语言处理方向。",
+      tags: ["Transformer", "Attention", "大模型基础"]
+    },
+    {
+      year: "2018",
+      title: "BERT 推动预训练语言模型",
+      category: "范式变革",
+      summary: "BERT 采用双向 Transformer 预训练，推动自然语言理解进入预训练时代。",
+      detail: "BERT 通过大规模无标注文本预训练，再在下游任务上微调，刷新了多项自然语言理解基准。它让“预训练 + 微调”成为主流范式之一。",
+      tags: ["BERT", "预训练", "NLP"]
+    },
+    {
+      year: "2020",
+      title: "GPT-3 展示规模涌现能力",
+      category: "范式变革",
+      summary: "GPT-3 以大规模参数和少样本学习能力，展示大模型的通用潜力。",
+      detail: "GPT-3 通过更大规模参数和训练数据，在少样本甚至零样本任务中表现出较强能力。它让“规模扩展”与“通用语言模型”成为大模型发展的重要方向。",
+      tags: ["GPT-3", "少样本学习", "规模扩展"]
+    },
+    {
+      year: "2022",
+      title: "ChatGPT 让对话式 AI 走向大众",
+      category: "普及与前沿",
+      summary: "ChatGPT 以自然对话交互迅速普及，生成式 AI 进入大众视野。",
+      detail: "ChatGPT 基于大语言模型和对话式交互，让普通用户可以直接用自然语言完成写作、问答、编程辅助等任务。它成为生成式 AI 普及的重要节点。",
+      tags: ["ChatGPT", "对话式 AI", "生成式 AI"]
+    },
+    {
+      year: "2023",
+      title: "多模态与智能助手加速发展",
+      category: "普及与前沿",
+      summary: "文本、图像、语音等模态加速融合，AI 助手能力从对话扩展到多模态理解。",
+      detail: "多模态模型能够同时处理文本、图像、音频等信息，智能助手开始具备更丰富的感知与交互能力。AI 应用从单轮问答走向更复杂的任务协作。",
+      tags: ["多模态", "智能助手", "视觉", "语音"]
+    },
+    {
+      year: "2024+",
+      title: "推理、实时交互与智能体工作流",
+      category: "普及与前沿",
+      summary: "大模型向更强推理、实时语音视觉和智能体工作流方向演进。",
+      detail: "前沿探索聚焦于复杂推理、工具调用、长期记忆、实时多模态交互和智能体协作。AI 系统不再只是回答问题，而是尝试规划并完成多步骤任务。",
+      tags: ["推理", "智能体", "Agent", "实时交互"]
+    }
+  ];
+
+  const timelineEl = document.getElementById("timeline");
+  const toolbarEl = document.getElementById("toolbar");
+  const backdrop = document.getElementById("modalBackdrop");
+  const closeBtn = document.getElementById("closeBtn");
+  const modalYear = document.getElementById("modalYear");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDetail = document.getElementById("modalDetail");
+  const modalTags = document.getElementById("modalTags");
+
+  let activeCategory = "全部";
+
+  const categories = ["全部", ...new Set(events.map(e => e.category))];
+
+  function renderFilters() {
+    toolbarEl.innerHTML = categories.map(cat => `
+      <button class="filter-btn ${cat === activeCategory ? "active" : ""}" data-cat="${cat}">
+        ${cat}
+      </button>
+    `).join("");
+
+    toolbarEl.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCategory = btn.dataset.cat;
+        renderFilters();
+        renderTimeline();
+      });
+    });
+  }
+
+  function renderTimeline() {
+    const list = activeCategory === "全部"
+      ? events
+      : events.filter(e => e.category === activeCategory);
+
+    if (!list.length) {
+      timelineEl.innerHTML = `<div class="empty">暂无内容</div>`;
+      return;
+    }
+
+    timelineEl.innerHTML = list.map((e, i) => `
+      <article class="item" style="animation-delay:${Math.min(i * 60, 480)}ms">
+        <div class="card" tabindex="0" role="button" data-index="${events.indexOf(e)}" aria-label="查看 ${e.year} ${e.title}">
+          <span class="year">${e.year}</span>
+          <h2>${e.title}</h2>
+          <p>${e.summary}</p>
+          <div class="tags">
+            ${e.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join("")}
+          </div>
+          <span class="hint">点击卡片查看详情 →</span>
+        </div>
+      </article>
+    `).join("");
+
+    timelineEl.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => openModal(Number(card.dataset.index)));
+      card.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          openModal(Number(card.dataset.index));
+        }
+      });
+    });
+  }
+
+  function openModal(index) {
+    const e = events[index];
+    modalYear.textContent = e.year;
+    modalTitle.textContent = e.title;
+    modalDetail.textContent = e.detail;
+    modalTags.innerHTML = e.tags.map(t => `<span class="tag">${t}</span>`).join("");
+    backdrop.classList.add("show");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  renderFilters();
+  renderTimeline();
 </script>
 </body>
 </html>
