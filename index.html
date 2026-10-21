@@ -1,98 +1,138 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#050817">
-<meta name="description" content="群星闪耀：交互式人工智能与大模型发展史。">
+<meta name="description" content="群星闪耀：交互式人工智能与大模型发展史">
 <title>群星闪耀｜AI 大模型发展史</title>
 <style>
-:root{color-scheme:dark;--bg:#050817;--panel:rgba(12,19,47,.82);--line:rgba(118,166,255,.3);--text:#f3f6ff;--muted:#b2bedc;--cyan:#8beaff;--violet:#c4a0ff;--gold:#ffe1a1}
+:root{color-scheme:dark;--bg:#050817;--line:rgba(118,166,255,.3);--text:#f3f6ff;--muted:#b2bedc;--cyan:#8beaff;--violet:#c4a0ff;--gold:#ffe1a1}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--bg)}
 body{margin:0;background:transparent;color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans SC",sans-serif;line-height:1.7;overflow-x:hidden}
-#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,#111e52 0%,#070b20 44%,#030510 100%)}
-.nebula{position:fixed;inset:-25%;z-index:0;pointer-events:none;opacity:.48;filter:blur(32px);background:conic-gradient(from 40deg at 40% 40%,transparent 0deg,#153d9a33 40deg,#8b42ff35 85deg,transparent 130deg,#146bdc44 205deg,transparent 270deg,#6638b733 320deg,transparent 360deg);animation:nebulaDrift 48s ease-in-out infinite alternate;transform-origin:center}
-.nebula.n2{opacity:.28;filter:blur(50px);background:radial-gradient(ellipse at 20% 60%,#176cff66,transparent 34%),radial-gradient(ellipse at 72% 35%,#7e35d966,transparent 35%),radial-gradient(ellipse at 60% 80%,#00b9ff44,transparent 28%);animation-duration:65s;animation-direction:alternate-reverse}
+#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.nebula{position:fixed;inset:-25%;z-index:0;pointer-events:none;opacity:.48;filter:blur(32px);background:conic-gradient(from 40deg at 40% 40%,transparent,#153d9a33,#8b42ff35,transparent,#146bdc44,transparent,#6638b733,transparent);animation:nebulaDrift 35s ease-in-out infinite alternate;will-change:transform}
+.nebula.n2{opacity:.3;filter:blur(45px);background:radial-gradient(ellipse at 20% 60%,#176cff66,transparent 34%),radial-gradient(ellipse at 72% 35%,#7e35d966,transparent 35%),radial-gradient(ellipse at 60% 80%,#00b9ff44,transparent 28%);animation-duration:48s;animation-direction:alternate-reverse}
 @keyframes nebulaDrift{0%{transform:translate3d(-2%,1%,0) rotate(-8deg) scale(1)}50%{transform:translate3d(2%,-2%,0) rotate(9deg) scale(1.08)}100%{transform:translate3d(-1%,2%,0) rotate(18deg) scale(1.03)}}
-header.hero{position:relative;z-index:1;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:45px 18px 34px;position:relative;isolation:isolate}
-.brand{position:absolute;top:16px;left:18px;font-weight:700;font-size:14px;letter-spacing:.03em;color:#eaf5ff}
+header.hero{position:relative;z-index:1;min-height:88vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:65px 18px 34px;isolation:isolate}
+.brand{position:absolute;top:16px;left:18px;font-weight:700;font-size:14px;color:#eaf5ff}
 .brand span{color:var(--cyan);margin-right:8px}
-nav{position:absolute;top:17px;right:18px;display:flex;gap:15px;font-size:12px}
+nav{position:absolute;top:18px;right:18px;display:flex;gap:15px;font-size:12px}
 nav a{color:#cbd6f5;text-decoration:none}
 nav a:hover{color:var(--cyan)}
 .planet{width:80px;height:80px;border-radius:50%;display:grid;place-items:center;font-size:34px;margin:18px auto 20px;position:relative;background:radial-gradient(circle at 35% 30%,#d9f8ff,#678dff 27%,#29206d 63%,#080c25 74%);box-shadow:0 0 50px #3e72ff77,0 0 100px #6038ff33}
 .planet:after{content:"";position:absolute;width:124px;height:35px;border:1px solid #8edfff99;border-radius:50%;transform:rotate(-24deg);box-shadow:0 0 18px #528dff44}
 .eyebrow{font-size:10px;letter-spacing:.25em;color:var(--cyan);font-weight:700}
-h1{font-size:clamp(42px,10vw,78px);line-height:1.15;letter-spacing:.08em;margin:8px 0;background:linear-gradient(100deg,#fff,#8beaff 48%,#bd9bff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 35px #3d7cff22}
+h1{font-size:clamp(42px,10vw,78px);line-height:1.15;letter-spacing:.08em;margin:8px 0;background:linear-gradient(100deg,#fff,#8beaff 48%,#bd9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
 h2{line-height:1.3}
 .hero h2{font-size:clamp(18px,4vw,28px);letter-spacing:.16em;margin:0 0 15px;color:#e8edff}
 .subtitle{max-width:720px;color:#c0cbea;font-size:14px;margin:0 auto 24px}
 .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:12px 0}
-.btn{border:1px solid #6888db99;border-radius:12px;padding:11px 17px;color:white;background:#0d1c46cc;text-decoration:none;font-weight:650;cursor:pointer;box-shadow:0 0 20px #214fff18}
+.btn{border:1px solid #6888db99;border-radius:12px;padding:11px 17px;color:white;background:#0d1c46e8;text-decoration:none;font-weight:650;cursor:pointer;box-shadow:0 0 20px #214fff18;font:inherit}
 .btn.primary{background:linear-gradient(115deg,#2364db,#7043d8);border-color:#b3c9ff88;box-shadow:0 0 25px #4b5cff55}
 .btn:active{transform:scale(.98)}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;width:min(650px,100%);margin:22px auto 0}
-.stat{background:#08122bc9;border:1px solid var(--line);border-radius:14px;padding:10px}
+.stat{background:#08122be8;border:1px solid var(--line);border-radius:14px;padding:10px}
 .stat strong{display:block;font-size:23px;color:var(--cyan)}
 .stat span{font-size:11px;color:var(--muted)}
 .hero-quote{margin:26px 0 0;color:#e3d8ff;font-weight:700;text-shadow:0 0 15px #9875ff66}
 .scrollhint{font-size:11px;color:#aebbe0;margin-top:18px;animation:bob 2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(5px)}}
 main{position:relative;z-index:1;width:min(960px,100%);margin:auto;padding:0 15px 50px}
-.intro{background:linear-gradient(120deg,#101b3bd9,#0b1230df);border:1px solid var(--line);border-radius:18px;padding:19px;margin:12px 0 23px;box-shadow:0 12px 40px #0002}
-.intro h2{font-size:20px;margin:0 0 8px}.intro p{margin:0;color:var(--muted);font-size:14px}
-.controls{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:1fr auto;gap:9px;padding:10px 0;background:#050817eF;backdrop-filter:blur(15px)}
+.intro{background:linear-gradient(120deg,#101b3bf2,#0b1230f2);border:1px solid var(--line);border-radius:18px;padding:19px;margin:12px 0 23px;box-shadow:0 12px 40px #0002}
+.intro h2{font-size:20px;margin:0 0 8px}
+.intro p{margin:0;color:var(--muted);font-size:14px}
+.controls{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:1fr auto;gap:9px;padding:10px 0;background:#050817f2;backdrop-filter:blur(15px)}
 input,select{min-width:0;width:100%;border:1px solid #354b7c;background:#0b1430;color:#f3f6ff;border-radius:12px;padding:12px;font:inherit}
 select{max-width:230px}
-.section-head{display:flex;align-items:baseline;gap:10px;margin:28px 0 14px}.section-head h2{font-size:23px;margin:0}.section-head span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;align-items:baseline;gap:10px;margin:28px 0 14px}
+.section-head h2{font-size:23px;margin:0}
+.section-head span{font-size:12px;color:var(--muted)}
 .timeline{margin-left:9px;padding-left:22px;border-left:1px solid #4a67a7}
 .event{position:relative;margin:0 0 14px}
 .event:before{content:"";position:absolute;left:-29px;top:22px;width:11px;height:11px;border-radius:50%;background:var(--cyan);border:2px solid #09102b;box-shadow:0 0 15px #65dfff}
-.event details{border:1px solid var(--line);border-radius:15px;background:linear-gradient(140deg,rgba(13,22,49,.91),rgba(7,13,31,.91));overflow:hidden}
-.event summary{list-style:none;cursor:pointer;padding:15px}.event summary::-webkit-details-marker{display:none}
-.event summary:after{content:"＋ 点击展开";display:block;color:var(--cyan);font-size:11px;margin-top:7px}.event details[open] summary:after{content:"－ 收起详情"}
+.event details{border:1px solid var(--line);border-radius:15px;background:linear-gradient(140deg,rgba(13,22,49,.96),rgba(7,13,31,.96));overflow:hidden}
+.event summary{list-style:none;cursor:pointer;padding:15px}
+.event summary::-webkit-details-marker{display:none}
+.event summary:after{content:"＋ 点击展开";display:block;color:var(--cyan);font-size:11px;margin-top:7px}
+.event details[open] summary:after{content:"－ 收起详情"}
 .event details[open]{border-color:#6d8ee1;box-shadow:0 0 25px #314d9a22}
-.year{font-weight:800;color:var(--gold);font-size:13px}.tag{display:inline-block;margin-left:8px;font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid #8e77d477;color:#d9c8ff;background:#5b3d8b22}
-.event h3{font-size:17px;margin:6px 0 3px}.short{font-size:13px;color:var(--muted);margin:0}
-.detail{padding:0 15px 17px;color:#cbd5ed;font-size:13px}.detail p{margin:9px 0}.detail strong{color:#fff}.why{border-left:2px solid var(--violet);background:#8c6cff12;border-radius:0 8px 8px 0;padding:9px 12px}
+.year{font-weight:800;color:var(--gold);font-size:13px}
+.tag{display:inline-block;margin-left:8px;font-size:10px;padding:2px 8px;border-radius:20px;border:1px solid #8e77d477;color:#d9c8ff;background:#5b3d8b22}
+.event h3{font-size:17px;margin:6px 0 3px}
+.short{font-size:13px;color:var(--muted);margin:0}
+.detail{padding:0 15px 17px;color:#cbd5ed;font-size:13px}
+.detail p{margin:9px 0}
+.detail strong{color:#fff}
+.why{border-left:2px solid var(--violet);background:#8c6cff12;border-radius:0 8px 8px 0;padding:9px 12px}
 .empty{text-align:center;color:var(--muted);display:none;padding:25px}
 .glossary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.term{padding:13px;border:1px solid var(--line);background:#0b1430c9;border-radius:12px}.term strong{color:var(--cyan)}.term p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.term{padding:13px;border:1px solid var(--line);background:#0b1430e8;border-radius:12px}
+.term strong{color:var(--cyan)}
+.term p{font-size:12px;color:var(--muted);margin:4px 0 0}
 footer{position:relative;z-index:1;text-align:center;padding:25px 15px 35px;color:#8e9cc0;font-size:11px;border-top:1px solid #283458}
 .backtop{display:block;text-align:center;margin:23px auto;color:var(--cyan);text-decoration:none}
 @media(min-width:700px){header.hero{min-height:92vh}.timeline{margin-left:55px;padding-left:29px}.event:before{left:-36px}.event summary{padding:18px 20px}.detail{padding:0 20px 20px}.glossary{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:520px){nav{top:52px;left:18px;right:18px;justify-content:center;gap:14px}.brand{top:15px}header.hero{padding-top:90px;min-height:88vh}.controls{grid-template-columns:1fr}select{max-width:none}.planet{width:67px;height:67px}.stats{gap:6px}.stat strong{font-size:20px}.hero-quote{font-size:13px}.event h3{font-size:16px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<canvas id="space" aria-hidden="true"></canvas><div class="nebula"></div><div class="nebula n2"></div>
+<canvas id="space" aria-hidden="true"></canvas>
+<div class="nebula"></div><div class="nebula n2"></div>
+
 <header class="hero" id="top">
   <div class="brand"><span>✦</span>群星闪耀 | AI 大模型发展史</div>
   <nav><a href="#top">首页</a><a href="#timeline-title">发展历程</a><a href="#glossary">术语词典</a></nav>
   <div class="planet">✦</div>
   <div class="eyebrow">A JOURNEY THROUGH ARTIFICIAL INTELLIGENCE</div>
-  <h1>群星闪耀</h1><h2>AI 大模型发展史</h2>
+  <h1>群星闪耀</h1>
+  <h2>AI 大模型发展史</h2>
   <p class="subtitle">从早期的灵感探索，到大模型的崛起，再到通用人工智能的未来，<br>这是一段由科学家、工程师和梦想家共同书写的星辰大海。</p>
   <div class="actions">
     <a class="btn primary" href="#timeline-title">开始探索 ↓</a>
     <a class="btn" href="#timeline-title">发展历程 →</a>
-    <button class="btn" id="meteorToggle" type="button">流星雨：开启</button>
+    <button class="btn" id="meteorToggle" type="button" aria-pressed="true">流星雨：开启</button>
   </div>
-  <div class="stats"><div class="stat"><strong>70+</strong><span>年探索历程</span></div><div class="stat"><strong id="eventCount">30</strong><span>个关键节点</span></div><div class="stat"><strong>∞</strong><span>仍在延伸的未来</span></div></div>
-  <p class="hero-quote">每一个伟大的模型，都是人类智慧的星光</p><div class="scrollhint">⌄ 向下滑动探索时间线</div>
+  <div class="stats">
+    <div class="stat"><strong>70+</strong><span>年探索历程</span></div>
+    <div class="stat"><strong id="eventCount">31</strong><span>个关键节点</span></div>
+    <div class="stat"><strong>∞</strong><span>仍在延伸的未来</span></div>
+  </div>
+  <p class="hero-quote">每一个伟大的模型，都是人类智慧的星光</p>
+  <div class="scrollhint">⌄ 向下滑动探索时间线</div>
 </header>
+
 <main>
-<section class="intro"><h2>✨ 如何阅读这段历史？</h2><p>人工智能并不是突然出现的。它经历了符号推理、专家系统、机器学习、深度学习、预训练大模型等阶段。点击任意事件查看背景、技术突破和历史意义；也可以搜索人物、模型或技术名称。</p></section>
-<div class="controls"><input id="search" type="search" placeholder="搜索：图灵、Transformer、GPT、DeepSeek…" aria-label="搜索事件"><select id="era" aria-label="按时期筛选"><option value="all">全部时期</option><option value="early">萌芽与起步（1950—1980）</option><option value="winter">低谷与复兴（1981—2010）</option><option value="deep">深度学习崛起（2011—2017）</option><option value="llm">大模型时代（2018—至今）</option></select></div>
+<section class="intro">
+  <h2>✨ 如何阅读这段历史？</h2>
+  <p>人工智能并不是突然出现的。它经历了符号推理、专家系统、机器学习、深度学习、预训练大模型等阶段。点击任意事件查看背景、技术突破和历史意义；也可以搜索人物、模型或技术名称。</p>
+</section>
+<div class="controls">
+  <input id="search" type="search" placeholder="搜索：图灵、Transformer、GPT、DeepSeek…" aria-label="搜索事件">
+  <select id="era" aria-label="按时期筛选">
+    <option value="all">全部时期</option>
+    <option value="early">萌芽与起步（1950—1980）</option>
+    <option value="winter">低谷与复兴（1981—2010）</option>
+    <option value="deep">深度学习崛起（2011—2017）</option>
+    <option value="llm">大模型时代（2018—至今）</option>
+  </select>
+</div>
 <div class="section-head" id="timeline-title"><h2>宇宙时间线</h2><span>按时间顺序 · 点击展开</span></div>
-<div class="timeline" id="timeline"></div><div class="empty" id="empty">没有找到相关事件，试试其他关键词。</div>
+<div class="timeline" id="timeline"></div>
+<div class="empty" id="empty">没有找到相关事件，试试其他关键词。</div>
 <a class="backtop" href="#top">↑ 返回星空首页</a>
-<section class="intro" id="glossary"><h2>🪐 大模型常见术语</h2><div class="glossary">
-<div class="term"><strong>神经网络</strong><p>由相互连接的计算单元组成，能够从数据中学习模式的模型。</p></div>
-<div class="term"><strong>深度学习</strong><p>使用多层神经网络学习复杂数据规律的方法。</p></div>
-<div class="term"><strong>Transformer</strong><p>以注意力机制为核心的架构，是现代语言模型的重要基础。</p></div>
-<div class="term"><strong>预训练</strong><p>先使用大规模数据学习通用能力，再适配具体任务。</p></div>
-<div class="term"><strong>微调</strong><p>在已有模型上继续训练，使它更适合特定任务或指令。</p></div>
-<div class="term"><strong>多模态</strong><p>
+
+<section class="intro" id="glossary">
+  <h2>🪐 大模型常见术语</h2>
+  <div class="glossary">
+    <div class="term"><strong>神经网络</strong><p>由相互连接的计算单元组成，能够从数据中学习模式的模型。</p></div>
+    <div class="term"><strong>深度学习</strong><p>使用多层神经网络学习复杂数据规律的方法。</p></div>
+    <div class="term"><strong>Transformer</strong><p>以注意力机制为核心的架构，是现代语言模型的重要基础。</p></div>
+    <div class="term"><strong>预训练</strong><p>先使用大规模数据学习通用能力，再适配具体任务。</p></div>
+    <div class="term"><strong>微调</strong><p>在已有模型上继续训练，使它更适合特定任务或指令。</p></div>
+    <div class="term"><strong>多模态</strong><p>处理或生成文本、图像、音频、视频等不同类型信息。</p></div>
+    <div class="term"><strong>推理模型</strong><p>针对复杂问题求解优化，可能投入更多计算步骤。</p></div>
+    <div class="term"><strong>幻觉</strong><p>模型生成听起来合理、但不准确或没有依据的内容。</p></
