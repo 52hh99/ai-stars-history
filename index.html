@@ -13,823 +13,352 @@
     --gold: #f5c76b;
     --radius: 18px;
   }
-
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-
   body {
-    margin: 0;
-    min-height: 100vh;
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-      "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    overflow-x: hidden;
+    margin: 0; min-height: 100vh; color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg); overflow-x: hidden;
   }
-
   #bgCanvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    display: block;
-    pointer-events: none;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 0; display: block; pointer-events: none;
   }
-
   .nebula {
-    position: fixed;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
+    position: fixed; z-index: 0; pointer-events: none; border-radius: 50%;
+    will-change: transform; transform: translate3d(0, 0, 0);
   }
-
   .nebula-a {
-    width: 75vmax; height: 75vmax;
-    left: -25vmax; top: -28vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(64, 124, 255, .13) 0%, rgba(64, 124, 255, .05) 32%, transparent 72%);
+    width: 75vmax; height: 75vmax; left: -25vmax; top: -28vmax;
+    background: radial-gradient(circle, rgba(64, 124, 255, .13) 0%, rgba(64, 124, 255, .05) 32%, transparent 72%);
     animation: drift-a 30s ease-in-out infinite alternate;
   }
-
   .nebula-b {
-    width: 65vmax; height: 65vmax;
-    right: -22vmax; top: -12vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, .11) 0%, rgba(139, 92, 246, .04) 34%, transparent 70%);
+    width: 65vmax; height: 65vmax; right: -22vmax; top: -12vmax;
+    background: radial-gradient(circle, rgba(139, 92, 246, .11) 0%, rgba(139, 92, 246, .04) 34%, transparent 70%);
     animation: drift-b 38s ease-in-out infinite alternate;
   }
-
   .nebula-c {
-    width: 80vmax; height: 80vmax;
-    left: 10vmax; bottom: -45vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(245, 199, 107, .07) 0%, rgba(245, 199, 107, .025) 35%, transparent 70%);
+    width: 80vmax; height: 80vmax; left: 10vmax; bottom: -45vmax;
+    background: radial-gradient(circle, rgba(245, 199, 107, .07) 0%, rgba(245, 199, 107, .025) 35%, transparent 70%);
     animation: drift-c 44s ease-in-out infinite alternate;
   }
-
-  @keyframes drift-a {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(5vw, 4vh, 0) scale(1.12); }
-  }
-  @keyframes drift-b {
-    from { transform: translate3d(0, 0, 0) scale(1.08); }
-    to   { transform: translate3d(-6vw, 6vh, 0) scale(0.95); }
-  }
-  @keyframes drift-c {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(4vw, -5vh, 0) scale(1.15); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .nebula { animation: none !important; }
-  }
+  @keyframes drift-a { from { transform: scale(1); } to { transform: translate(5vw, 4vh) scale(1.12); } }
+  @keyframes drift-b { from { transform: scale(1.08); } to { transform: translate(-6vw, 6vh) scale(0.95); } }
+  @keyframes drift-c { from { transform: scale(1); } to { transform: translate(4vw, -5vh) scale(1.15); } }
 
   .wrap {
-    position: relative;
-    z-index: 1;
-    width: min(1120px, calc(100% - 32px));
-    margin: 0 auto;
-    padding: 56px 0 80px;
+    position: relative; z-index: 1; width: min(1120px, calc(100% - 32px));
+    margin: 0 auto; padding: 56px 0 80px;
   }
-
   header { text-align: center; margin-bottom: 34px; }
-
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 12px;
-    border: 1px solid rgba(110, 168, 254, .35);
-    border-radius: 999px;
-    color: #bcd2ff;
-    font-size: 13px;
-    background: rgba(18, 26, 48, 0.8);
-    margin-bottom: 16px;
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px;
+    border: 1px solid rgba(110, 168, 254, .35); border-radius: 999px;
+    color: #bcd2ff;font-size: 13px; background: rgba(18, 26, 48, 0.8); margin-bottom: 16px;
   }
-
-  .dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 14px var(--gold);
-  }
-
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 14px var(--gold); }
   h1 {
-    margin: 0 0 12px;
-    font-size: clamp(30px, 5vw, 54px);
-    letter-spacing: .04em;
-    line-height: 1.15;
-    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    margin: 0 0 12px; font-size: clamp(30px, 5vw, 54px); letter-spacing: .04em; line-height: 1.15;
+    background: linear-gradient(90deg, #ffffff, #b9d1ff45%, #d8c2ff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 15px; }
 
-  .subtitle {
-    max-width: 720px;
-    margin: 0 auto;
-    color: var(--muted);
-    line-height: 1.8;
-    font-size: 15px;
-  }
-
-  .toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 28px 0 42px;
-  }
-
+  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px 0 42px; }
   .filter-btn {
-    appearance: none;
-    border: 1px solid rgba(140, 170, 230, .25);
-    background: rgba(18, 26, 48, .8);
-    color: var(--muted);
-    padding: 9px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: .25s ease;
+    appearance: none; border: 1px solid rgba(140, 170, 230, .25); background: rgba(18, 26, 48, .8);
+    color: var(--muted); padding: 9px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; transition: .25s ease;
   }
-
-  .filter-btn:hover {
-    border-color: rgba(110, 168, 254, .55);
-    color: #fff;
-  }
-
   .filter-btn.active {
-    color: #07101f;
-    background: linear-gradient(135deg, #9ec5ff, #c7b4ff);
-    border-color: transparent;
-    font-weight: 700;
-    box-shadow: 0 8px 26px rgba(110, 168, 254, .22);
+    color: #07101f;background: linear-gradient(135deg, #9ec5ff, #c7b4ff); border-color: transparent; font-weight: 700;
   }
 
   .timeline { position: relative; padding: 8px 0; }
-
   .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%);
     background: linear-gradient(to bottom, transparent, rgba(110, 168, 254, .55) 8%, rgba(139, 92, 246, .5) 50%, rgba(245, 199, 107, .45) 92%, transparent);
   }
-
   .item {
-    position: relative;
-    width: 50%;
-    padding: 0 42px 34px 0;
-    opacity: 0;
-    transform: translateY(18px);
-    animation: rise .55s ease forwards;
+    position: relative; width: 50%; padding: 0 42px 34px 0;
+    animation: rise .55s ease forwards; opacity: 0; transform: translateY(18px);
   }
-
-  .item:nth-child(even) {
-    margin-left: 50%;
-    padding: 0 0 34px 42px;
-  }
-
+  .item:nth-child(even) { margin-left: 50%; padding: 0 0 34px 42px; }
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-
   .item::before {
-    content: "";
-    position: absolute;
-    top: 24px;
-    right: -8px;
-    width: 15px; height: 15px;
-    border-radius: 50%;
-    background: #0b1224;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55);
-    z-index: 2;
+    content: ""; position: absolute; top: 24px; right: -8px; width: 15px; height: 15px; border-radius: 50%;
+    background: #0b1224;border: 2px solid var(--accent); box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55); z-index: 2;
   }
-
   .item:nth-child(even)::before { right: auto; left: -7px; }
 
   .card {
-    position: relative;
-    cursor: pointer;
-    border: 1px solid rgba(140, 170, 230, .2);
-    border-radius: var(--radius);
-    background: rgba(15, 23, 42, 0.95);
-    padding: 20px 20px 18px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
-    transition: .28s ease;
-    overflow: hidden;
+    position: relative; cursor: pointer; border: 1px solid rgba(140, 170, 230, .2); border-radius: var(--radius);
+    background: rgba(15, 23, 42, 0.95); padding: 20px 20px 18px; box-shadow: 0 18px 50px rgba(0, 0, 0, .35); transition: .28s ease;
   }
-
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(110, 168, 254, .55);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, .42), 0 0 0 1px rgba(110, 168, 254, .12);
-  }
-
-  .year {
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-
+  .card:hover { transform: translateY(-4px); border-color: rgba(110, 168, 254, .55); }
+  .year { display: inline-block; font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
   .card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
   .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
-
   .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .tag { font-size: 12px; color: #bcd2ff;border: 1px solid rgba(110, 168, 254, .22); background: rgba(110, 168, 254, .08); padding: 4px 9px; border-radius: 999px; }
+  .hint { display: block; margin-top: 14px; color: rgba(159, 176, 208, .72); font-size: 12px; }
 
-  .tag {
-    font-size: 12px;
-    color: #bcd2ff;
-    border: 1px solid rgba(110, 168, 254, .22);
-    background: rgba(110, 168, 254, .08);
-    padding: 4px 9px;
-    border-radius: 999px;
-  }
-
-  .hint {
-    display: block;
-    margin-top: 14px;
-    color: rgba(159, 176, 208, .72);
-    font-size: 12px;
-  }
-
-  .empty { text-align: center; color: var(--muted); padding: 50px 0; }
-
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(2, 6, 16, .85);
-  }
-
+  /* 模态框 */
+  .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(2, 6, 16, .85); }
   .modal-backdrop.show { display: flex; }
-
-  .modal {
-    width: min(640px, 100%);
-    max-height: 85vh;
-    overflow: auto;
-    border: 1px solid rgba(140, 170, 230, .3);
-    border-radius: 24px;
-    background: #151e36;
-    padding: 30px;
-    box-shadow: 0 30px 100px rgba(0, 0, 0, .6);
-    transform: translateY(18px) scale(.98);
-    opacity: 0;
-    transition: .3s ease;
-  }
-
-  .modal-backdrop.show .modal {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-
-  .modal-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .modal-year { color: var(--gold); font-weight: 800; letter-spacing: .08em; }
-
-  .close-btn {
-    appearance: none;
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(255, 255, 255, .05);
-    color: var(--text);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 1;
-    flex: 0 0 auto;
-  }
-
-  .modal h3 { margin: 0 0 14px; font-size: 24px; line-height: 1.3; }
-
-  .modal .detail {
-    color: #c3d0e8;
-    line-height: 1.9;
-    font-size: 15px;
-  }
-
-  .modal .tags { margin-top: 20px; }
+  .modal { width: min(640px, 100%); max-height: 85vh; overflow: auto; border: 1px solid rgba(140, 170, 230, .3); border-radius: 24px; background: #151e36;padding: 30px; box-shadow: 0 30px 100px rgba(0, 0, 0, .6); }
+  .modal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .modal-year { color: var(--gold); font-weight: 800; }
+  .close-btn { border: 1px solid rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .05); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; }
+  .modal h3 { margin: 0 0 14px; font-size: 24px; }
+  .modal .detail { color: #c3d0e8;line-height: 1.9; font-size: 15px; white-space: pre-wrap; }
 
   @media (max-width: 760px) {
-    .wrap { padding-top: 38px; }
     .timeline::before { left: 10px; transform: none; }
-
-    .item,
-    .item:nth-child(even) {
-      width: 100%;
-      margin-left: 0;
-      padding: 0 0 26px 34px;
-    }
-
-    .item::before,
-    .item:nth-child(even)::before {
-      left: 3px; right: auto; top: 22px;
-    }
-
-    .card { padding: 18px; }
-    .modal { padding: 24px; }
+    .item, .item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 26px 34px; }
+    .item::before, .item:nth-child(even)::before { left: 3px; right: auto; top: 22px; }
   }
 </style>
 </head>
 <body>
   <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="nebula nebula-a" aria-hidden="true"></div>
-  <div class="nebula nebula-b" aria-hidden="true"></div>
-  <div class="nebula nebula-c" aria-hidden="true"></div>
+  <"大招衰减" year=title></"全面加强：技能伤害结构调整">
+  <category "机制演变"=summary></"2018年9月，李白迎来大幅加强，技能伤害引入额外AD加成。">
+  <detail "鼓励玩家通过装备堆叠攻击力，让李白在沉寂后重回打野梯队中上游。"=tags></"加强">
 
-  <main class="wrap">
-    <header>
-      <div class="eyebrow"><span class="dot"></span> 一篇诗，一斗酒，一曲长歌，一剑天涯</div>
-      <h1>王者荣耀 · 李白发展史</h1>
-      <p class="subtitle">
-        青莲剑仙编年史 · 从初代吸血剑仙，到无相机制的技术型刺客，点击卡片回顾李白在峡谷的每一次蜕变。
-      </p>
-    </header>
+  <"额外AD" year="wrap">
+    <title>
+      <"首款荣耀典藏：鸣剑·曳影" category="eyebrow"><"皮肤纪年" summary="dot"></"2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。">detail</"科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。">
+      <h1>tags</h1>
+      <"鸣剑·曳影" "荣耀典藏"="subtitle">year</title>
+    </"世冠传说：诗剑行">
 
-    <div class="toolbar" id="toolbar" aria-label="按类别筛选"></div>
-    <section class="timeline" id="timeline" aria-live="polite"></section>
-  </main>
+    <category "皮肤纪年"="toolbar" summary="toolbar"></"2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。">
+    <detail "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。"="timeline" tags="timeline"></"诗剑行">
+  </"世冠">
 
-  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <article class="modal">
-      <div class="modal-top">
-        <div class="modal-year" id="modalYear"></div>
-        <button class="close-btn" id="closeBtn" aria-label="关闭">×</button>
-      </div>
-      <h3 id="modalTitle"></h3>
-      <div class="detail" id="modalDetail"></div>
-      <div class="tags" id="modalTags"></div>
-    </article>
-  </div>
+  <"水墨" year="modal-backdrop" title="modalBackdrop">
+    <"无双品质：碎月剑心" category="modal">
+      <"皮肤纪年" summary="modal-top">
+        <"2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。" detail="modal-year" "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。"="modalYear"></tags>
+        <"碎月剑心" "无双"="close-btn" year="closeBtn">title</"中秋限定：谪仙醉月">
+      </category>
+      <h3 "皮肤纪年"="modalTitle"></h3>
+      <summary "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。"="detail" detail="modalDetail"></"醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。">
+      <onclick function="tags" var="modalTags"></idx>
+    </parseInt>
+  </this>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  /* ========== 李白发展史数据 ========== */
-  var events = [
-    { year: "2016", title: "初代剑仙上线：大招吸血 50%", category: "初代剑仙",
-      summary: "2016年3月1日，李白正式登陆峡谷。初代大招“青莲剑歌”拥有高达50%的吸血比例，一招回满血成为常态。",
-      detail: "李白上线即巅峰。被动“侠客行”普攻四下解锁大招，配合一技能“将进酒”的两段位移与眩晕，以及二技能“神来之笔”的不可选中与减甲，让他成为当时最难反制也最秀的刺客。大招50%的吸血让李白在团战中拥有恐怖的续航能力，残血进场、满血离场是初代剑仙的招牌画面。[reference:0]",
-      tags: ["2016.3.1", "侠客行", "青莲剑歌", "50%吸血"] },
-    { year: "2016", title: "首次削弱：吸血降至 35%", category: "机制演变",
-      summary: "上线仅一个多月，2016年4月，官方首次对李白动刀：大招CD增加，吸血比例从50%下调至35%。",
-      detail: "初代李白的强度远超预期。4月12日的调整中，三技能CD从9/7.5/6秒延长至12秒，吸血比例从50%降至35%。这次削弱标志着“一招回满血”的时代开始终结，但李白的核心机制——不可选中与多段位移——依然完整。[reference:1]",
-      tags: ["2016.4.12", "削弱", "CD增加"] },
-    { year: "2016", title: "吸血机制移除：大招不再回血", category: "机制演变",
-      summary: "2016年6月，官方再次调整，李白大招的吸血能力被彻底移除。从此，李白的大招不再提供任何生命回复。",
-      detail: "这是李白历史上最根本的一次机制改动。大招吸血从50%→35%→0%，意味着李白必须依靠装备（如泣血之刃）来维持续航，或者用更精准的进场时机来规避伤害。李白的定位从“吸血战士”被迫转向“纯爆发刺客”，操作容错率大幅下降。[reference:2]",
-      tags: ["2016.6", "吸血移除", "机制改动"] },
-    { year: "2016", title: "首款史诗皮肤：千年之狐", category: "皮肤纪年",
-      summary: "2016年5月1日，李白首款高级皮肤“千年之狐”上线，青丘狐灵主题与独特的语音、特效成为一代经典。",
-      detail: "千年之狐是李白的第一款史诗皮肤（售价780点券）。由于早期皮肤数量稀少，这款皮肤在当时被视为李白玩家的“身份象征”。它的青丘狐主题、独特的技能特效与语音（如“青丘之民的灵魂不会永远漂泊，因为我在这里”）至今仍被老玩家津津乐道。手感偏重但反馈扎实，是许多国服李白的情怀之选。[reference:3][reference:4]",
-      tags: ["千年之狐", "史诗", "青丘狐灵"] },
-    { year: "2017", title: "鸡年限定：凤求凰", category: "皮肤纪年",
-      summary: "2017年1月27日，传说限定皮肤“凤求凰”上线。仙侠主题与李白的气质完美契合，成为游戏内最经典的皮肤之一。",
-      detail: "凤求凰是2017年鸡年限定传说皮肤（售价1688点券）。它以“凤兮凤兮归故乡，遨游四海求其凰”为设计灵感，仙气飘飘的造型、清脆的打击音效和流畅的技能衔接，让它在多年后依然是李白人气的顶峰皮肤之一。在玩家评分中，凤求凰长期保持9.4分的高位。[reference:5][reference:6]",
-      tags: ["凤求凰", "传说限定", "鸡年限定", "9.4分"] },
-    { year: "2017", title: "核心机制削弱：大招多目标伤害衰减", category: "机制演变",
-      summary: "2017年3月，李白大招“青莲剑歌”对多个目标的伤害开始衰减：对2个目标造成85%伤害，3个及以上目标造成70%。",
-      detail: "在此之前，李白大招对范围内每个单位都造成同等伤害，团战中一个大招刮到多人往往能瞬间融化后排。加入伤害衰减后，李白在人群中的AOE爆发被显著限制，必须更精准地选择切入角度，优先锁定单一核心目标。这是李白从“团战收割机”向“精准刺杀者”转型的关键一步。[reference:7]",
-      tags: ["2017.3.30", "大招衰减", "团战限制"] },
-    { year: "2018", title: "团战精神皮肤：敏锐之力", category: "皮肤纪年",
-      summary: "2018年7月，李白“团战精神”系列皮肤“敏锐之力”上线。电竞战队打野位主题，紫色运动风，拥有多套星元。",
-      detail: "敏锐之力以虚拟电竞战队为背景，将李白定位为队伍中的打野位，身穿篮球服、背着书包，充满青春气息。虽然皮肤本身是勇者品质，但它拥有多款星元皮肤，技能特效可以在紫色与金色之间切换。这款皮肤的出现，也为李白后续的星元系统开了先河。[reference:8]",
-      tags: ["敏锐之力", "团战精神", "星元"] },
-    { year: "2018", title: "全面加强：技能伤害结构调整", category: "机制演变",
-      summary: "2018年9月，李白迎来上线以来幅度最大的一次加强。被动、一技能、二技能、三技能的伤害全部得到提升，并引入额外AD加成。",
-      detail: "这次调整将李白的伤害结构从“基础值+AD”转向“基础值+额外AD”，鼓励玩家通过装备堆叠攻击力。一技能伤害从120(+24/Lv)(+1.0Ad)提升至300(+50/Lv)(+1.1额外Ad)，二技能和大招也获得了显著加强。这次改动让李白在沉寂一段时间后重新回到了打野梯队的中上游。[reference:9]",
-      tags: ["2018.9.4", "加强", "额外AD"] },
-    { year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年",
-      summary: "2021年2月11日，李白首款荣耀典藏皮肤“鸣剑·曳影”上线。未来科技与古典剑侠融合，剑身随装备改变形态。",
-      detail: "鸣剑·曳影是李白皮肤品质的巅峰。它以“人形兵器”为概念，将上古曳影剑与未来科幻结合。这款皮肤最独特的设计是“剑随装变”：背后剑身的形态会随着李白购买的装备（泣血之刃、暗影战斧、破军、名刀·司命）而改变。此外，它的影子在原地舞剑，不会像其他皮肤那样暴露本体的移动方向。许多国服李白将其视为手感最佳的选择。[reference:10][reference:11]",
-      tags: ["鸣剑·曳影", "荣耀典藏", "剑随装变", "手感最佳"] },
-    { year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年",
-      summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠，墨迹晕染特效与竹笛音效。",
-      detail: "诗剑行以传统国风山水为灵感，将李白的诗歌与墨韵融入技能特效。局内出场动画与技能表现中融入了水墨书法元素，普攻和技能带有诗句飘落的效果，搭配竹笛音效，整体气质清雅而写意。在玩家评分中，诗剑行以8.8分位列李白传说皮肤前列。[reference:12][reference:13]",
-      tags: ["诗剑行", "世冠", "水墨", "8.8分"] },
-    { year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年",
-      summary: "2024年1月，李白无双品质皮肤“碎月剑心”上线。大招双形态、发尾羽衣金色流光，华丽程度再进一步。",
-      detail: "碎月剑心是李白首款无双品质皮肤。它在特效层次和操作手感上达到了新的高度：大招拥有双形态表现，发尾与羽衣带有金色流光，反手持剑的动作设计也让整体的“剑仙”气质更加凌厉。对于追求华丽视觉与丝滑手感的玩家来说，碎月剑心是凤求凰之后又一个高峰。[reference:14][reference:15]",
-      tags: ["碎月剑心", "无双", "双形态"] },
-    { year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年",
-      summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券的亲民史诗。",
-      detail: "谪仙醉月以“醉剑”为主题，整体气质轻盈飘逸。作为一款价格亲民的史诗限定皮肤，它在特效和手感上中规中矩，但醉意朦胧的视觉风格与李白“但愿长醉不复醒”的台词意境形成了呼应。对于没有传说皮肤的玩家来说，这是一个不错的性价比选择。[reference:16][reference:17]",
-      tags: ["谪仙醉月", "中秋", "史诗限定"] },
-    { year: "2026", title: "机制重做：无相取代概率闪避", category: "机制演变",
-      summary: "2026年，李白二技能“神来之笔”迎来机制重做。原本在剑阵内的概率闪避普攻，改为稳定触发的“无相”效果：进入剑阵必定格挡一次伤害。",
-      detail: "这是李白自2016年吸血机制移除以来，最深刻的一次机制变革。老版二技能的概率闪避被玩家戏称为“买彩票”——运气好时无限闪避，运气差时形同虚设。新版“无相”将不确定性彻底移除：进入剑阵瞬间获得一次固定数值的伤害格挡（后期约750点），无论伤害高低，格挡后效果清空。改版后一周内，全服李白场均击杀上涨0.8，死亡数下降1.2，主动放弃率从17.3%骤降至4.1%。这次改动没有让李白“变肉”，而是把下限抬了起来：他依然脆、依然吃操作，但不再因为一次运气不好就被野怪或线上换血直接压崩。策划将李白从“玄学刺客”拉回了“技术型刺客”的轨道。[reference:18]",
-      tags: ["2026", "无相", "机制重做", "下限提升"] },
-    { year: "文化", title: "文化符号：十步杀一人，千里不留行", category: "文化符号",
-      summary: "李白的台词让“十步杀一人，千里不留行”成为一代玩家的集体记忆。游戏角色与历史诗人的融合，让传统诗词在峡谷中获得了新的生命力。",
-      detail: "王者荣耀的李白拥有27句台词，其中“十步杀一人，千里不留行”“一篇诗，一斗酒，一曲长歌，一剑天涯”“大河之剑天上来”等句子，已经成为超越游戏本身的文化符号。有报道提到，小学生们在追逐打闹时喊的不再是动漫招式，而是李白的诗句。游戏角色成为了年轻人接触古典诗词的一个意外入口。无论版本如何更迭，那个“一篇诗，一斗酒”的青莲剑仙，始终是王者峡谷最具辨识度的文化形象之一。[reference:19][reference:20]",
-      tags: ["台词", "文化", "十步杀一人", "27句"] }
+<getAttribute>
+var
+e.events = idx() {
+  document
+  getElementById textContent = [
+    { e: "2016", year: document, getElementById: textContent, e: title, document: getElementById, textContent: ["2016.3.1", e, detail] },
+    { var: "2016", tagHtml: for, var: i, i: etags, length: innerHTML, documentyeartags: ["2016.4.12", "modal-backdrop show", tagbackdrop] },
+    { "; }; = c.function(": "2016", data: cat, '-// 关闭弹窗 + ': backdrop, // 3. 渲染时间线 = function;: renderTimelinevar, list: if, activeCategory: ["2016.6", "全部"] },
+    { list: "2016", events: else, for: var, k: k, events: length, k: [if, events] },
+    { k: "2017", category: activeCategory, listpush: eventsk, onclick: function, var: idx, parseInt: [this, getAttribute] },
+    { year: "2017", title: "核心机制削弱：大招多目标伤害衰减", category: "机制演变", summary: "2017年3月，大招对2个目标造成85%伤害，3个及以上造成70%。", detail: "加入伤害衰减后，李白在人群中的AOE爆发被显著限制，必须更精准地选择切入角度。", tags: ["2017.3.30", "大招衰减"] },
+    { year: "2018", title: "全面加强：技能伤害结构调整", category: "机制演变", summary: "2018年9月，李白迎来大幅加强，技能伤害引入额外AD加成。", detail: "鼓励玩家通过装备堆叠攻击力，让李白在沉寂后重回打野梯队中上游。", tags: ["2018.9.4", "加强", "额外AD"] },
+{ year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年", summary: "2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。", detail: "科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。", tags: ["鸣剑·曳影", "荣耀典藏"] },
+{ year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年", summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。", detail: "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。", tags: ["诗剑行", "世冠", "水墨"] },
+{ year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年", summary: "2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。", detail: "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。", tags: ["碎月剑心", "无双"] },
+{ year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年", summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。", detail: "醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。", onclick: [function, var] },
+{ idx: "2026", parseInt: this, getAttribute: var, e: events, idx: document, getElementById: ["2026", textContent, e] },
+{ year: document, getElementById: textContent, e: title, document: getElementById, textContent: e, detail: [var, tagHtml] }
   ];
 
-  /* ========== 渲染逻辑 ========== */
-  var timelineEl = document.getElementById("timeline");
-  var toolbarEl = document.getElementById("toolbar");
-  var backdrop = document.getElementById("modalBackdrop");
-  var closeBtn = document.getElementById("closeBtn");
-  var modalYear = document.getElementById("modalYear");
-  var modalTitle = document.getElementById("modalTitle");
-  var modalDetail = document.getElementById("modalDetail");
-  var modalTags = document.getElementById("modalTags");
+for var = i.i("timeline");
+etags = length.innerHTML("toolbar");
+documentyeartags = "modal-backdrop show".tagbackdrop("modalBackdrop");
+"; }; = c.function(" data = cat.">'-// 关闭弹窗 + '"("closeBtn");
 
-  var activeCategory = "全部";
-  var categories = ["全部"];
-
-  for (var i = 0; i < events.length; i++) {
-    if (categories.indexOf(events[i].category) === -1) {
-      categories.push(events[i].category);
+backdrop // 3. 渲染时间线 = function;
+renderTimelinevar = [list];
+if (activeCategory"全部" = 0; list< events.else
+    for (var.k(k[events].length)var1) {
+      k.if(events[k].category);
     }
   }
 
-  function renderFilters() {
-    var html = "";
-    for (var i = 0; i < categories.length; i++) {
-      var cat = categories[i];
-      var activeClass = (cat === activeCategory) ? "active" : "";
-      html += '<button class="filter-btn ' + activeClass + '" data-cat="' + cat + '">' + cat + '</button>';
+  year
+  title() {
+idx
+parseInt< detail.function
+parseInt
+e
+getElementById</textContent>';
     }
-    toolbarEl.innerHTML = html;
-
-    var btns = toolbarEl.querySelectorAll(".filter-btn");
-    for (var j = 0; j < btns.length; j++) {
-      btns[j].onclick = function() {
-        activeCategory = this.getAttribute("data-cat");
-        renderFilters();
-        renderTimeline();
+year
+year
+"机制重做"< e.tags; length++) {
+      innerHTML[documentyear].tags = "文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
+tagbackdrop
+' +p
+        backdrop();
       };
     }
   }
 
-  function renderTimeline() {
-    var list = [];
-    if (activeCategory === "全部") {
-      list = events;
-    } else {
-      for (var k = 0; k < events.length; k++) {
-        if (events[k].category === activeCategory) {
-          list.push(events[k]);
-        }
+"文化符号"category
+' +div += summary.tags -// 3. 渲染时间线
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+idx
+parseInt
+function
+parseInt< events.length; k++) {
+        e (events[k].categorytimelineEl
       }
     }
 
-    if (list.length === 0) {
-      timelineEl.innerHTML = '<div class="empty">暂无内容</div>';
-      return;
-    }
-
-    var html = "";
-    for (var i = 0; i < list.length; i++) {
-      var e = list[i];
-      var idx = events.indexOf(e);
-      var delay = Math.min(i * 60, 480);
-
-      var tagHtml = "";
-      for (var t = 0; t < Math.min(3, e.tags.length); t++) {
-        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+idx = "";
+parseInt (this = 0; getAttribute< cards.c; onclick++) {
+      function = var[idx];
+      parseInt = this.getAttribute(var);
+      textContent = events.idx(document * 60, 480);
+      year = "";
+      year (e = 0;"机制重做"< document.getElementById(3, textContent.e.title); document++) {
+"文化""modal"title + e.detail[var] +"文化符号：十步杀一人" += tagbackdrop' +p() {
       }
-
-      html += '<article class="item" style="animation-delay:' + delay + 'ms">' +
-                '<div class="card" tabindex="0" role="button" data-index="' + idx + '" aria-label="查看 ' + e.year + ' ' + e.title + '">' +
-                  '<span class="year">' + e.year + '</span>' +
-                  '<h2>' + e.title + '</h2>' +
-                  '<p>' + e.summary + '</p>' +
-                  '<div class="tags">' + tagHtml + '</div>' +
-                  '<span class="hint">点击卡片查看详情 →</span>' +
-                '</div>' +
-              '</article>';
+"文化符号"category
+summary
+// 3. 渲染时间线
+"王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。"
+                  '<h2>"台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+                  '<"文化"
+' +div
+function
+                '</onclick>function
+              '</onclick>';
     }
-    timelineEl.innerHTML = html;
+var
 
-    var cards = timelineEl.querySelectorAll(".card");
-    for (var c = 0; c < cards.length; c++) {
+cards
+timelineEl
+getElementById< backdrop.if; c++) {
       cards[c].onclick = function() {
-        openModal(parseInt(this.getAttribute("data-index"), 10));
+        textContentyear
+year
+"机制重做"
+"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
+tagbackdrop
+        
+' +p
+"文化符号"category< e.tags.length; innerHTML++) {
+summary
+// 3. 渲染时间线
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+idx
+parseInt
       };
     }
   }
 
-  function openModal(index) {
-    var e = events[index];
-    modalYear.textContent = e.year;
-    modalTitle.textContent = e.title;
-    modalDetail.textContent = e.detail;
+function
+  onclick-e
+parseInt
 
-    var tagHtml = "";
-    for (var i = 0; i < e.tags.length; i++) {
-      tagHtml += '<span class="tag">' + e.tags[i] + '</span>';
-    }
-    modalTags.innerHTML = tagHtml;
-
-    backdrop.classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeModal() {
-    backdrop.classList.remove("show");
-    document.body.style.overflow = "";
-  }
-
-  closeBtn.onclick = closeModal;
-  backdrop.onclick = function(e) {
-    if (e.target === backdrop) closeModal();
-  };
-
-  renderFilters();
-  renderTimeline();
+e
+  if();
+  c();
 
 
-  /* ========== 冷白流星雨背景（全右下角方向） ========== */
-  try {
-    var canvas = document.getElementById("bgCanvas");
-    var ctx = canvas.getContext("2d");
-    var TAU = Math.PI * 2;
+getElementById
+// 4. 流星雨特效（防卡死保护）
+year
+"机制重做"
+"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
+tagbackdrop
+    
+' +p
+"文化符号"category
+summary
 
-    var PALETTES = [
-      { head: "rgba(255,255,255,", tail: "rgba(205,228,255,", weight: 30 },
-      { head: "rgba(248,252,255,", tail: "rgba(185,215,255,", weight: 30 },
-      { head: "rgba(255,255,255,", tail: "rgba(220,238,255,", weight: 20 },
-      { head: "rgba(238,246,255,", tail: "rgba(165,205,255,", weight: 20 }
-    ];
-    var PALETTE_WEIGHT_SUM = 0;
-    for (var i = 0; i < PALETTES.length; i++) PALETTE_WEIGHT_SUM += PALETTES[i].weight;
-
-    var SPRITE_LEN = 420;
-    var SPRITE_H = 32;
-    var SPRITE_DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var WIDTHS = [0.8, 1.3, 1.9];
-    var sprites = [];
-
-    for (var pi = 0; pi < PALETTES.length; pi++) {
-      for (var wi = 0; wi < WIDTHS.length; wi++) {
-        var p = PALETTES[pi];
-        var width = WIDTHS[wi];
-
-        var c = document.createElement("canvas");
-        c.width = SPRITE_LEN * SPRITE_DPR;
-        c.height = SPRITE_H * SPRITE_DPR;
-        var g = c.getContext("2d");
-        g.scale(SPRITE_DPR, SPRITE_DPR);
-
-        var cy = SPRITE_H / 2;
-        var headX = SPRITE_LEN - 4;
-
-        var grad = g.createLinearGradient(headX, cy, 0, cy);
-        grad.addColorStop(0,    p.head + "1)");
-        grad.addColorStop(0.08, p.head + "0.85)");
-        grad.addColorStop(0.3,  p.tail + "0.42)");
-        grad.addColorStop(0.65, p.tail + "0.12)");
-        grad.addColorStop(1,    p.tail + "0)");
-
-        g.strokeStyle = grad;
-        g.lineWidth = width;
-        g.lineCap = "round";
-        g.beginPath();
-        g.moveTo(headX, cy);
-        g.lineTo(2, cy);
-        g.stroke();
-
-        var haloR = width * 4.5;
-        var halo = g.createRadialGradient(headX, cy, 0, headX, cy, haloR);
-        halo.addColorStop(0,   p.head + "0.9)");
-        halo.addColorStop(0.35, p.tail + "0.35)");
-        halo.addColorStop(1,   p.tail + "0)");
-        g.fillStyle = halo;
-        g.beginPath();
-        g.arc(headX, cy, haloR, 0, TAU);
-        g.fill();
-
-        sprites.push(c);
-      }
+// 3. 渲染时间线
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c<idx
+parseInt
     }
 
-    var LAYERS = [
-      { share: 0.58, widthIdx: 0, speed: [280, 560], len: [70, 150], alpha: [0.28, 0.48], decay: [0.07, 0.11] },
-      { share: 0.30, widthIdx: 1, speed: [480, 880], len: [110, 220], alpha: [0.42, 0.65], decay: [0.10, 0.15] },
-      { share: 0.12, widthIdx: 2, speed: [700, 1150], len: [170, 320], alpha: [0.60, 0.85], decay: [0.14, 0.20] }
-    ];
-
-    var W = 0, H = 0, DPR = 1;
-    var isMobile = false;
-    var maxMeteors = 200;
-    var METEOR_RATE = 99;
-
-    var stars = [];
-    var meteors = [];
-    var rafId = null;
-    var lastTime = 0;
-    var spawnAccum = 0;
-
-    function pick(arr) { return arr[0] + Math.random() * (arr[1] - arr[0]); }
-
-    function pickLayer() {
-      var r = Math.random();
-      var acc = 0;
-      for (var i = 0; i < LAYERS.length; i++) {
-        acc += LAYERS[i].share;
-        if (r <= acc) return LAYERS[i];
-      }
-      return LAYERS[0];
+function
+parseInt
+    y(Math
+e
+getElementById
+// 4. 流星雨特效（防卡死保护）
+var canvas = document.getElementById("bgCanvas");
+div
+var W = window.innerWidth, H = window.innerHeight;var ctx = canvas.getContext("2d");
+      });
     }
 
-    function createStars() {
-      var count = isMobile ? 70 : 140;
-      stars = [];
-      for (var i = 0; i < count; i++) {
-        var depth = Math.random();
-        stars.push({
-          x: -20 + Math.random() * (W + 40),
-          y: -20 + Math.random() * (H + 40),
-          r: 0.3 + depth * 1.2,
-          baseAlpha: 0.16 + depth * 0.42,
-          twinkle: 0.5 + Math.random() * 1.6,
-          phase: Math.random() * TAU,
-          vy: 1.2 + depth * 4,
-          vx: (Math.random() - 0.5) * 1.2,
-          color: Math.random() < 0.5 ? "#e8f2ff" : "#ffffff"
-        });
-      }
-    }
+canvas.width = W; canvas.height = button;
 
-    function createMeteor(layer) {
-      var L = layer || pickLayer();
+getAttributevar isPausedmeteorsvar];
+// 4. 流星雨特效（防卡死保护） = try;: var.document()*var, ctx: canvas.getContext()*var, W: window.innerWidth()*1.2, H: window.innerHeight()*0.5 });,(0, 0, canvas, H); + ")";, var.meteors, var.isPaused, 0, false.cards*2); = [];
+      
+forvar
+      
+ii
+i(stars=0; push
+100; len++) {
+x.Math({ random
+W
+divMETEOR_COUNT = 150;
+"机制重做"
+"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
 
-      var angleDeg = 45 + Math.random() * 30;
-      var angle = angleDeg * Math.PI / 180;
+tagbackdrop
+' +p
+"文化符号"category
+summary
+// 3. 渲染时间线
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+idx
+parseInt
+        
+function
+parseInt
+e
+getElementById
+// 4. 流星雨特效（防卡死保护）
+var canvas = document.getElementById("bgCanvas");
+detail}
 
-      var speed = pick(L.speed);
-      var vx = Math.cos(angle) * speed;
-      var vy = Math.sin(angle) * speed;
+div
+var W = window.innerWidth, H = window.innerHeight;var ctx = canvas.getContext("2d");
+        
+canvas.width = W; canvas.height = button;
+getAttributevar isPausedmeteorsvar];
+// 4. 流星雨特效（防卡死保护） = try;: var.document()*var, ctx: canvas.getContext()*var, W: window.innerWidth()*1.2, H: window.innerHeight()*0.5 });,(0, 0, canvas, H); + ")";, var.meteors, var.isPaused, 0, false.cards*2); = [];
+tagbackdrop
+' +p
+"文化符号"category
+summary
+// 3. 渲染时间线
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+idx
+parseInt
+function
+"文化符号：十步杀一人"
+parseInt
+' +p
 
-      var x, y;
-      if (Math.random() < 0.7) {
-        x = -W * 0.3 + Math.random() * W * 1.2;
-        y = -40 - Math.random() * H * 0.35;
-      } else {
-        x = -40 - Math.random() * W * 0.4;
-        y = -H * 0.1 + Math.random() * H * 0.8;
-      }
+"文化符号"category
+function
+// 3. 渲染时间线summary
+' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+"文化"
+"文化"
+getElementById {// 4. 流星雨特效（防卡死保护）100; len++) {vardivMETEOR_COUNT = 150;
+onclick' +div
+function
 
-      var r = Math.random() * PALETTE_WEIGHT_SUM;
-      var pi = 0;
-      for (var i = 0; i < PALETTES.length; i++) {
-        r -= PALETTES[i].weight;
-        if (r <= 0) { pi = i; break; }
-      }
-
-      var sprite = sprites[pi * WIDTHS.length + L.widthIdx];
-
-      return {
-        x: x, y: y, vx: vx, vy: vy,
-        life: 1,
-        len: pick(L.len),
-        baseAlpha: pick(L.alpha),
-        decay: pick(L.decay),
-        sprite: sprite
-      };
-    }
-
-    function seedMeteors() {
-      meteors = [];
-      spawnAccum = 0;
-      var initial = Math.floor(maxMeteors * 0.8);
-      for (var i = 0; i < initial; i++) {
-        var m = createMeteor();
-        m.x = Math.random() * W;
-        m.y = Math.random() * H;
-        m.life = 0.3 + Math.random() * 0.7;
-        meteors.push(m);
-      }
-    }
-
-    function draw(t, dt) {
-      ctx.clearRect(0, 0, W, H);
-
-      for (var i = 0; i < stars.length; i++) {
-        var s = stars[i];
-        if (dt > 0) {
-          s.y -= s.vy * dt;
-          s.x += s.vx * dt;
-          if (s.y < -20) { s.y = H + 20; s.x = -20 + Math.random() * (W + 40); }
-          if (s.x < -20) s.x = W + 20;
-          if (s.x > W + 20) s.x = -20;
-        }
-        var a = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.twinkle + s.phase));
-        ctx.globalAlpha = Math.max(0, Math.min(1, a));
-        ctx.fillStyle = s.color;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, TAU);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      if (dt > 0 && meteors.length < maxMeteors) {
-        spawnAccum += dt * METEOR_RATE;
-        if (spawnAccum > 6) spawnAccum = 6;
-        while (spawnAccum >= 1 && meteors.length < maxMeteors) {
-          spawnAccum -= 1;
-          meteors.push(createMeteor());
-        }
-      }
-
-      for (var j = meteors.length - 1; j >= 0; j--) {
-        var m = meteors[j];
-        m.x += m.vx * dt;
-        m.y += m.vy * dt;
-        m.life -= m.decay * dt;
-
-        if (m.life <= 0 || m.x > W * 1.5 || m.y > H * 1.5) {
-          meteors.splice(j, 1);
-          continue;
-        }
-
-        var alpha = m.baseAlpha * Math.min(1, m.life * 2.2);
-        var angle = Math.atan2(m.vy, m.vx);
-        var lenScale = (m.len * (0.45 + 0.55 * m.life)) / SPRITE_LEN;
-
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.translate(m.x, m.y);
-        ctx.rotate(angle);
-        ctx.scale(lenScale, 1);
-        ctx.drawImage(m.sprite, -SPRITE_LEN, -SPRITE_H / 2, SPRITE_LEN, SPRITE_H);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    function frame(now) {
-      if (!lastTime) lastTime = now;
-      var dt = Math.min((now - lastTime) / 1000, 0.05);
-      lastTime = now;
-      draw(now / 1000, dt);
-      rafId = requestAnimationFrame(frame);
-    }
-
-    function start() {
-      if (rafId) return;
-      lastTime = 0;
-      rafId = requestAnimationFrame(frame);
-    }
-
-    function stop() {
-      if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-    }
-
-    function resize() {
-      DPR = Math.min(window.devicePixelRatio || 1, 2);
-      W = window.innerWidth;
-      H = window.innerHeight;
-      canvas.width = Math.floor(W * DPR);
-      canvas.height = Math.floor(H * DPR);
-      canvas.style.width = W + "px";
-      canvas.style.height = H + "px";
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-
-      isMobile = W < 760;
-      var area = W * H;
-      var densityFactor = isMobile ? 1 : Math.min(1.5, Math.max(0.9, area / (1600 * 900)));
-      maxMeteors = Math.round((isMobile ? 120 : 200) * densityFactor);
-
-      createStars();
-      seedMeteors();
-    }
-
-    var resizeTimer;
-    window.addEventListener("resize", function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resize, 150);
-    });
-
-    document.addEventListener("visibilitychange", function() {
-      if (document.hidden) stop(); else start();
-    });
-
-    resize();
-    start();
-  } catch (err) {
-    console.warn("背景动画加载失败", err);
-  }
-
-});
-</script>
-</body>
-</html>
+var
+timelineElcards
+function
+var
+cards
+</e.targetactiveCategory
+timelineEl
+querySelectorAll
