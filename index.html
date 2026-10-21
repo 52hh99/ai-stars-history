@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d20">
+<title>群星闪耀 · AI发展史</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090d20;color:#f4f6ff;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif}
+header{padding:28px 20px 24px;background:radial-gradient(ellipse at 50% 0%,#263b78 0%,#111632 48%,#090d20 100%);text-align:center;border-bottom:1px solid #273154}
+.tag{color:#9eafff;font-size:12px;letter-spacing:4px}
+h1{font-size:clamp(32px,9vw,52px);margin:14px 0 8px;letter-spacing:5px}
+.sub{color:#b6c1e6;font-size:14px;line-height:1.8}
+.wrap{max-width:760px;margin:auto;padding:20px 16px 50px}
+.search{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #303b62;background:#111832;color:white;font-size:16px;outline:none}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:15px 0}
+button{cursor:pointer;font:inherit}
+.filter{flex-shrink:0;background:#131a35;border:1px solid #303b62;color:#c7d0f4;padding:9px 14px;border-radius:20px}
+.filter.active{background:#b9c5ff;color:#10152d;border-color:#b9c5ff}
+.intro{padding:16px;border:1px solid #303b62;background:linear-gradient(130deg,#141d3c,#101329);border-radius:18px;margin:8px 0 24px}
+.intro strong{color:#d5dcff}
+.intro p{font-size:14px;line-height:1.8;color:#b8c4e8;margin-bottom:0}
+.section-title{font-size:19px;margin:26px 0 18px}
+.timeline{border-left:2px solid #384773;margin-left:8px;padding-left:20px}
+.event{position:relative;margin:0 0 16px;padding:16px;border:1px solid #293456;background:#10162d;border-radius:16px}
+.event:before{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#a9baff;left:-27px;top:22px;box-shadow:0 0 14px #788fff}
+.year{color:#9fb0ff;font-weight:800;font-size:13px;letter-spacing:1px}
+.event h3{margin:7px 0;font-size:17px}
+.event p{margin:0;color:#b5c0e1;font-size:14px;line-height:1.8}
+.more{margin-top:12px;padding:10px 12px;width:100%;text-align:left;border:1px solid #303b62;border-radius:10px;background:#171f3d;color:#dbe1ff}
+.detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid #303b62;color:#d1d9f6;font-size:14px;line-height:1.9}
+.event.open .detail{display:block}
+.empty{color:#b5c0e1;text-align:center;padding:25px;display:none}
+footer{text-align:center;padding:24px;color:#7f8bb4;font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">A JOURNEY THROUGH INTELLIGENCE</div>
+  <h1>群星闪耀</h1>
+  <div class="sub">AI 大模型发展史<br>从思想的萌芽，到智能时代的星河</div>
+</header>
+<main class="wrap">
+  <input id="search" class="search" placeholder="搜索年份、模型或关键词…" aria-label="搜索历史事件">
+  <div class="filters" id="filters">
+    <button class="filter active" data-era="全部">全部</button>
+    <button class="filter" data-era="萌芽">思想萌芽</button>
+    <button class="filter" data-era="学习">机器学习</button>
+    <button class="filter" data-era="深度">深度学习</button>
+    <button class="filter" data-era="大模型">大模型时代</button>
+  </div>
+  <section class="intro">
+    <strong>✦ 每一颗星，都照亮了智能的未来</strong>
+    <p>探索人工智能的重要时刻。点击每张历史卡片，了解改变 AI 发展方向的技术突破。</p>
+  </section>
+  <div class="section-title">✧ 探索历史时间线</div>
+  <section class="timeline" id="timeline"></section>
+  <div class="empty" id="empty">没有找到相关事件，试试其他关键词吧。</div>
+</main>
+<footer>群星闪耀 · AI 发展探索计划<br>历史事件为科普摘要，持续更新中 ✦</footer>
+<script>
+const events=[
+{y:"1950",era:"萌芽",title:"图灵提出机器智能问题",desc:"艾伦·图灵发表关于机器与智能的经典思考。",detail:"图灵提出后来被称为“图灵测试”的思想实验，推动人们认真讨论机器能否表现出类似人类的智能。"},
+{y:"1956",era:"萌芽",title:"人工智能正式命名",desc:"达特茅斯研讨会成为 AI 学科的重要起点。",detail:"研究者开始把机器推理、学习和解决问题作为一个明确的研究领域，人工智能由此逐渐形成独立学科。"},
+{y:"1986",era:"学习",title:"反向传播推动神经网络",desc:"神经网络训练方法获得广泛关注。",detail:"反向传播让网络能够根据预测误差调整内部参数，成为后来深度神经网络训练的重要基础。"},
+{y:"1997",era:"学习",title:"深蓝战胜国际象棋冠军",desc:"计算机在国际象棋领域取得标志性胜利。",detail:"IBM 深蓝击败世界冠军加里·卡斯帕罗夫，展示了专用计算系统在复杂策略任务上的强大能力。"},
+{y:"2012",era:"深度",title:"AlexNet 引爆深度学习",desc:"图像识别领域迎来关键突破。",detail:"AlexNet 在 ImageNet 图像识别竞赛中取得显著成绩，推动深度神经网络、GPU 训练和大规模数据成为 AI 发展的重要方向。"},
+{y:"2016",era:"深度",title:"AlphaGo 战胜李世石",desc:"深度学习与强化学习震撼世界。",detail:"AlphaGo 将深度神经网络、搜索和强化学习结合，在围棋这一复杂领域取得突破，展示了 AI 解决高难度问题的新路径。"},
+{y:"2017",era:"大模型",title:"Transformer 架构诞生",desc:"注意力机制改变语言模型的发展。",detail:"论文《Attention Is All You Need》提出 Transformer 架构。它便于并行训练，成为后来许多大型语言模型的核心基础。"},
+{y:"2018",era:"大模型",title:"BERT 推动预训练语言模型",desc:"大规模文本预训练成为关键路线。",detail:"BERT 展示了通过海量文本预训练，再适配具体语言任务的有效性，推动自然语言处理快速发展。"},
+{y:"2020",era:"大模型",title:"GPT-3 展示少样本能力",desc:"大规模语言模型引发广泛关注。",detail:"GPT-3 展示了大型语言模型通过提示和少量示例完成多种任务的能力，让通用模型路线更加受到关注。"},
+{y:"2022",era:"大模型",title:"ChatGPT 走向大众",desc:"对话式 AI 进入公众视野。",detail:"ChatGPT 让更多人通过自然语言体验 AI 的写作、解释、总结和编程辅助能力，推动生成式 AI 普及。"},
+{y:"2023",era:"大模型",title:"多模态与智能助手加速",desc:"模型能力和应用生态快速扩展。",detail:"大语言模型、图像理解、工具调用与开发者生态持续发展，AI 助手逐渐进入学习和工作流程。"},
+{y:"2024+",era:"大模型",title:"推理、多模态与智能体探索",desc:"AI 持续向更复杂的任务发展。",detail:"研究和产品不断探索更强的推理能力、实时语音与视觉、工具使用及智能体工作流。不同模型的能力和表现各有差异。"}
+];
+let selected="全部";
+const timeline=document.getElementById("timeline");
+const search=document.getElementById("search");
+function render(){
+ const q=search.value.trim().toLowerCase();
+ const list=events.filter(e=>(selected==="全部"||e.era===selected)&&[e.y,e.title,e.desc,e.detail,e.era].join(" ").toLowerCase().includes(q));
+ timeline.innerHTML=list.map((e,i)=>`<article class="event" data-index="${events.indexOf(e)}"><div class="year">${e.y}</div><h3>${e.title}</h3><p>${e.desc}</p><button class="more" aria-expanded="false">查看星辰档案　＋</button><div class="detail">${e.detail}</div></article>`).join("");
+ document.getElementById("empty").style.display=list.length?"none":"block";
+ timeline.querySelectorAll(".more").forEach(b=>b.addEventListener("click",()=>{
+ const card=b.closest(".event");
+ card.classList.toggle("open");
+ const open=card.classList.contains("open");
+ b.textContent=open?"收起档案　−":"查看星辰档案　＋";
+ b.setAttribute("aria-expanded",String(open));
+ }));
+}
+document.getElementById("filters").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-era]");
+ if(!b)return;
+ selected=b.dataset.era;
+ document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));
+ render();
+});
+search.addEventListener("input",render);
+render();
+</script>
+</body>
+</html>
