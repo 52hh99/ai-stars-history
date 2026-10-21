@@ -386,4 +386,450 @@ document.addEventListener("DOMContentLoaded", function () {
       tags: ["2016.3.1", "侠客行", "青莲剑歌", "50%吸血"] },
     { year: "2016", title: "首次削弱：吸血降至 35%", category: "机制演变",
       summary: "上线仅一个多月，2016年4月，官方首次对李白动刀：大招CD增加，吸血比例从50%下调至35%。",
-      detail: "初代李白的强度远超预期。4月12日的调整中，三技能CD从9/7.5/6秒延长至12秒，吸血比例从50%降至35%。这次削弱标志着“一招回满血”的时代开始终结，但李白的核心机制——不可选中与多段
+      detail: "初代李白的强度远超预期。4月12日的调整中，三技能CD从9/7.5/6秒延长至12秒，吸血比例从50%降至35%。这次削弱标志着“一招回满血”的时代开始终结，但李白的核心机制——不可选中与多段位移——依然完整。[reference:1]",
+      tags: ["2016.4.12", "削弱", "CD增加"] },
+    { year: "2016", title: "吸血机制移除：大招不再回血", category: "机制演变",
+      summary: "2016年6月，官方再次调整，李白大招的吸血能力被彻底移除。从此，李白的大招不再提供任何生命回复。",
+      detail: "这是李白历史上最根本的一次机制改动。大招吸血从50%→35%→0%，意味着李白必须依靠装备（如泣血之刃）来维持续航，或者用更精准的进场时机来规避伤害。李白的定位从“吸血战士”被迫转向“纯爆发刺客”，操作容错率大幅下降。[reference:2]",
+      tags: ["2016.6", "吸血移除", "机制改动"] },
+    { year: "2016", title: "首款史诗皮肤：千年之狐", category: "皮肤纪年",
+      summary: "2016年5月1日，李白首款高级皮肤“千年之狐”上线，青丘狐灵主题与独特的语音、特效成为一代经典。",
+      detail: "千年之狐是李白的第一款史诗皮肤（售价780点券）。由于早期皮肤数量稀少，这款皮肤在当时被视为李白玩家的“身份象征”。它的青丘狐主题、独特的技能特效与语音（如“青丘之民的灵魂不会永远漂泊，因为我在这里”）至今仍被老玩家津津乐道。手感偏重但反馈扎实，是许多国服李白的情怀之选。[reference:3][reference:4]",
+      tags: ["千年之狐", "史诗", "青丘狐灵"] },
+    { year: "2017", title: "鸡年限定：凤求凰", category: "皮肤纪年",
+      summary: "2017年1月27日，传说限定皮肤“凤求凰”上线。仙侠主题与李白的气质完美契合，成为游戏内最经典的皮肤之一。",
+      detail: "凤求凰是2017年鸡年限定传说皮肤（售价1688点券）。它以“凤兮凤兮归故乡，遨游四海求其凰”为设计灵感，仙气飘飘的造型、清脆的打击音效和流畅的技能衔接，让它在多年后依然是李白人气的顶峰皮肤之一。在玩家评分中，凤求凰长期保持9.4分的高位。[reference:5][reference:6]",
+      tags: ["凤求凰", "传说限定", "鸡年限定", "9.4分"] },
+    { year: "2017", title: "核心机制削弱：大招多目标伤害衰减", category: "机制演变",
+      summary: "2017年3月，李白大招“青莲剑歌”对多个目标的伤害开始衰减：对2个目标造成85%伤害，3个及以上目标造成70%。",
+      detail: "在此之前，李白大招对范围内每个单位都造成同等伤害，团战中一个大招刮到多人往往能瞬间融化后排。加入伤害衰减后，李白在人群中的AOE爆发被显著限制，必须更精准地选择切入角度，优先锁定单一核心目标。这是李白从“团战收割机”向“精准刺杀者”转型的关键一步。[reference:7]",
+      tags: ["2017.3.30", "大招衰减", "团战限制"] },
+    { year: "2018", title: "团战精神皮肤：敏锐之力", category: "皮肤纪年",
+      summary: "2018年7月，李白“团战精神”系列皮肤“敏锐之力”上线。电竞战队打野位主题，紫色运动风，拥有多套星元。",
+      detail: "敏锐之力以虚拟电竞战队为背景，将李白定位为队伍中的打野位，身穿篮球服、背着书包，充满青春气息。虽然皮肤本身是勇者品质，但它拥有多款星元皮肤，技能特效可以在紫色与金色之间切换。这款皮肤的出现，也为李白后续的星元系统开了先河。[reference:8]",
+      tags: ["敏锐之力", "团战精神", "星元"] },
+    { year: "2018", title: "全面加强：技能伤害结构调整", category: "机制演变",
+      summary: "2018年9月，李白迎来上线以来幅度最大的一次加强。被动、一技能、二技能、三技能的伤害全部得到提升，并引入额外AD加成。",
+      detail: "这次调整将李白的伤害结构从“基础值+AD”转向“基础值+额外AD”，鼓励玩家通过装备堆叠攻击力。一技能伤害从120(+24/Lv)(+1.0Ad)提升至300(+50/Lv)(+1.1额外Ad)，二技能和大招也获得了显著加强。这次改动让李白在沉寂一段时间后重新回到了打野梯队的中上游。[reference:9]",
+      tags: ["2018.9.4", "加强", "额外AD"] },
+    { year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年",
+      summary: "2021年2月11日，李白首款荣耀典藏皮肤“鸣剑·曳影”上线。未来科技与古典剑侠融合，剑身随装备改变形态。",
+      detail: "鸣剑·曳影是李白皮肤品质的巅峰。它以“人形兵器”为概念，将上古曳影剑与未来科幻结合。这款皮肤最独特的设计是“剑随装变”：背后剑身的形态会随着李白购买的装备（泣血之刃、暗影战斧、破军、名刀·司命）而改变。此外，它的影子在原地舞剑，不会像其他皮肤那样暴露本体的移动方向。许多国服李白将其视为手感最佳的选择。[reference:10][reference:11]",
+      tags: ["鸣剑·曳影", "荣耀典藏", "剑随装变", "手感最佳"] },
+    { year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年",
+      summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠，墨迹晕染特效与竹笛音效。",
+      detail: "诗剑行以传统国风山水为灵感，将李白的诗歌与墨韵融入技能特效。局内出场动画与技能表现中融入了水墨书法元素，普攻和技能带有诗句飘落的效果，搭配竹笛音效，整体气质清雅而写意。在玩家评分中，诗剑行以8.8分位列李白传说皮肤前列。[reference:12][reference:13]",
+      tags: ["诗剑行", "世冠", "水墨", "8.8分"] },
+    { year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年",
+      summary: "2024年1月，李白无双品质皮肤“碎月剑心”上线。大招双形态、发尾羽衣金色流光，华丽程度再进一步。",
+      detail: "碎月剑心是李白首款无双品质皮肤。它在特效层次和操作手感上达到了新的高度：大招拥有双形态表现，发尾与羽衣带有金色流光，反手持剑的动作设计也让整体的“剑仙”气质更加凌厉。对于追求华丽视觉与丝滑手感的玩家来说，碎月剑心是凤求凰之后又一个高峰。[reference:14][reference:15]",
+      tags: ["碎月剑心", "无双", "双形态"] },
+    { year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年",
+      summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券的亲民史诗。",
+      detail: "谪仙醉月以“醉剑”为主题，整体气质轻盈飘逸。作为一款价格亲民的史诗限定皮肤，它在特效和手感上中规中矩，但醉意朦胧的视觉风格与李白“但愿长醉不复醒”的台词意境形成了呼应。对于没有传说皮肤的玩家来说，这是一个不错的性价比选择。[reference:16][reference:17]",
+      tags: ["谪仙醉月", "中秋", "史诗限定"] },
+    { year: "2026", title: "机制重做：无相取代概率闪避", category: "机制演变",
+      summary: "2026年，李白二技能“神来之笔”迎来机制重做。原本在剑阵内的概率闪避普攻，改为稳定触发的“无相”效果：进入剑阵必定格挡一次伤害。",
+      detail: "这是李白自2016年吸血机制移除以来，最深刻的一次机制变革。老版二技能的概率闪避被玩家戏称为“买彩票”——运气好时无限闪避，运气差时形同虚设。新版“无相”将不确定性彻底移除：进入剑阵瞬间获得一次固定数值的伤害格挡（后期约750点），无论伤害高低，格挡后效果清空。改版后一周内，全服李白场均击杀上涨0.8，死亡数下降1.2，主动放弃率从17.3%骤降至4.1%。这次改动没有让李白“变肉”，而是把下限抬了起来：他依然脆、依然吃操作，但不再因为一次运气不好就被野怪或线上换血直接压崩。策划将李白从“玄学刺客”拉回了“技术型刺客”的轨道。[reference:18]",
+      tags: ["2026", "无相", "机制重做", "下限提升"] },
+    { year: "文化", title: "文化符号：十步杀一人，千里不留行", category: "文化符号",
+      summary: "李白的台词让“十步杀一人，千里不留行”成为一代玩家的集体记忆。游戏角色与历史诗人的融合，让传统诗词在峡谷中获得了新的生命力。",
+      detail: "王者荣耀的李白拥有27句台词，其中“十步杀一人，千里不留行”“一篇诗，一斗酒，一曲长歌，一剑天涯”“大河之剑天上来”等句子，已经成为超越游戏本身的文化符号。有报道提到，小学生们在追逐打闹时喊的不再是动漫招式，而是李白的诗句。游戏角色成为了年轻人接触古典诗词的一个意外入口。无论版本如何更迭，那个“一篇诗，一斗酒”的青莲剑仙，始终是王者峡谷最具辨识度的文化形象之一。[reference:19][reference:20]",
+      tags: ["台词", "文化", "十步杀一人", "27句"] }
+  ];
+
+  /* ========== 渲染逻辑 ========== */
+  var timelineEl = document.getElementById("timeline");
+  var toolbarEl = document.getElementById("toolbar");
+  var backdrop = document.getElementById("modalBackdrop");
+  var closeBtn = document.getElementById("closeBtn");
+  var modalYear = document.getElementById("modalYear");
+  var modalTitle = document.getElementById("modalTitle");
+  var modalDetail = document.getElementById("modalDetail");
+  var modalTags = document.getElementById("modalTags");
+
+  var activeCategory = "全部";
+  var categories = ["全部"];
+
+  for (var i = 0; i < events.length; i++) {
+    if (categories.indexOf(events[i].category) === -1) {
+      categories.push(events[i].category);
+    }
+  }
+
+  function renderFilters() {
+    var html = "";
+    for (var i = 0; i < categories.length; i++) {
+      var cat = categories[i];
+      var activeClass = (cat === activeCategory) ? "active" : "";
+      html += '<button class="filter-btn ' + activeClass + '" data-cat="' + cat + '">' + cat + '</button>';
+    }
+    toolbarEl.innerHTML = html;
+
+    var btns = toolbarEl.querySelectorAll(".filter-btn");
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].onclick = function() {
+        activeCategory = this.getAttribute("data-cat");
+        renderFilters();
+        renderTimeline();
+      };
+    }
+  }
+
+  function renderTimeline() {
+    var list = [];
+    if (activeCategory === "全部") {
+      list = events;
+    } else {
+      for (var k = 0; k < events.length; k++) {
+        if (events[k].category === activeCategory) {
+          list.push(events[k]);
+        }
+      }
+    }
+
+    if (list.length === 0) {
+      timelineEl.innerHTML = '<div class="empty">暂无内容</div>';
+      return;
+    }
+
+    var html = "";
+    for (var i = 0; i < list.length; i++) {
+      var e = list[i];
+      var idx = events.indexOf(e);
+      var delay = Math.min(i * 60, 480);
+
+      var tagHtml = "";
+      for (var t = 0; t < Math.min(3, e.tags.length); t++) {
+        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+      }
+
+      html += '<article class="item" style="animation-delay:' + delay + 'ms">' +
+                '<div class="card" tabindex="0" role="button" data-index="' + idx + '" aria-label="查看 ' + e.year + ' ' + e.title + '">' +
+                  '<span class="year">' + e.year + '</span>' +
+                  '<h2>' + e.title + '</h2>' +
+                  '<p>' + e.summary + '</p>' +
+                  '<div class="tags">' + tagHtml + '</div>' +
+                  '<span class="hint">点击卡片查看详情 →</span>' +
+                '</div>' +
+              '</article>';
+    }
+    timelineEl.innerHTML = html;
+
+    var cards = timelineEl.querySelectorAll(".card");
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].onclick = function() {
+        openModal(parseInt(this.getAttribute("data-index"), 10));
+      };
+    }
+  }
+
+  function openModal(index) {
+    var e = events[index];
+    modalYear.textContent = e.year;
+    modalTitle.textContent = e.title;
+    modalDetail.textContent = e.detail;
+
+    var tagHtml = "";
+    for (var i = 0; i < e.tags.length; i++) {
+      tagHtml += '<span class="tag">' + e.tags[i] + '</span>';
+    }
+    modalTags.innerHTML = tagHtml;
+
+    backdrop.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.onclick = closeModal;
+  backdrop.onclick = function(e) {
+    if (e.target === backdrop) closeModal();
+  };
+
+  renderFilters();
+  renderTimeline();
+
+
+  /* ========== 冷白流星雨背景（全右下角方向） ========== */
+  try {
+    var canvas = document.getElementById("bgCanvas");
+    var ctx = canvas.getContext("2d");
+    var TAU = Math.PI * 2;
+
+    var PALETTES = [
+      { head: "rgba(255,255,255,", tail: "rgba(205,228,255,", weight: 30 },
+      { head: "rgba(248,252,255,", tail: "rgba(185,215,255,", weight: 30 },
+      { head: "rgba(255,255,255,", tail: "rgba(220,238,255,", weight: 20 },
+      { head: "rgba(238,246,255,", tail: "rgba(165,205,255,", weight: 20 }
+    ];
+    var PALETTE_WEIGHT_SUM = 0;
+    for (var i = 0; i < PALETTES.length; i++) PALETTE_WEIGHT_SUM += PALETTES[i].weight;
+
+    var SPRITE_LEN = 420;
+    var SPRITE_H = 32;
+    var SPRITE_DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var WIDTHS = [0.8, 1.3, 1.9];
+    var sprites = [];
+
+    for (var pi = 0; pi < PALETTES.length; pi++) {
+      for (var wi = 0; wi < WIDTHS.length; wi++) {
+        var p = PALETTES[pi];
+        var width = WIDTHS[wi];
+
+        var c = document.createElement("canvas");
+        c.width = SPRITE_LEN * SPRITE_DPR;
+        c.height = SPRITE_H * SPRITE_DPR;
+        var g = c.getContext("2d");
+        g.scale(SPRITE_DPR, SPRITE_DPR);
+
+        var cy = SPRITE_H / 2;
+        var headX = SPRITE_LEN - 4;
+
+        var grad = g.createLinearGradient(headX, cy, 0, cy);
+        grad.addColorStop(0,    p.head + "1)");
+        grad.addColorStop(0.08, p.head + "0.85)");
+        grad.addColorStop(0.3,  p.tail + "0.42)");
+        grad.addColorStop(0.65, p.tail + "0.12)");
+        grad.addColorStop(1,    p.tail + "0)");
+
+        g.strokeStyle = grad;
+        g.lineWidth = width;
+        g.lineCap = "round";
+        g.beginPath();
+        g.moveTo(headX, cy);
+        g.lineTo(2, cy);
+        g.stroke();
+
+        var haloR = width * 4.5;
+        var halo = g.createRadialGradient(headX, cy, 0, headX, cy, haloR);
+        halo.addColorStop(0,   p.head + "0.9)");
+        halo.addColorStop(0.35, p.tail + "0.35)");
+        halo.addColorStop(1,   p.tail + "0)");
+        g.fillStyle = halo;
+        g.beginPath();
+        g.arc(headX, cy, haloR, 0, TAU);
+        g.fill();
+
+        sprites.push(c);
+      }
+    }
+
+    var LAYERS = [
+      { share: 0.58, widthIdx: 0, speed: [280, 560], len: [70, 150], alpha: [0.28, 0.48], decay: [0.07, 0.11] },
+      { share: 0.30, widthIdx: 1, speed: [480, 880], len: [110, 220], alpha: [0.42, 0.65], decay: [0.10, 0.15] },
+      { share: 0.12, widthIdx: 2, speed: [700, 1150], len: [170, 320], alpha: [0.60, 0.85], decay: [0.14, 0.20] }
+    ];
+
+    var W = 0, H = 0, DPR = 1;
+    var isMobile = false;
+    var maxMeteors = 200;
+    var METEOR_RATE = 99;
+
+    var stars = [];
+    var meteors = [];
+    var rafId = null;
+    var lastTime = 0;
+    var spawnAccum = 0;
+
+    function pick(arr) { return arr[0] + Math.random() * (arr[1] - arr[0]); }
+
+    function pickLayer() {
+      var r = Math.random();
+      var acc = 0;
+      for (var i = 0; i < LAYERS.length; i++) {
+        acc += LAYERS[i].share;
+        if (r <= acc) return LAYERS[i];
+      }
+      return LAYERS[0];
+    }
+
+    function createStars() {
+      var count = isMobile ? 70 : 140;
+      stars = [];
+      for (var i = 0; i < count; i++) {
+        var depth = Math.random();
+        stars.push({
+          x: -20 + Math.random() * (W + 40),
+          y: -20 + Math.random() * (H + 40),
+          r: 0.3 + depth * 1.2,
+          baseAlpha: 0.16 + depth * 0.42,
+          twinkle: 0.5 + Math.random() * 1.6,
+          phase: Math.random() * TAU,
+          vy: 1.2 + depth * 4,
+          vx: (Math.random() - 0.5) * 1.2,
+          color: Math.random() < 0.5 ? "#e8f2ff" : "#ffffff"
+        });
+      }
+    }
+
+    function createMeteor(layer) {
+      var L = layer || pickLayer();
+
+      var angleDeg = 45 + Math.random() * 30;
+      var angle = angleDeg * Math.PI / 180;
+
+      var speed = pick(L.speed);
+      var vx = Math.cos(angle) * speed;
+      var vy = Math.sin(angle) * speed;
+
+      var x, y;
+      if (Math.random() < 0.7) {
+        x = -W * 0.3 + Math.random() * W * 1.2;
+        y = -40 - Math.random() * H * 0.35;
+      } else {
+        x = -40 - Math.random() * W * 0.4;
+        y = -H * 0.1 + Math.random() * H * 0.8;
+      }
+
+      var r = Math.random() * PALETTE_WEIGHT_SUM;
+      var pi = 0;
+      for (var i = 0; i < PALETTES.length; i++) {
+        r -= PALETTES[i].weight;
+        if (r <= 0) { pi = i; break; }
+      }
+
+      var sprite = sprites[pi * WIDTHS.length + L.widthIdx];
+
+      return {
+        x: x, y: y, vx: vx, vy: vy,
+        life: 1,
+        len: pick(L.len),
+        baseAlpha: pick(L.alpha),
+        decay: pick(L.decay),
+        sprite: sprite
+      };
+    }
+
+    function seedMeteors() {
+      meteors = [];
+      spawnAccum = 0;
+      var initial = Math.floor(maxMeteors * 0.8);
+      for (var i = 0; i < initial; i++) {
+        var m = createMeteor();
+        m.x = Math.random() * W;
+        m.y = Math.random() * H;
+        m.life = 0.3 + Math.random() * 0.7;
+        meteors.push(m);
+      }
+    }
+
+    function draw(t, dt) {
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        if (dt > 0) {
+          s.y -= s.vy * dt;
+          s.x += s.vx * dt;
+          if (s.y < -20) { s.y = H + 20; s.x = -20 + Math.random() * (W + 40); }
+          if (s.x < -20) s.x = W + 20;
+          if (s.x > W + 20) s.x = -20;
+        }
+        var a = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.twinkle + s.phase));
+        ctx.globalAlpha = Math.max(0, Math.min(1, a));
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, TAU);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      if (dt > 0 && meteors.length < maxMeteors) {
+        spawnAccum += dt * METEOR_RATE;
+        if (spawnAccum > 6) spawnAccum = 6;
+        while (spawnAccum >= 1 && meteors.length < maxMeteors) {
+          spawnAccum -= 1;
+          meteors.push(createMeteor());
+        }
+      }
+
+      for (var j = meteors.length - 1; j >= 0; j--) {
+        var m = meteors[j];
+        m.x += m.vx * dt;
+        m.y += m.vy * dt;
+        m.life -= m.decay * dt;
+
+        if (m.life <= 0 || m.x > W * 1.5 || m.y > H * 1.5) {
+          meteors.splice(j, 1);
+          continue;
+        }
+
+        var alpha = m.baseAlpha * Math.min(1, m.life * 2.2);
+        var angle = Math.atan2(m.vy, m.vx);
+        var lenScale = (m.len * (0.45 + 0.55 * m.life)) / SPRITE_LEN;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(m.x, m.y);
+        ctx.rotate(angle);
+        ctx.scale(lenScale, 1);
+        ctx.drawImage(m.sprite, -SPRITE_LEN, -SPRITE_H / 2, SPRITE_LEN, SPRITE_H);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(now) {
+      if (!lastTime) lastTime = now;
+      var dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      draw(now / 1000, dt);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (rafId) return;
+      lastTime = 0;
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function stop() {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    function resize() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.floor(W * DPR);
+      canvas.height = Math.floor(H * DPR);
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+      isMobile = W < 760;
+      var area = W * H;
+      var densityFactor = isMobile ? 1 : Math.min(1.5, Math.max(0.9, area / (1600 * 900)));
+      maxMeteors = Math.round((isMobile ? 120 : 200) * densityFactor);
+
+      createStars();
+      seedMeteors();
+    }
+
+    var resizeTimer;
+    window.addEventListener("resize", function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 150);
+    });
+
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) stop(); else start();
+    });
+
+    resize();
+    start();
+  } catch (err) {
+    console.warn("背景动画加载失败", err);
+  }
+
+});
+</script>
+</body>
+</html>
