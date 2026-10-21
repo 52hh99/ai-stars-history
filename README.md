@@ -1,2 +1,1 @@
 # ai-stars-history
-px
