@@ -1,209 +1,389 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王者荣耀 - 李白发展史</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        liBai: {
-                            dark: '#0f172a',
-                            main: '#22d3ee',
-                            accent: '#fbbf24',
-                            card: '#1e293b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['system-ui', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
-            }
-            .timeline-line {
-                @apply absolute left-[19px] top-0 bottom-0 w-[2px] bg-liBai-main/40;
-            }
-            .timeline-dot {
-                @apply absolute left-0 w-10 h-10 rounded-full bg-liBai-main flex items-center justify-center text-liBai-dark font-bold;
-            }
-            .scroll-smooth {
-                scroll-behavior: smooth;
-            }
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>王者荣耀 · 李白发展史</title>
+<style>
+  :root {
+    --bg: #05080f;
+    --text: #eaf1ff;
+    --muted: #9fb0d0;
+    --accent: #6ea8fe;
+    --gold: #f5c76b;
+    --radius: 18px;
+  }
 
-        body {
-            position: relative;
-            background-color: #0b1220;
-            background-image: url('https://p3-flow-imagex-sign.byteimg.com/ocean-cloud-tos/7539692598944868920~tplv-be4g62t4ka-image.image');
-            background-repeat: no-repeat;
-            background-position: center top;
-            background-size: cover;
-            background-attachment: fixed;
-        }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(11, 18, 32, 0.85) 0%, rgba(15, 23, 42, 0.92) 40%, rgba(11, 18, 32, 0.98) 100%);
-            z-index: -1;
-            pointer-events: none;
-        }
-    </style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    overflow-x: hidden;
+  }
+
+  #bgCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  .nebula {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nebula-a {
+    width: 75vmax; height: 75vmax;
+    left: -25vmax; top: -28vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(64, 124, 255, .13) 0%, rgba(64, 124, 255, .05) 32%, transparent 72%);
+    animation: drift-a 30s ease-in-out infinite alternate;
+  }
+
+  .nebula-b {
+    width: 65vmax; height: 65vmax;
+    right: -22vmax; top: -12vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, .11) 0%, rgba(139, 92, 246, .04) 34%, transparent 70%);
+    animation: drift-b 38s ease-in-out infinite alternate;
+  }
+
+  .nebula-c {
+    width: 80vmax; height: 80vmax;
+    left: 10vmax; bottom: -45vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(245, 199, 107, .07) 0%, rgba(245, 199, 107, .025) 35%, transparent 70%);
+    animation: drift-c 44s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift-a {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(5vw, 4vh, 0) scale(1.12); }
+  }
+  @keyframes drift-b {
+    from { transform: translate3d(0, 0, 0) scale(1.08); }
+    to   { transform: translate3d(-6vw, 6vh, 0) scale(0.95); }
+  }
+  @keyframes drift-c {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(4vw, -5vh, 0) scale(1.15); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nebula { animation: none !important; }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  header { text-align: center; margin-bottom: 34px; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid rgba(110, 168, 254, .35);
+    border-radius: 999px;
+    color: #bcd2ff;
+    font-size: 13px;
+    background: rgba(18, 26, 48, 0.8);
+    margin-bottom: 16px;
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 14px var(--gold);
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 54px);
+    letter-spacing: .04em;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 28px 0 42px;
+  }
+
+  .filter-btn {
+    appearance: none;
+    border: 1px solid rgba(140, 170, 230, .25);
+    background: rgba(18, 26, 48, .8);
+    color: var(--muted);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .25s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: rgba(110, 168, 254, .55);
+    color: #fff;
+  }
+
+  .filter-btn.active {
+    color: #07101f;
+    background: linear-gradient(135deg, #9ec5ff, #c7b4ff);
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 8px 26px rgba(110, 168, 254, .22);
+  }
+
+  .timeline { position: relative; padding: 8px 0; }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, rgba(110, 168, 254, .55) 8%, rgba(139, 92, 246, .5) 50%, rgba(245, 199, 107, .45) 92%, transparent);
+  }
+
+  .item {
+    position: relative;
+    width: 50%;
+    padding: 0 42px 34px 0;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: rise .55s ease forwards;
+  }
+
+  .item:nth-child(even) {
+    margin-left: 50%;
+    padding: 0 0 34px 42px;
+  }
+
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .item::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    right: -8px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: #0b1224;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55);
+    z-index: 2;
+  }
+
+  .item:nth-child(even)::before { right: auto; left: -7px; }
+
+  .card {
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(140, 170, 230, .2);
+    border-radius: var(--radius);
+    background: rgba(15, 23, 42, 0.95);
+    padding: 20px 20px 18px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+    transition: .28s ease;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(110, 168, 254, .55);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .42), 0 0 0 1px rgba(110, 168, 254, .12);
+  }
+
+  .year {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
+  .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+
+  .tag {
+    font-size: 12px;
+    color: #bcd2ff;
+    border: 1px solid rgba(110, 168, 254, .22);
+    background: rgba(110, 168, 254, .08);
+    padding: 4px 9px;
+    border-radius: 999px;
+  }
+
+  .hint {
+    display: block;
+    margin-top: 14px;
+    color: rgba(159, 176, 208, .72);
+    font-size: 12px;
+  }
+
+  .empty { text-align: center; color: var(--muted); padding: 50px 0; }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2, 6, 16, .85);
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal {
+    width: min(640px, 100%);
+    max-height: 85vh;
+    overflow: auto;
+    border: 1px solid rgba(140, 170, 230, .3);
+    border-radius: 24px;
+    background: #151e36;
+    padding: 30px;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, .6);
+    transform: translateY(18px) scale(.98);
+    opacity: 0;
+    transition: .3s ease;
+  }
+
+  .modal-backdrop.show .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .modal-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .modal-year { color: var(--gold); font-weight: 800; letter-spacing: .08em; }
+
+  .close-btn {
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, .14);
+    background: rgba(255, 255, 255, .05);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+
+  .modal h3 { margin: 0 0 14px; font-size: 24px; line-height: 1.3; }
+
+  .modal .detail {
+    color: #c3d0e8;
+    line-height: 1.9;
+    font-size: 15px;
+  }
+
+  .modal .tags { margin-top: 20px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding-top: 38px; }
+    .timeline::before { left: 10px; transform: none; }
+
+    .item,
+    .item:nth-child(even) {
+      width: 100%;
+      margin-left: 0;
+      padding: 0 0 26px 34px;
+    }
+
+    .item::before,
+    .item:nth-child(even)::before {
+      left: 3px; right: auto; top: 22px;
+    }
+
+    .card { padding: 18px; }
+    .modal { padding: 24px; }
+  }
+</style>
 </head>
-<body class="text-gray-100 scroll-smooth">
-    <!-- 导航 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-liBai-dark/85 backdrop-blur border-b border-liBai-main/20">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="text-xl font-bold text-liBai-main text-shadow">李白发展史</div>
-            <div class="hidden md:flex gap-6 text-sm">
-                <a href="#intro" class="hover:text-liBai-main transition">英雄简介</a>
-                <a href="#timeline" class="hover:text-liBai-main transition">版本时间线</a>
-                <a href="#skill" class="hover:text-liBai-main transition">技能变迁</a>
-                <a href="#skin" class="hover:text-liBai-main transition">皮肤历程</a>
-                <a href="#summary" class="hover:text-liBai-main transition">总结</a>
-            </div>
-            <button id="menuBtn" class="md:hidden text-xl">
-                <i class="fa fa-bars"></i>
-            </button>
-        </div>
-        <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-2 text-sm">
-            <a href="#intro" class="block py-1 hover:text-liBai-main">英雄简介</a>
-            <a href="#timeline" class="block py-1 hover:text-liBai-main">版本时间线</a>
-            <a href="#skill" class="block py-1 hover:text-liBai-main">技能变迁</a>
-            <a href="#skin" class="block py-1 hover:text-liBai-main">皮肤历程</a>
-            <a href="#summary" class="block py-1 hover:text-liBai-main">总结</a>
-        </div>
-    </nav>
+<body>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <div class="nebula nebula-a" aria-hidden="true"></div>
+  <div class="nebula nebula-b" aria-hidden="true"></div>
+  <div class="nebula nebula-c" aria-hidden="true"></div>
 
-    <!-- 首屏 -->
-    <header class="pt-24 pb-16 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="rounded-xl overflow-hidden bg-gradient-to-br from-liBai-card/70 to-liBai-dark/80 border border-liBai-main/30 p-8 md:p-12 backdrop-blur-sm">
-                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-liBai-main text-shadow mb-4">
-                    青莲剑仙 · 李白
-                </h1>
-                <p class="text-lg md:text-xl text-gray-200 max-w-3xl">
-                    王者荣耀最经典的刺客之一，从初代无敌青莲、多次大砍、重做调整，到现在的版本常客。
-                    这份记录完整梳理李白从上线至今的强弱变化、技能改动、赛场热度与皮肤故事。
-                </p>
-                <div class="mt-8 flex flex-wrap gap-3">
-                    <a href="#timeline" class="px-5 py-2 bg-liBai-main text-liBai-dark rounded-lg font-medium hover:bg-cyan-300 transition">查看时间线</a>
-                    <a href="#skill" class="px-5 py-2 border border-liBai-main text-liBai-main rounded-lg hover:bg-liBai-main/10 transition">技能对比</a>
-                </div>
-            </div>
-        </div>
+  <main class="wrap">
+    <header>
+      <div class="eyebrow"><span class="dot"></span> 一篇诗，一斗酒，一曲长歌，一剑天涯</div>
+      <h1>王者荣耀 · 李白发展史</h1>
+      <p class="subtitle">
+        青莲剑仙编年史 · 从初代吸血剑仙，到无相机制的技术型刺客，点击卡片回顾李白在峡谷的每一次蜕变。
+      </p>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 pb-20 space-y-20">
-        <!-- 简介 -->
-        <section id="intro">
-            <h2 class="text-2xl font-bold text-liBai-main mb-6 flex items-center gap-2">
-                <i class="fa fa-info-circle"></i>英雄简介
-            </h2>
-            <div class="bg-liBai-card/70 rounded-xl p-6 border border-liBai-main/20 backdrop-blur-sm">
-                <p class="mb-4">定位：刺客 / 打野</p>
-                <p class="mb-4">核心机制：普攻叠被动【侠客行】解锁大招，大招期间无法选中；二技能、大招不可选中是李白的灵魂。</p>
-                <p class="mb-4">上线时间：2016年3月1日（内测结束后正式服上线）</p>
-                <p>特点：上限极高、怕控制；操作型英雄，人气常年稳居前列，也是很多玩家的信仰英雄。</p>
-            </div>
-        </section>
+    <div class="toolbar" id="toolbar" aria-label="按类别筛选"></div>
+    <section class="timeline" id="timeline" aria-live="polite"></section>
+  </main>
 
-        <!-- 时间线 -->
-        <section id="timeline">
-            <h2 class="text-2xl font-bold text-liBai-main mb-6 flex items-center gap-2">
-                <i class="fa fa-history"></i>版本发展史时间线
-            </h2>
-            <div class="relative pl-10">
-                <div class="timeline-line"></div>
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <article class="modal">
+      <div class="modal-top">
+        <div class="modal-year" id="modalYear"></div>
+        <button class="close-btn" id="closeBtn" aria-label="关闭">×</button>
+      </div>
+      <h3 id="modalTitle"></h3>
+      <div class="detail" id="modalDetail"></div>
+      <div class="tags" id="modalTags"></div>
+    </article>
+  </div>
 
-                <div class="relative mb-10">
-                    <div class="timeline-dot">1</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2016.03 初代李白（最古老版本）</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 被动：4层解锁大招，大招伤害极高，CD短</li>
-                            <li>• 早期大招CD很短，吸血很强，野区霸主</li>
-                            <li>• 强度超标，出场率爆炸，玩家俗称“青莲无敌”</li>
-                            <li>• 很快迎来第一次削弱</li>
-                        </ul>
-                    </div>
-                </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-                <div class="relative mb-10">
-                    <div class="timeline-dot">2</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2016下半年 连续多次削弱</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 大招伤害下调、大招CD加长、吸血砍低</li>
-                            <li>• 这一阶段李白热度下滑，但绝活哥依旧能玩</li>
-                            <li>• 机制没变，只是数值持续被砍</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="relative mb-10">
-                    <div class="timeline-dot">3</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2018 李白大重做（关键分水岭）</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 被动调整：普攻4层解锁，大招伤害结构改动</li>
-                            <li>• 二技能破甲效果调整，之前高额破甲移除</li>
-                            <li>• 这次改动直接废掉老李白一套秒人的玩法</li>
-                            <li>• 一段时间冷门，很多老玩家退坑李白</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="relative mb-10">
-                    <div class="timeline-dot">4</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2019-2020 多次小幅回调、装备红利期</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 碎星锤、打野刀改动，李白短暂回暖</li>
-                            <li>• 赛场偶尔登场，属于绝活英雄，非T0</li>
-                            <li>• 凤求凰返场，人气持续居高不下</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="relative mb-10">
-                    <div class="timeline-dot">5</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2021-2022 野区改动，李白低谷期</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 野区经济改动、打野刀改版，前期发育变慢</li>
-                            <li>• 很怕版本强势硬控英雄（澜、镜、暃等）挤压</li>
-                            <li>• 排位胜率偏低，只有高熟练度玩家能上分</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="relative mb-10">
-                    <div class="timeline-dot">6</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2023 装备调整，李白小幅回暖</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 泣血、暗影战斧等装备调整适配</li>
-                            <li>• 出现肉刀李白、红刀李白两套玩法分支</li>
-                            <li>• 路人局出场率回升，赛场依旧少见</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="relative mb-10">
-                    <div class="timeline-dot">7</div>
-                    <div class="bg-liBai-card/70 rounded-xl p-5 border border-liBai-main/20 backdrop-blur-sm">
-                        <h3 class="text-lg font-bold text-liBai-accent">2024~至今 现状</h3>
-                        <ul class="mt-2 space-y-1 text-gray-200 text-sm">
-                            <li>• 机制基
+  /* ========== 李白发展史数据 ========== */
+  var events = [
+    { year: "2016", title: "初代剑仙上线：大招吸血 50%", category: "初代剑仙",
+      summary: "2016年3月1日，李白正式登陆峡谷。初代大招“青莲剑歌”拥有高达50%的吸血比例，一招回满血成为常态。",
+      detail: "李白上线即巅峰。被动“侠客行”普攻四下解锁大招，配合一技能“将进酒”的两段位移与眩晕，以及二技能“神来之笔”的不可选中与减甲，让他成为当时最难反制也最秀的刺客。大招50%的吸血让李白在团战中拥有恐怖的续航能力，残血进场、满血离场是初代剑仙的招牌画面。[reference:0]",
+      tags: ["2016.3.1", "侠客行", "青莲剑歌", "50%吸血"] },
+    { year: "2016", title: "首次削弱：吸血降至 35%", category: "机制演变",
+      summary: "上线仅一个多月，2016年4月，官方首次对李白动刀：大招CD增加，吸血比例从50%下调至35%。",
+      detail: "初代李白的强度远超预期。4月12日的调整中，三技能CD从9/7.5/6秒延长至12秒，吸血比例从50%降至35%。这次削弱标志着“一招回满血”的时代开始终结，但李白的核心机制——不可选中与多段
