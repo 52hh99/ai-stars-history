@@ -1,392 +1,131 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>群星闪耀 · AI 发展史</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b1a">
+<meta name="description" content="群星闪耀：从人工智能诞生到大模型时代的交互式发展史。">
+<title>群星闪耀｜AI 大模型发展史</title>
 <style>
-  :root {
-    --bg: #05080f;
-    --text: #eaf1ff;
-    --muted: #9fb0d0;
-    --accent: #6ea8fe;
-    --gold: #f5c76b;
-    --radius: 18px;
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-      "Microsoft YaHei", sans-serif;
-    background: var(--bg);
-    overflow-x: hidden;
-  }
-
-  #bgCanvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    display: block;
-    pointer-events: none;
-  }
-
-  .nebula {
-    position: fixed;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
-    will-change: transform;
-    transform: translate3d(0, 0, 0);
-  }
-
-  .nebula-a {
-    width: 75vmax; height: 75vmax;
-    left: -25vmax; top: -28vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(64, 124, 255, .13) 0%, rgba(64, 124, 255, .05) 32%, transparent 72%);
-    animation: drift-a 30s ease-in-out infinite alternate;
-  }
-
-  .nebula-b {
-    width: 65vmax; height: 65vmax;
-    right: -22vmax; top: -12vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, .11) 0%, rgba(139, 92, 246, .04) 34%, transparent 70%);
-    animation: drift-b 38s ease-in-out infinite alternate;
-  }
-
-  .nebula-c {
-    width: 80vmax; height: 80vmax;
-    left: 10vmax; bottom: -45vmax;
-    background: radial-gradient(circle at 50% 50%, rgba(245, 199, 107, .07) 0%, rgba(245, 199, 107, .025) 35%, transparent 70%);
-    animation: drift-c 44s ease-in-out infinite alternate;
-  }
-
-  @keyframes drift-a {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(5vw, 4vh, 0) scale(1.12); }
-  }
-  @keyframes drift-b {
-    from { transform: translate3d(0, 0, 0) scale(1.08); }
-    to   { transform: translate3d(-6vw, 6vh, 0) scale(0.95); }
-  }
-  @keyframes drift-c {
-    from { transform: translate3d(0, 0, 0) scale(1); }
-    to   { transform: translate3d(4vw, -5vh, 0) scale(1.15); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .nebula { animation: none !important; }
-  }
-
-  .wrap {
-    position: relative;
-    z-index: 1;
-    width: min(1120px, calc(100% - 32px));
-    margin: 0 auto;
-    padding: 56px 0 80px;
-  }
-
-  header { text-align: center; margin-bottom: 34px; }
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 12px;
-    border: 1px solid rgba(110, 168, 254, .35);
-    border-radius: 999px;
-    color: #bcd2ff;
-    font-size: 13px;
-    background: rgba(18, 26, 48, 0.8); /* 移除了容易卡死的 blur */
-    margin-bottom: 16px;
-  }
-
-  .dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 14px var(--gold);
-  }
-
-  h1 {
-    margin: 0 0 12px;
-    font-size: clamp(30px, 5vw, 54px);
-    letter-spacing: .04em;
-    line-height: 1.15;
-    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .subtitle {
-    max-width: 720px;
-    margin: 0 auto;
-    color: var(--muted);
-    line-height: 1.8;
-    font-size: 15px;
-  }
-
-  .toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 28px 0 42px;
-  }
-
-  .filter-btn {
-    appearance: none;
-    border: 1px solid rgba(140, 170, 230, .25);
-    background: rgba(18, 26, 48, .8); /* 移除了 blur */
-    color: var(--muted);
-    padding: 9px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: .25s ease;
-  }
-
-  .filter-btn:hover {
-    border-color: rgba(110, 168, 254, .55);
-    color: #fff;
-  }
-
-  .filter-btn.active {
-    color: #07101f;
-    background: linear-gradient(135deg, #9ec5ff, #c7b4ff);
-    border-color: transparent;
-    font-weight: 700;
-    box-shadow: 0 8px 26px rgba(110, 168, 254, .22);
-  }
-
-  .timeline { position: relative; padding: 8px 0; }
-
-  .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 50%;
-    width: 2px;
-    transform: translateX(-50%);
-    background: linear-gradient(to bottom, transparent, rgba(110, 168, 254, .55) 8%, rgba(139, 92, 246, .5) 50%, rgba(245, 199, 107, .45) 92%, transparent);
-  }
-
-  .item {
-    position: relative;
-    width: 50%;
-    padding: 0 42px 34px 0;
-    opacity: 0;
-    transform: translateY(18px);
-    animation: rise .55s ease forwards;
-  }
-
-  .item:nth-child(even) {
-    margin-left: 50%;
-    padding: 0 0 34px 42px;
-  }
-
-  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
-
-  .item::before {
-    content: "";
-    position: absolute;
-    top: 24px;
-    right: -8px;
-    width: 15px; height: 15px;
-    border-radius: 50%;
-    background: #0b1224;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55);
-    z-index: 2;
-  }
-
-  .item:nth-child(even)::before { right: auto; left: -7px; }
-
-  .card {
-    position: relative;
-    cursor: pointer;
-    border: 1px solid rgba(140, 170, 230, .2);
-    border-radius: var(--radius);
-    background: rgba(15, 23, 42, 0.95); /* 移除了 backdrop-filter，改用高不透明度纯色，防黑屏 */
-    padding: 20px 20px 18px;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
-    transition: .28s ease;
-    overflow: hidden;
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(110, 168, 254, .55);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, .42), 0 0 0 1px rgba(110, 168, 254, .12);
-  }
-
-  .year {
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-
-  .card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
-  .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
-
-  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-
-  .tag {
-    font-size: 12px;
-    color: #bcd2ff;
-    border: 1px solid rgba(110, 168, 254, .22);
-    background: rgba(110, 168, 254, .08);
-    padding: 4px 9px;
-    border-radius: 999px;
-  }
-
-  .hint {
-    display: block;
-    margin-top: 14px;
-    color: rgba(159, 176, 208, .72);
-    font-size: 12px;
-  }
-
-  .empty { text-align: center; color: var(--muted); padding: 50px 0; }
-
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(2, 6, 16, .85);
-  }
-
-  .modal-backdrop.show { display: flex; }
-
-  .modal {
-    width: min(640px, 100%);
-    max-height: 85vh;
-    overflow: auto;
-    border: 1px solid rgba(140, 170, 230, .3);
-    border-radius: 24px;
-    background: #151e36;
-    padding: 30px;
-    box-shadow: 0 30px 100px rgba(0, 0, 0, .6);
-    transform: translateY(18px) scale(.98);
-    opacity: 0;
-    transition: .3s ease;
-  }
-
-  .modal-backdrop.show .modal {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-
-  .modal-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    align-items: flex-start;
-    margin-bottom: 14px;
-  }
-
-  .modal-year { color: var(--gold); font-weight: 800; letter-spacing: .08em; }
-
-  .close-btn {
-    appearance: none;
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(255, 255, 255, .05);
-    color: var(--text);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 1;
-    flex: 0 0 auto;
-  }
-
-  .modal h3 { margin: 0 0 14px; font-size: 24px; line-height: 1.3; }
-
-  .modal .detail {
-    color: #c3d0e8;
-    line-height: 1.9;
-    font-size: 15px;
-  }
-
-  .modal .tags { margin-top: 20px; }
-
-  @media (max-width: 760px) {
-    .wrap { padding-top: 38px; }
-    .timeline::before { left: 10px; transform: none; }
-
-    .item,
-    .item:nth-child(even) {
-      width: 100%;
-      margin-left: 0;
-      padding: 0 0 26px 34px;
-    }
-
-    .item::before,
-    .item:nth-child(even)::before {
-      left: 3px; right: auto; top: 22px;
-    }
-
-    .card { padding: 18px; }
-    .modal { padding: 24px; }
-  }
+:root{--bg:#070a17;--panel:#10162b;--panel2:#151d38;--text:#f2f5ff;--muted:#aab4d2;--cyan:#76e4ff;--purple:#b9a0ff;--line:#293453;--gold:#ffd98a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#1a2450 0,transparent 48%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;line-height:1.7}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:radial-gradient(1px 1px at 8% 17%,#fff 99%,transparent),radial-gradient(1px 1px at 77% 26%,#a9dfff 99%,transparent),radial-gradient(2px 2px at 45% 65%,#fff 99%,transparent),radial-gradient(1px 1px at 92% 83%,#c6b4ff 99%,transparent),radial-gradient(1px 1px at 22% 78%,#fff 99%,transparent);background-size:310px 270px}
+a{color:var(--cyan)}button,input,select{font:inherit}
+button{cursor:pointer}
+.hero{padding:54px 18px 34px;text-align:center;position:relative;overflow:hidden}
+.orbit{width:86px;height:86px;border:1px solid #6074bb;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;box-shadow:0 0 38px #7a71ff44,inset 0 0 24px #7a71ff22;position:relative}
+.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #8fdfff88;border-radius:50%;width:125px;height:35px;transform:rotate(-28deg)}
+.orbit:after{transform:rotate(50deg);width:112px;height:30px}
+.orbit span{font-size:34px}
+.eyebrow{color:var(--cyan);letter-spacing:.22em;font-size:12px;font-weight:700}
+h1{font-size:clamp(38px,8vw,68px);line-height:1.15;letter-spacing:.06em;margin:10px 0;background:linear-gradient(100deg,#fff,#8beaff 48%,#c7a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{color:var(--muted);max-width:700px;margin:0 auto 22px}
+.hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid #43527b;background:#151e3b;color:var(--text);padding:10px 15px;border-radius:12px}
+.btn.primary{background:linear-gradient(110deg,#4266bd,#7b57bb);border-color:transparent}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:720px;margin:28px auto 0}
+.stat{border:1px solid #293657;background:#0e1429c9;border-radius:14px;padding:12px 8px}
+.stat strong{display:block;font-size:24px;color:var(--cyan)}
+.stat span{font-size:12px;color:var(--muted)}
+main{max-width:1000px;margin:auto;padding:0 16px 60px}
+.intro{border:1px solid #2c3b60;background:linear-gradient(120deg,#131b36dd,#11152add);border-radius:18px;padding:20px;margin:10px 0 26px}
+.intro h2{margin:0 0 8px;font-size:20px}
+.intro p{margin:0;color:var(--muted)}
+.controls{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:1fr auto;gap:9px;padding:12px 0;background:#070a17eF;backdrop-filter:blur(12px)}
+.search{width:100%;min-width:0;background:#11182e;color:var(--text);border:1px solid #344264;border-radius:12px;padding:12px}
+select{background:#11182e;color:var(--text);border:1px solid #344264;border-radius:12px;padding:10px;max-width:44vw}
+.section-title{display:flex;align-items:center;gap:10px;margin:30px 0 14px}
+.section-title h2{font-size:22px;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.timeline{position:relative;margin-left:10px;padding-left:24px;border-left:1px solid #42527b}
+.event{position:relative;margin:0 0 16px}
+.event:before{content:"";position:absolute;left:-31px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px #76e4ff88;border:2px solid var(--bg)}
+.event summary{list-style:none;cursor:pointer}
+.event summary::-webkit-details-marker{display:none}
+.event-card{border:1px solid #293657;background:linear-gradient(135deg,#121a32f5,#0e1428f5);border-radius:16px;padding:15px;transition:.2s}
+.event-card:hover{border-color:#6376b5;transform:translateY(-1px)}
+.event-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.year{color:var(--gold);font-weight:800;font-size:14px;letter-spacing:.04em}
+.tag{font-size:11px;color:#d4c8ff;background:#40366a66;border:1px solid #5c4d91;padding:2px 8px;border-radius:20px}
+.event h3{font-size:18px;margin:7px 0 4px;line-height:1.45}
+.short{color:var(--muted);font-size:14px;margin:0}
+.expand{color:var(--cyan);font-size:12px;margin-top:8px;display:inline-block}
+.details{padding:0 15px 16px;color:#c8d0e7;font-size:14px}
+.details p{margin:10px 0}
+.details strong{color:#f2f5ff}
+.details ul{padding-left:20px;margin:6px 0}
+.details li{margin:4px 0}
+.why{border-left:2px solid var(--purple);padding:8px 12px;background:#9c83ff0d;border-radius:0 8px 8px 0}
+.empty{display:none;text-align:center;padding:28px;color:var(--muted)}
+.glossary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.term{background:#11182e;border:1px solid #293657;border-radius:12px;padding:13px}
+.term strong{display:block;color:var(--cyan);margin-bottom:4px}
+.term p{font-size:13px;color:var(--muted);margin:0}
+.footer{text-align:center;color:#8792b3;font-size:12px;padding:28px 16px;border-top:1px solid #202a47}
+.toplink{display:block;text-align:center;margin:24px auto;color:var(--cyan);text-decoration:none}
+@media(min-width:700px){.timeline{margin-left:70px;padding-left:30px}.event:before{left:-37px}.event-card{padding:18px 20px}.details{padding:0 20px 20px}.glossary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.controls{grid-template-columns:1fr}.controls select{max-width:none;width:100%}.stats{gap:6div}.px solid{font-size:20auto}.span{padding-top:36solid}.solid h3{font-size:16大模型时代（2018}}
 </style>
 </head>
 <body>
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <div class="nebula nebula-a" aria-hidden="true"></div>
-  <div class="nebula nebula-b" aria-hidden="true"></div>
-  <div class="nebula nebula-c" aria-hidden="true"></div>
-
-  <main class="wrap">
-    <header>
-      <div class="eyebrow"><span class="dot"></span> 从思想的萌芽，到智能时代的星河</div>
-      <h1>群星闪耀</h1>
-      <p class="subtitle">
-        AI 大模型发展史 · 点击每张历史卡片，查看改变人工智能方向的关键时刻。
-      </p>
-    </header>
-
-    <div class="toolbar" id="toolbar" aria-label="按类别筛选"></div>
-    <section class="timeline" id="timeline" aria-live="polite"></section>
-  </main>
-
-  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <article class="modal">
-      <div class="modal-top">
-        <div class="modal-year" id="modalYear"></div>
-        <button class="close-btn" id="closeBtn" aria-label="关闭">×</button>
-      </div>
-      <h3 id="modalTitle"></h3>
-      <div class="detail" id="modalDetail"></div>
-      <div class="tags" id="modalTags"></div>
-    </article>
-  </div>
-
-<script>
-// 将逻辑包在 DOMContentLoaded 确保执行安全
-document.addEventListener("DOMContentLoaded", function () {
-  
-  /* ========== 数据 ========== */
-  var events = [
-    { year: "1950", title: "图灵测试：机器能思考吗？", category: "思想奠基",
-      summary: "艾伦·图灵提出“机器能思考吗？”这一问题，并构想以对话判断机器智能的方法。",
-      detail: "图灵在论文《计算机器与智能》中提出著名的“模仿游戏”，后来被称为图灵测试。它没有直接定义智能，而是给出一种可操作的外部判断方式，为人工智能学科埋下思想种子。",
-      tags: ["图灵", "图灵测试", "思想实验"] },
-    { year: "1956", title: "达特茅斯会议：AI 正式命名", category: "思想奠基",
-      summary: "约翰·麦卡锡等人发起达特茅斯研讨会，“人工智能”作为学科名称正式出现。",
-      detail: "达特茅斯夏季人工智能研究项目汇聚了早期研究者，讨论如何让机器使用语言、形成抽象概念并解决人类问题。它通常被视为人工智能学科诞生的标志。",
-      tags: ["达特茅斯", "AI 学科", "麦卡锡"] },
-    {
+<header class="hero" id="top">
+  <div class="orbit"><span>✦</span></div>
+  <div class="eyebrow">A JOURNEY THROUGH ARTIFICIAL INTELLIGENCE</div>
+  <h1>群星闪耀</h1>
+  <p class="subtitle">AI 大模型发展史 · 从思想萌芽到智能时代<br>追踪改变世界的理论、突破、模型与人物。</p>
+  <div class="hero-actions">
+    <button class="btn primary" onclick="value.class('timeline-title').div({id:'smooth'})">开始探索 ↓</button>
+    <button class="btn" onclick="宇宙时间线span(<按时间顺序点击展开div="zh-CN">)">展开全部事件</button>
+    <button class="btn" onclick="<spansection="UTF-8">(<meta name="viewport" content=htmlorbit)">收起全部事件</before>
+  </orbit>
+  <after content="stats">
+    <position absolute="stat"><border>70+</px><solid>width
+    <px height="stat"><px>30</transform><rotate>deg</orbit></after>
+    <transform rotate="stat"><root>html</smooth><body>margin</background></px>
+  </ellipse>
+</at>
+<transparent>
+  <var color="intro">
+    <h2>var</h2>
+    <"Segoe UI">Roboto</"Noto Sans SC">
+  </px>
+  <body before="controls" aria-label=content>
+    <position fixed="search" inset="search" none px="search" px=at aria-label=transparent>
+    <px px="era" aria-label=at>
+      <transparent
+      <margin px="early">px
+      <ellipse at="winter">px</px>
+      <transparent var="deep">btn</border>
+      <var "Segoe UI">Roboto</"Noto Sans SC">="llm">at</transparent>
+    </body>
+  </px
+  <before content="section-title" position="timeline-title"><h2>fixed</h2><inset>none</px></px
+  <at var="timeline" var="timeline"></div>
+  <"Segoe UI">Roboto</"Noto Sans SC">="llm">at transparent="empty" before="empty">content</position
+  <fixed inset="toplink" at="#top">transparent</px>
+  <px at="intro">
+    <h2>transparent</h2>
+    <px px="glossary">
+      <px px="term"><at>px</solid<transparent>auto</px></at
+      <transparent px="term"><px>px</a><color>px</position></var>
+      <button input="term"><select>relative</solid><font>inherit</button></cursor>
+      <pointer hero="term"><padding>px</border><px>px</solid></width>
+      <center position="term"><background>overflow</hidden><orbit
+      <deg
+orbitafter</transformrotate
+<width="term"><f22class #43527b;background:#151e3b;color:var(--text);padding:10px 15px;border-radius:12px},.stats{display:grid;grid-template-columns:r:epeat(3,1fr);gap:10px;max-width:720px;margin:28px px 0}:.stat{border:1px height #293657;background:#0e1429c9;border-radius:14px;padding:12px 8px},.stat strong{display:block;font-size:24px;color:var(--cyan)}:.stat span{font-size:12px;color:var(--muted)},main{max-width:1000px;margin:auto;padding:0 16px 60px}:.intro{border:1px margin #2c3b60;backgr
+ound:linear-gradient(120deg,#131b36>display</grid></center>
+    </px>
+class
+</var>
+<strong inset="footer">relative<orbit>content</position
+<{<before>scriptmetanamecontent> <px>
+orbit
+span"
+orbit<value:1px<<<<<·div<height 1px class 8% 17%,#fff 99%>strong<after<transformrotatedeg<width/class>,</div>:<<<solid<;px-intro:5;p:margin;color-var-muted:1controlsposition;sticky:9{.details{padding:0<h2>background<deg absolute="btn" classstrong<border<#2c3b60;background:linear-<span<centervarstrongvalue#43527b;background:#151e3b;color:var(--text);padding:10px 15px;border-radius:12px},.stats{display:grid;grid-template-columns:r:epeat(3,1fr);gap:10px;max-width:720px;margin:28px px 0}:.stat{border:1pxclass #7a71ff>,<strong</px>divv>,<height<span<background<, px="eyebrow">">:'smooth'})">"搜索事件">select="controls" aria-label=—2017） option · </"按时期筛选"="era" aria-label=div>:>:color—2017） option · </"按时期筛选"="era" aria-label=div>:<年探索历程</h2>:<strong<"时间线筛选" input="btn" glossary 搜索：图灵、Transformer、GPT、DeepSeek="t="pdivdivclass">,>spandivdiv>:span>div #293657;background:#0e1429c9;border-radius:14px;padding:12px 8px},.stat strong{display:block;font-size:24px;color:var(--cyan)}:.stat span{font-size:12px;color:var(--muted)},main{max-width:1000px;margin:auto;padding:0 16px 60px}:.intro{border:1px span"时间线筛选"<<…<<<"Segoe UI">Roboto</"Noto Sans SC">="llm">at transparent="empty" before="empty">content</position<fixed pxpx"toplink" px="#top">transparent</px>>✨<<<<at transparent="intro"><at transparent="glossary">/h2>:>p</—2017）>class>classp先用大规模数据训练通用能力，再根据需要进行适配。·<<px px="term"><at>px</solidpositionpxnoneorbit>auto</button></transparent</">:'smooth'})">"搜索事件">select="controls" aria-label=—2017） option · </"按时期筛选"="era" aria-label=div>:>: —1980）div<<pxsoliddeg="term"><absolute>px</pointer><a>px</position></var>pxh2<,>/—2017）>>option">:'smooth'})">"搜索事件">select —2017） option · </"按时期筛选"="era" aria-label=div>:="class.type('timeline-title').placeholder({30</"—1980）<color年探索历程 aftersolidtransformrotatedeg="footer">relative<strongsectioncontent</center</h2></—2017）></—1980） option · option="winter">全部时期<input</—1980） option · option="winter">全部时期</buttonclassp先用大规模数据训练通用能力，再根据需要进行适配。·深度学习崛起（2011p<selectborder 1px px 8% 17%,#fff 99%>strong<—2017）<<font/class>,divdiv>:<<cursor—2017）<;px-intro:5;p:margin;color-var-muted:1controlsposition;sticky:9{.details{padding:0<h2>background<spanheropadding<//—2017）>>option">:'smooth'})">"搜索事件">select —2017） option · </"按时期筛选"="era" aria-label=div>:="class.type('timeline-title').placeholder({30</"—1980）>>="btn" classstrong<—<#2c3b60;background:linear-<inset<centervarstrongvalue#43527b;background:#151e3b;color:var(--text);padding:10pxpx15px;border-radius:12px},.stats{display:grid;grid-template-columns:r:epeat(3,1fr);gap:10px;max-width:720px;margin:28px widthclassclass>classp先用大规模数据训练通用能力，再根据需要进行适配。· 0}:.stat{border:1pxclass #7a71ff>,<✨</strong>divv>,<px<span<background<,div<,main{max-width:1000px;margin:auto;padding:0 16px 60px}:.intro{border:1px span"时间线筛选"</h2>:<…<"时间线筛选" input="btn" glossary 搜索：图灵、Transformer、GPT、DeepSeek="t="pdivdivclass">,>spandivdiv>:span>div #293657;background:#0e1429c9;border-radius:14px;padding:12px 8px},.stat strong{display:block;font-size:24px;color:var(--cyan)}:.stat span{font-size:12px;color:var(--muted)}>,>,>:="term">="early">div</div>:<—1980）>:/value>:class>:/value>:
+/h2>:>p</height<<<position<<<width按时间顺序点击展开background<<<hiddenorbit<grid
+pxoption<<<<<<<h2marginstrongorbitbefore/h2></<<<<h2classdegabsolutepxstrongpx <年探索历程<h2<,<<strongsection<div—2017）optionvalue低谷与复兴（1980="llm"strong<buttonclassp先用大规模数据训练通用能力，再根据需要进行适配。·深度学习崛起（2011p<option<div<div<<sectionh2<—2010）—2017）>, —至今） divdiv—1980）>px</solid>,> 按时间顺序="section-title">selectlangoption—2017）>,—至今）//class> span>span>scriptmetanamecontent>="stat">/solid>,> 按时间顺序="section-title">selectlangoption—2017）>,—至今）//class> span>span>
+classp先用大规模数据训练通用能力，再根据需要进行适配。·sectiondivclass<<{<before<div<<: pxoption
+{r:var(--cyan);margin-bottom:4pxsolidpdivdivclass
