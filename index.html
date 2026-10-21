@@ -1,1 +1,194 @@
-
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b1a">
+<meta name="description" content="群星闪耀：从人工智能诞生到大模型时代的交互式发展史。">
+<title>群星闪耀｜AI 大模型发展史</title>
+<style>
+:root{--bg:#070a17;--panel:#10162b;--panel2:#151d38;--text:#f2f5ff;--muted:#aab4d2;--cyan:#76e4ff;--purple:#b9a0ff;--line:#293453;--gold:#ffd98a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#1a2450 0,transparent 48%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;line-height:1.7}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:radial-gradient(1px 1px at 8% 17%,#fff 99%,transparent),radial-gradient(1px 1px at 77% 26%,#a9dfff 99%,transparent),radial-gradient(2px 2px at 45% 65%,#fff 99%,transparent),radial-gradient(1px 1px at 92% 83%,#c6b4ff 99%,transparent),radial-gradient(1px 1px at 22% 78%,#fff 99%,transparent);background-size:310px 270px}
+a{color:var(--cyan)}button,input,select{font:inherit}
+button{cursor:pointer}
+.hero{padding:54px 18px 34px;text-align:center;position:relative;overflow:hidden}
+.orbit{width:86px;height:86px;border:1px solid #6074bb;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;box-shadow:0 0 38px #7a71ff44,inset 0 0 24px #7a71ff22;position:relative}
+.orbit:before,.orbit:after{content:"";position:absolute;border:1px solid #8fdfff88;border-radius:50%;width:125px;height:35px;transform:rotate(-28deg)}
+.orbit:after{transform:rotate(50deg);width:112px;height:30px}
+.orbit span{font-size:34px}
+.eyebrow{color:var(--cyan);letter-spacing:.22em;font-size:12px;font-weight:700}
+h1{font-size:clamp(38px,8vw,68px);line-height:1.15;letter-spacing:.06em;margin:10px 0;background:linear-gradient(100deg,#fff,#8beaff 48%,#c7a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{color:var(--muted);max-width:700px;margin:0 auto 22px}
+.hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid #43527b;background:#151e3b;color:var(--text);padding:10px 15px;border-radius:12px}
+.btn.primary{background:linear-gradient(110deg,#4266bd,#7b57bb);border-color:transparent}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:720px;margin:28px auto 0}
+.stat{border:1px solid #293657;background:#0e1429c9;border-radius:14px;padding:12px 8px}
+.stat strong{display:block;font-size:24px;color:var(--cyan)}
+.stat span{font-size:12px;color:var(--muted)}
+main{max-width:1000px;margin:auto;padding:0 16px 60px}
+.intro{border:1px solid #2c3b60;background:linear-gradient(120deg,#131b36dd,#11152add);border-radius:18px;padding:20px;margin:10px 0 26px}
+.intro h2{margin:0 0 8px;font-size:20px}
+.intro p{margin:0;color:var(--muted)}
+.controls{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:1fr auto;gap:9px;padding:12px 0;background:#070a17eF;backdrop-filter:blur(12px)}
+.search{width:100%;min-width:0;background:#11182e;color:var(--text);border:1px solid #344264;border-radius:12px;padding:12px}
+select{background:#11182e;color:var(--text);border:1px solid #344264;border-radius:12px;padding:10px;max-width:44vw}
+.section-title{display:flex;align-items:center;gap:10px;margin:30px 0 14px}
+.section-title h2{font-size:22px;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.timeline{position:relative;margin-left:10px;padding-left:24px;border-left:1px solid #42527b}
+.event{position:relative;margin:0 0 16px}
+.event:before{content:"";position:absolute;left:-31px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--cyan);box-shadow:0 0 16px #76e4ff88;border:2px solid var(--bg)}
+.event summary{list-style:none;cursor:pointer}
+.event summary::-webkit-details-marker{display:none}
+.event-card{border:1px solid #293657;background:linear-gradient(135deg,#121a32f5,#0e1428f5);border-radius:16px;padding:15px;transition:.2s}
+.event-card:hover{border-color:#6376b5;transform:translateY(-1px)}
+.event-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.year{color:var(--gold);font-weight:800;font-size:14px;letter-spacing:.04em}
+.tag{font-size:11px;color:#d4c8ff;background:#40366a66;border:1px solid #5c4d91;padding:2px 8px;border-radius:20px}
+.event h3{font-size:18px;margin:7px 0 4px;line-height:1.45}
+.short{color:var(--muted);font-size:14px;margin:0}
+.expand{color:var(--cyan);font-size:12px;margin-top:8px;display:inline-block}
+.details{padding:0 15px 16px;color:#c8d0e7;font-size:14px}
+.details p{margin:10px 0}
+.details strong{color:#f2f5ff}
+.details ul{padding-left:20px;margin:6px 0}
+.details li{margin:4px 0}
+.why{border-left:2px solid var(--purple);padding:8px 12px;background:#9c83ff0d;border-radius:0 8px 8px 0}
+.empty{display:none;text-align:center;padding:28px;color:var(--muted)}
+.glossary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.term{background:#11182e;border:1px solid #293657;border-radius:12px;padding:13px}
+.term strong{display:block;color:var(--cyan);margin-bottom:4px}
+.term p{font-size:13px;color:var(--muted);margin:0}
+.footer{text-align:center;color:#8792b3;font-size:12px;padding:28px 16px;border-top:1px solid #202a47}
+.toplink{display:block;text-align:center;margin:24px auto;color:var(--cyan);text-decoration:none}
+@media(min-width:700px){.timeline{margin-left:70px;padding-left:30px}.event:before{left:-37px}.event-card{padding:18px 20px}.details{padding:0 20px 20px}.glossary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.controls{grid-template-columns:1fr}.controls select{max-width:none;width:100%}.stats{gap:6px}.stat strong{font-size:20px}.hero{padding-top:36px}.event h3{font-size:16px}}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="orbit"><span>✦</span></div>
+  <div class="eyebrow">A JOURNEY THROUGH ARTIFICIAL INTELLIGENCE</div>
+  <h1>群星闪耀</h1>
+  <p class="subtitle">AI 大模型发展史 · 从思想萌芽到智能时代<br>追踪改变世界的理论、突破、模型与人物。</p>
+  <div class="hero-actions">
+    <button class="btn primary" onclick="document.getElementById('timeline-title').scrollIntoView({behavior:'smooth'})">开始探索 ↓</button>
+    <button class="btn" onclick="expandAll(true)">展开全部事件</button>
+    <button class="btn" onclick="expandAll(false)">收起全部事件</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong>70+</strong><span>年探索历程</span></div>
+    <div class="stat"><strong>30</strong><span>个关键节点</span></div>
+    <div class="stat"><strong>∞</strong><span>仍在延伸的未来</span></div>
+  </div>
+</header>
+<main>
+  <section class="intro">
+    <h2>✨ 如何阅读这段历史？</h2>
+    <p>人工智能并不是突然出现的。它经历了符号推理、专家系统、机器学习、深度学习、预训练大模型等阶段。点击任意时间卡片，即可查看背景、技术突破和历史意义；也可以使用搜索框查找人物、模型或技术。</p>
+  </section>
+  <div class="controls" aria-label="时间线筛选">
+    <input id="search" class="search" type="search" placeholder="搜索：图灵、Transformer、GPT、DeepSeek…" aria-label="搜索事件">
+    <select id="era" aria-label="按时期筛选">
+      <option value="all">全部时期</option>
+      <option value="early">萌芽与起步（1950—1980）</option>
+      <option value="winter">低谷与复兴（1980—2010）</option>
+      <option value="deep">深度学习崛起（2011—2017）</option>
+      <option value="llm">大模型时代（2018—至今）</option>
+    </select>
+  </div>
+  <div class="section-title" id="timeline-title"><h2>宇宙时间线</h2><span>按时间顺序 · 点击展开</span></div>
+  <div id="timeline" class="timeline"></div>
+  <div id="empty" class="empty">没有找到相关事件，试试其他关键词。</div>
+  <a class="toplink" href="#top">↑ 返回星空首页</a>
+  <section class="intro">
+    <h2>🪐 大模型常见术语</h2>
+    <div class="glossary">
+      <div class="term"><strong>神经网络</strong><p>受生物神经系统启发，由相互连接的计算单元组成的模型。</p></div>
+      <div class="term"><strong>深度学习</strong><p>使用多层神经网络，从大量数据中学习复杂模式的方法。</p></div>
+      <div class="term"><strong>Transformer</strong><p>以注意力机制为核心的神经网络架构，是现代语言模型的重要基础。</p></div>
+      <div class="term"><strong>预训练</strong><p>先用大规模数据训练通用能力，再根据需要进行适配。</p></div>
+      <div class="term"><strong>微调</strong><p>在已有模型上继续训练，使其更适合特定任务或指令。</p></div>
+      <div class="term"><strong>多模态</strong><p>能够处理或生成文本、图像、音频、视频等不同类型信息。</p></div>
+      <div class="term"><strong>推理模型</strong><p>针对复杂问题求解进行优化，可能会使用更多计算步骤来组织答案。</p></div>
+      <div class="term"><strong>幻觉</strong><p>模型生成了听起来合理、但不准确或没有依据的内容。</p></div>
+      <div class="term"><strong>智能体</strong><p>能够围绕目标规划步骤、调用工具并根据结果继续行动的系统。</p></div>
+    </div>
+  </section>
+</main>
+<footer class="footer">群星闪耀 · AI 大模型发展史<br>历史仍在书写。重要日期与模型能力会持续更新；模型的表现因任务、版本和评测方式而异。</footer>
+<script>
+const events = [
+{y:"1950",t:"图灵提出机器智能测试",tag:"思想萌芽",era:"early",s:"艾伦·图灵在论文中提出：机器能否表现出类似人类的对话智能？",p:"英国数学家艾伦·图灵发表《计算机器与智能》，讨论机器是否能够思考，并提出后来被称为“图灵测试”的模仿游戏。测试关注的是机器在对话中的表现，而不是直接判断机器是否拥有意识。",tech:"以语言互动作为观察智能行为的一种方式。",people:"艾伦·图灵（Alan Turing）",why:"它把“机器能否思考”从纯哲学问题推进为可以讨论和研究的科学问题，也为后来人工智能研究提供了经典起点。"},
+{y:"1956",t:"达特茅斯会议与“人工智能”命名",tag:"学科诞生",era:"early",s:"研究者提出用计算机模拟学习、推理和其他智能活动。",p:"约翰·麦卡锡、马文·明斯基、克劳德·香农、纳撒尼尔·罗切斯特等研究者推动了达特茅斯夏季研究项目。“人工智能”（Artificial Intelligence）由此成为一个重要研究领域的名称。",tech:"早期研究侧重符号、逻辑、搜索和问题求解。",people:"约翰·麦卡锡等研究者",why:"这次会议常被视为人工智能作为独立研究领域的标志性事件，也开启了长期的学术与工程探索。"},
+{y:"1957—1958",t:"感知机与早期神经网络",tag:"神经网络",era:"early",s:"弗兰克·罗森布拉特推动感知机研究，让机器从样例中调整参数。",p:"感知机是一种早期学习模型，可以根据输入特征调整权重，用于区分简单模式。它展示了机器通过数据而不是只靠人工编写规则来学习的可能性。",tech:"线性分类、权重更新；早期模型的能力和适用范围有限。",people:"弗兰克·罗森布拉特（Frank Rosenblatt）",why:"感知机成为神经网络历史中的重要一步，也引发了关于学习机器能力边界的讨论。"},
+{y:"1966",t:"ELIZA 展示文本对话程序",tag:"自然语言",era:"early",s:"一个早期对话程序通过模式匹配模拟心理咨询式交流。",p:"约瑟夫·魏泽鲍姆开发 ELIZA，其中著名的 DOCTOR 脚本会根据用户句子中的关键词生成回应。它并不真正理解人类语言，却能让部分用户感到对话自然。",tech:"规则、关键词识别与模板替换。",people:"约瑟夫·魏泽鲍姆",why:"ELIZA 提醒人们：流畅的语言表现不一定意味着系统真正理解了内容。这一问题在今天的大模型时代仍然重要。"},
+{y:"1970年代",t:"专家系统兴起",tag:"符号 AI",era:"early",s:"将专家知识写成规则，帮助系统在特定领域做判断。",p:"早期专家系统把领域知识编码为规则和事实，在医学、化学等相对受限的领域进行推断。它们能够在特定任务上表现出实用价值，但知识整理和维护成本较高。",tech:"知识库、规则引擎、推理机制。",people:"多个学术与工业研究团队",why:"专家系统说明，AI 不一定要模仿人脑；把人类知识组织成可计算规则，也能解决一部分现实问题。"},
+{y:"1974—1980年代",t:"第一次 AI 寒冬",tag:"发展低谷",era:"early",s:"早期承诺过高、算力和数据有限，资金与关注度下降。",p:"当时的计算能力、数据规模和算法方法都受到限制。部分研究目标难以实现，相关资助和商业热情因此降温。这段时期通常被称为第一次人工智能寒冬。",tech:"符号推理在复杂现实环境中容易遇到组合爆炸和知识瓶颈。",people:"整个 AI 研究领域",why:"这段历史提醒研究者，技术愿景必须与真实能力、资源条件和可验证结果相匹配。"},
+{y:"1980年代",t:"专家系统商业化",tag:"产业应用",era:"winter",s:"企业开始把规则型 AI 用于配置、诊断和专业决策支持。",p:"专家系统在一些受限商业场景中取得应用，但建立规则库需要专家投入，环境变化后还需要不断维护。系统通常缺乏从海量原始数据中自动学习的能力。",tech:"知识工程与基于规则的推理。",people:"企业知识工程团队",why:"它证明 AI 可以创造实际价值，也暴露出手工维护知识的规模化难题。"},
+{y:"1986",t:"反向传播推动多层神经网络",tag:"训练方法",era:"winter",s:"反向传播成为训练多层神经网络的重要方法之一。",p:"大卫·鲁梅尔哈特、杰弗里·辛顿和罗纳德·威廉姆斯等人的工作推动了反向传播的普及。算法利用误差对网络参数进行梯度更新，使多层网络训练更可行。",tech:"链式法则、梯度下降、误差反向传播。",people:"David Rumelhart、Geoffrey Hinton、Ronald Williams",why:"反向传播成为现代深度学习训练的核心基础之一，不过神经网络的广泛成功还需要数据、算力和其他技术共同发展。"},
+{y:"1997",t:"IBM 深蓝击败国际象棋世界冠军",tag:"搜索与博弈",era:"winter",s:"深蓝战胜加里·卡斯帕罗夫，成为机器博弈史上的里程碑。",p:"IBM 的 Deep Blue 在与世界冠军卡斯帕罗夫的正式比赛中获胜。它主要依靠专用硬件、高速搜索、棋局评估和大量国际象棋知识，而不是今天的大语言模型路线。",tech:"大规模搜索、启发式评估、专用计算。",people:"IBM 深蓝团队、加里·卡斯帕罗夫",why:"这一事件显示，机器在规则明确、目标清晰的复杂任务上，可以通过专门设计超越顶尖人类表现。"},
+{y:"2006",t:"深度信念网络带动深度学习复兴",tag:"深度学习",era:"winter",s:"研究者重新探索多层网络的有效训练方式。",p:"杰弗里·辛顿及合作者的研究推动了深层神经网络的关注度回升。此后，数据集、GPU 计算、激活函数、正则化和训练技巧不断改进，深度学习逐渐成为主流。",tech:"逐层预训练等早期深层网络训练思路。",people:"Geoffrey Hinton 及合作者",why:"这是深度学习复兴过程中的重要节点，但并非单一研究独自创造了后来所有突破。"},
+{y:"2011",t:"IBM Watson 赢得智力问答节目",tag:"问答系统",era:"deep",s:"Watson 在 Jeopardy! 节目中与人类冠军竞争并获胜。",p:"Watson 组合使用自然语言处理、信息检索、知识表示和统计方法，分析题目并估计答案置信度。它展示了复杂问答系统在结构化竞赛中的潜力。",tech:"信息检索、自然语言处理、候选答案排序。",people:"IBM Watson 团队",why:"它体现了将多种 AI 技术组合成系统的价值，也不同于通过单一大模型完成所有任务的路线。"},
+{y:"2012",t:"AlexNet 引爆深度学习热潮",tag:"视觉突破",era:"deep",s:"卷积神经网络在 ImageNet 图像识别竞赛中取得显著优势。",p:"Alex Krizhevsky、Ilya Sutskever 和 Geoffrey Hinton 的 AlexNet 使用深层卷积网络、GPU 训练等方法，在 2012 年 ImageNet 挑战赛中取得突破性成绩。",tech:"卷积神经网络、GPU、ReLU、数据增强与 Dropout。",people:"Alex Krizhevsky、Ilya Sutskever、Geoffrey Hinton",why:"它让学界和产业界更清楚地看到：在大规模数据和计算支持下，深度神经网络能够显著提升感知任务表现。"},
+{y:"2014",t:"生成对抗网络 GAN 出现",tag:"生成式 AI",era:"deep",s:"生成器和判别器相互竞争，推动模型学习生成数据。",p:"伊恩·古德费洛及合作者提出生成对抗网络。生成器尝试产生逼真的样本，判别器尝试区分真实数据与生成数据，两者在训练中相互促进。",tech:"对抗训练、生成模型。",people:"Ian Goodfellow 及合作者",why:"GAN 成为生成式 AI 的重要路线之一，影响图像生成和合成数据研究；它也有训练不稳定等挑战。"},
+{y:"2014",t:"Seq2Seq 与注意力机制发展",tag:"语言建模",era:"deep",s:"编码器—解码器架构推动机器翻译等序列任务。",p:"序列到序列模型将输入序列编码后生成输出序列。注意力机制进一步帮助解码器在生成每个词时关注输入的相关部分，为后来 Transformer 的注意力思想铺路。",tech:"循环神经网络、编码器—解码器、注意力机制。",people:"多个机器翻译研究团队",why:"这条研究路线把机器翻译和文本生成推进了一步，也为后来以注意力为核心的架构积累经验。"},
+{y:"2016",t:"AlphaGo 战胜李世石",tag:"强化学习",era:"deep",s:"结合深度神经网络、搜索和强化学习，攻克围棋难题。",p:"DeepMind 的 AlphaGo 在与李世石的五番棋比赛中以 4 比 1 获胜。系统结合策略网络、价值网络、蒙特卡洛树搜索，并使用人类棋谱和自我对弈训练。",tech:"深度学习、强化学习、树搜索、自我对弈。",people:"DeepMind AlphaGo 团队、李世石",why:"围棋曾被认为极难通过传统搜索解决。AlphaGo 展示了学习与规划结合的威力，成为 AI 发展史的标志性时刻。"},
+{y:"2017",t:"Transformer 架构提出",tag:"关键转折",era:"deep",s:"论文《Attention Is All You Need》提出以注意力为核心的架构。",p:"Transformer 弱化了对循环结构的依赖，使用自注意力机制建立序列中不同位置之间的联系，并更适合并行训练。后来大量语言模型和多模态模型都以 Transformer 或其变体为基础。",tech:"自注意力、多头注意力、位置编码、并行训练。",people:"Vaswani 等研究者",why:"Transformer 是现代大模型时代的关键技术基础之一，但模型能力仍取决于数据、训练目标、计算资源和系统设计。"},
+{y:"2018",t:"BERT 推动双向语言理解",tag:"预训练",era:"llm",s:"通过大规模文本预训练，再适配分类、问答等下游任务。",p:"Google 研究团队推出 BERT，利用双向上下文学习文本表示，并在多个语言理解基准上取得显著成绩。它通常通过微调适配具体任务，是预训练范式的重要里程碑。",tech:"Transformer 编码器、掩码语言模型、任务微调。",people:"Jacob Devlin 等研究者",why:"BERT 帮助确立了“先预训练、再适配”的路线，显著影响自然语言处理的研究与工程实践。"},
+{y:"2018",t:"GPT-1 展示生成式预训练路线",tag:"GPT 系列",era:"llm",s:"先在文本上学习语言规律，再针对任务进行微调。",p:"OpenAI 发布的 GPT 研究展示了生成式预训练模型的潜力。模型使用 Transformer 解码器，通过预测下一个词学习语言模式，再在具体任务上进行适配。",tech:"自回归语言建模、生成式预训练。",people:"OpenAI 研究团队",why:"GPT 系列随后逐步扩大模型规模并探索更通用的任务能力，成为生成式大模型发展的重要主线之一。"},
+{y:"2019",t:"GPT-2 展示更大规模文本生成",tag:"GPT 系列",era:"llm",s:"更大规模的语言模型表现出更连贯的文本续写能力。",p:"GPT-2 扩大了模型规模和训练数据，展示了多种文本生成任务的潜力。它也引起了关于生成内容误导性、滥用风险与发布责任的讨论。",tech:"更大规模的自回归 Transformer 语言模型。",people:"OpenAI 研究团队",why:"GPT-2 让更多人关注到规模扩展与语言生成能力之间的关系，也凸显了安全评估的重要性。"},
+{y:"2020",t:"GPT-3 与少样本学习",tag:"规模扩展",era:"llm",s:"模型可以通过提示中的示例完成许多任务，无需每项任务单独训练。",p:"GPT-3 拥有 1750 亿参数，研究展示了模型通过自然语言提示和少量示例执行多种任务的能力。参数规模只是模型特征之一，并不能单独代表可靠性或整体质量。",tech:"大规模自回归预训练、零样本/单样本/少样本提示。",people:"OpenAI 研究团队",why:"GPT-3 推动了“用一个模型处理多种任务”的愿景，也让提示设计成为许多用户接触大模型的入口。"},
+{y:"2021",t:"GitHub Copilot 展示 AI 编程辅助",tag:"开发工具",era:"llm",s:"模型开始进入日常软件开发工作流，协助补全和编写代码。",p:"AI 编程助手将大规模代码数据训练的模型整合进开发环境，能够根据上下文提出代码建议。生成的代码仍需要开发者检查、测试并关注安全性和许可证问题。",tech:"代码语言模型、上下文提示、IDE 集成。",people:"GitHub、OpenAI 等团队",why:"AI 能力开始以工具形式进入真实工作流程，提示了模型从演示走向产品的重要路径。"},
+{y:"2021",t:"CLIP 连接图像与文本",tag:"多模态",era:"llm",s:"通过图文配对数据学习图像与语言之间的对应关系。",p:"CLIP 使用大量图像—文本配对进行对比学习，让图像和文本映射到可比较的表示空间。它能支持零样本图像分类等任务，并影响后续多模态系统。",tech:"对比学习、图文联合表示。",people:"OpenAI 研究团队",why:"CLIP 是视觉与语言结合的重要里程碑，显示模型可从不同模态之间的关联中学习。"},
+{y:"2022",t:"扩散模型推动图像生成",tag:"图像生成",era:"llm",s:"Stable Diffusion、DALL·E 2 等系统让文本生成图像走向大众。",p:"扩散模型通过逐步去噪来生成样本，并结合文本条件引导结果。2022 年前后，相关系统使高质量图像生成变得更容易接触，也带来版权、来源与伪造内容等讨论。",tech:"扩散过程、去噪网络、文本条件控制。",people:"多个研究团队与开源社区",why:"生成式 AI 从文本扩展到视觉创作，普通用户也能通过自然语言参与内容生成。"},
+{y:"2022-11",t:"ChatGPT 发布",tag:"对话式 AI",era:"llm",s:"通过对话界面让公众直接体验大语言模型。",p:"OpenAI 发布 ChatGPT。它基于 GPT 系列模型，并通过指令微调和人类反馈等方法优化对话体验。用户可以连续追问、修改要求并让模型协助写作、解释、编程等任务。",tech:"指令微调、人类反馈强化学习等对齐方法。",people:"OpenAI 团队",why:"对话界面显著降低了使用门槛，使大模型迅速进入大众视野，同时也让幻觉、隐私与可靠性成为公众议题。"},
+{y:"2023",t:"GPT-4 与更强的复杂任务能力",tag:"模型进步",era:"llm",s:"新一代模型在多项专业与学术评测中表现提升，并支持图像输入。",p:"GPT-4 展示了较 GPT-3.5 更强的复杂指令处理和多项基准表现，并具备图像输入能力（具体可用性取决于产品与版本）。它仍可能犯错，不能把考试或基准成绩等同于全面可靠。",tech:"更大规模训练与系统优化；完整训练细节并未全部公开。",people:"OpenAI 团队",why:"它推动社会进一步讨论通用模型的能力、局限、评估方式以及安全部署。"},
+{y:"2023",t:"开源与开放权重模型快速发展",tag:"生态扩展",era:"llm",s:"Llama、Mistral 等模型推动开发者在本地和自有基础设施上实验。",p:"不同团队发布开放权重模型、研究模型或开放工具链，使研究者和企业能够更灵活地部署、微调和评估模型。不同项目的许可证、能力和开放程度并不相同。",tech:"开放权重、量化、微调、检索增强生成（RAG）。",people:"Meta、Mistral 及开源社区等",why:"模型生态不再只由少数闭源服务构成；开放生态扩大了实验空间，也带来安全、治理和许可证方面的新问题。"},
+{y:"2023",t:"多模态助手走向普及",tag:"多模态",era:"llm",s:"模型逐步处理文本、图像、语音等不同输入与输出。",p:"多模态系统把语言能力与视觉、音频等感知能力结合起来。不同产品对实时语音、图像理解、视频输入和生成的支持各不相同，不能假设所有模型都具备全部功能。",tech:"跨模态表示、语音识别与合成、视觉编码器、统一模型接口。",people:"多个 AI 实验室与产品团队",why:"人机交互从单纯打字扩展到看、听、说和创作，AI 助手更接近真实世界的使用场景。"},
+{y:"2024",t:"长上下文与推理能力继续发展",tag:"能力扩展",era:"llm",s:"模型处理更长资料、复杂步骤和工具调用的能力持续提升。",p:"研究和产品不断探索长上下文、代码执行、检索、规划和更可靠的多步求解。上下文窗口变大并不保证模型能准确使用其中每一条信息，实际效果仍需测试。",tech:"长上下文训练、检索增强、工具使用、推理时计算等方向。",people:"多个研究团队",why:"大模型逐步从生成一段回答，转向协助完成包含多步骤的信息处理与任务。"},
+{y:"2024",t:"推理型模型成为重要研究方向",tag:"推理",era:"llm",s:"研究者尝试让模型在复杂数学、编程和科学任务上投入更多求解步骤。",p:"推理型模型及相关训练方法尝试改善复杂问题求解。它们可能在回答前使用更多计算，但并不意味着每次都正确，也不等于模型具有与人类完全相同的思维过程。",tech:"强化学习、可验证奖励、测试时计算与多步求解等方法。",people:"多个 AI 研究团队",why:"评估焦点开始从单纯追求模型规模，扩展到推理过程、计算分配、可验证结果和任务成功率。"},
+{y:"2025",t:"AI 智能体与工作流受到更多关注",tag:"智能体",era:"llm",s:"模型尝试规划任务、调用工具、检查结果并继续执行。",p:"智能体系统通常把语言模型与浏览器、代码执行、文件处理、搜索或企业工具连接起来。它们可以分步骤完成任务，但也会误判、调用错误工具或在权限边界上出问题。",tech:"工具调用、任务规划、状态管理、评估与人工确认。",people:"多个模型提供方、开发者与研究团队",why:"AI 应用从“回答问题”进一步走向“协助执行工作”，因此权限控制、可追踪性和人工监督变得更加重要。"},
+{y:"2025—至今",t:"高效模型、开放生态与真实应用并进",tag:"持续演进",era:"llm",s:"行业同时探索推理、多模态、效率、成本、可靠性与端侧部署。",p:"大模型发展并非单一路线。闭源与开放权重模型、通用与专业模型、云端与本地部署都在演进。比较模型时，应结合任务、延迟、成本、隐私、可控性和独立评测，而不只看参数规模或宣传口号。",tech:"模型压缩、量化、蒸馏、检索、工具使用、端侧推理与评测。",people:"全球研究机构、企业与开源社区",why:"AI 的下一阶段不只是让模型更大，而是让它在真实场景中更有用、更经济、更安全，并能被可靠地评估。"}
+];
+const timeline = document.getElementById('timeline');
+const search = document.getElementById('search');
+const era = document.getElementById('era');
+function render(){
+ const q=search.value.trim().toLowerCase(), selected=era.value;
+ const filtered=events.filter(e=>{
+   const text=[e.y,e.t,e.tag,e.s,e.p,e.tech,e.people,e.why].join(' ').toLowerCase();
+   const year=parseInt(e.y.slice(0,4),10);
+   let eraMatch=selected==='all' ||
+     (selected==='early' && year<=1980) ||
+     (selected==='winter' && year>1980 && year<=2010) ||
+     (selected==='deep' && year>=2011 && year<=2017) ||
+     (selected==='llm' && year>=2018);
+   return eraMatch && (!q || text.includes(q));
+ });
+ timeline.innerHTML=filtered.map((e,i)=>`
+ <details class="event">
+  <summary class="event-card">
+   <div class="event-top"><span class="year">${e.y}</span><span class="tag">${e.tag}</span></div>
+   <h3>${e.t}</h3><p class="short">${e.s}</p><span class="expand">点击查看详细介绍 ＋</span>
+  </summary>
+  <div class="details">
+   <p><strong>事件背景：</strong>${e.p}</p>
+   <p><strong>核心技术：</strong>${e.tech}</p>
+   <p><strong>相关人物 / 团队：</strong>${e.people}</p>
+   <div class="why"><strong>为什么重要？</strong><br>${e.why}</div>
+  </div>
+ </details>`).join('');
+ document.getElementById('empty').style.display=filtered.length?'none':'block';
+}
+function expandAll(open){document.querySelectorAll('.event').forEach(e=>e.open=open)}
+search.addEventListener('input',render);
+era.addEventListener('change',render);
+render();
+</script>
+</body>
+</html>
