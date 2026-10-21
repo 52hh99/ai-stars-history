@@ -18,14 +18,25 @@
   body {
     margin: 0; min-height: 100vh; color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background: var(--bg); overflow-x: hidden;
+    overflow-x: hidden;
+    /* 李白原画背景 */
+    background: url('https://p3-flow-imagex-sign.byteimg.com/ocean-cloud-tos/7539692598944868920~tplv-be4g62t4ka-image.image') center / cover fixed no-repeat;
+  }
+  /* 暗色遮罩，保护文字可读性 */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(5,8,15,0.72) 0%, rgba(5,8,15,0.86) 45%, rgba(5,8,15,0.94) 100%);
+    z-index: 0;
+    pointer-events: none;
   }
   #bgCanvas {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: 0; display: block; pointer-events: none;
+    z-index: 1; display: block; pointer-events: none;
   }
   .nebula {
-    position: fixed; z-index: 0; pointer-events: none; border-radius: 50%;
+    position: fixed; z-index: 2; pointer-events: none; border-radius: 50%;
     will-change: transform; transform: translate3d(0, 0, 0);
   }
   .nebula-a {
@@ -48,19 +59,19 @@
   @keyframes drift-c { from { transform: scale(1); } to { transform: translate(4vw, -5vh) scale(1.15); } }
 
   .wrap {
-    position: relative; z-index: 1; width: min(1120px, calc(100% - 32px));
+    position: relative; z-index: 3; width: min(1120px, calc(100% - 32px));
     margin: 0 auto; padding: 56px 0 80px;
   }
   header { text-align: center; margin-bottom: 34px; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px;
     border: 1px solid rgba(110, 168, 254, .35); border-radius: 999px;
-    color: #bcd2ff;font-size: 13px; background: rgba(18, 26, 48, 0.8); margin-bottom: 16px;
+    color: #bcd2ff; font-size: 13px; background: rgba(18, 26, 48, 0.8); margin-bottom: 16px;
   }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 14px var(--gold); }
   h1 {
     margin: 0 0 12px; font-size: clamp(30px, 5vw, 54px); letter-spacing: .04em; line-height: 1.15;
-    background: linear-gradient(90deg, #ffffff, #b9d1ff45%, #d8c2ff);
+    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 15px; }
@@ -71,7 +82,7 @@
     color: var(--muted); padding: 9px 16px; border-radius: 999px; cursor: pointer; font-size: 14px; transition: .25s ease;
   }
   .filter-btn.active {
-    color: #07101f;background: linear-gradient(135deg, #9ec5ff, #c7b4ff); border-color: transparent; font-weight: 700;
+    color: #07101f; background: linear-gradient(135deg, #9ec5ff, #c7b4ff); border-color: transparent; font-weight: 700;
   }
 
   .timeline { position: relative; padding: 8px 0; }
@@ -87,7 +98,7 @@
   @keyframes rise { to { opacity: 1; transform: translateY(0); } }
   .item::before {
     content: ""; position: absolute; top: 24px; right: -8px; width: 15px; height: 15px; border-radius: 50%;
-    background: #0b1224;border: 2px solid var(--accent); box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55); z-index: 2;
+    background: #0b1224; border: 2px solid var(--accent); box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55); z-index: 2;
   }
   .item:nth-child(even)::before { right: auto; left: -7px; }
 
@@ -100,18 +111,18 @@
   .card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
   .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
   .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
-  .tag { font-size: 12px; color: #bcd2ff;border: 1px solid rgba(110, 168, 254, .22); background: rgba(110, 168, 254, .08); padding: 4px 9px; border-radius: 999px; }
+  .tag { font-size: 12px; color: #bcd2ff; border: 1px solid rgba(110, 168, 254, .22); background: rgba(110, 168, 254, .08); padding: 4px 9px; border-radius: 999px; }
   .hint { display: block; margin-top: 14px; color: rgba(159, 176, 208, .72); font-size: 12px; }
 
   /* 模态框 */
   .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(2, 6, 16, .85); }
   .modal-backdrop.show { display: flex; }
-  .modal { width: min(640px, 100%); max-height: 85vh; overflow: auto; border: 1px solid rgba(140, 170, 230, .3); border-radius: 24px; background: #151e36;padding: 30px; box-shadow: 0 30px 100px rgba(0, 0, 0, .6); }
+  .modal { width: min(640px, 100%); max-height: 85vh; overflow: auto; border: 1px solid rgba(140, 170, 230, .3); border-radius: 24px; background: #151e36; padding: 30px; box-shadow: 0 30px 100px rgba(0, 0, 0, .6); }
   .modal-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
   .modal-year { color: var(--gold); font-weight: 800; }
   .close-btn { border: 1px solid rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .05); color: var(--text); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; }
   .modal h3 { margin: 0 0 14px; font-size: 24px; }
-  .modal .detail { color: #c3d0e8;line-height: 1.9; font-size: 15px; white-space: pre-wrap; }
+  .modal .detail { color: #c3d0e8; line-height: 1.9; font-size: 15px; white-space: pre-wrap; }
 
   @media (max-width: 760px) {
     .timeline::before { left: 10px; transform: none; }
@@ -122,243 +133,244 @@
 </head>
 <body>
   <canvas id="bgCanvas" aria-hidden="true"></canvas>
-  <"大招衰减" year=title></"全面加强：技能伤害结构调整">
-  <category "机制演变"=summary></"2018年9月，李白迎来大幅加强，技能伤害引入额外AD加成。">
-  <detail "鼓励玩家通过装备堆叠攻击力，让李白在沉寂后重回打野梯队中上游。"=tags></"加强">
+  <div class="nebula nebula-a"></div>
+  <div class="nebula nebula-b"></div>
+  <div class="nebula nebula-c"></div>
 
-  <"额外AD" year="wrap">
-    <title>
-      <"首款荣耀典藏：鸣剑·曳影" category="eyebrow"><"皮肤纪年" summary="dot"></"2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。">detail</"科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。">
-      <h1>tags</h1>
-      <"鸣剑·曳影" "荣耀典藏"="subtitle">year</title>
-    </"世冠传说：诗剑行">
+  <main class="wrap">
+    <header>
+      <div class="eyebrow"><span class="dot"></span> 一篇诗，一斗酒，一曲长歌，一剑天涯</div>
+      <h1>王者荣耀 · 李白发展史</h1>
+      <p class="subtitle">青莲剑仙编年史 · 从初代吸血剑仙，到无相机制的技术型刺客。</p>
+    </header>
 
-    <category "皮肤纪年"="toolbar" summary="toolbar"></"2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。">
-    <detail "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。"="timeline" tags="timeline"></"诗剑行">
-  </"世冠">
+    <div class="toolbar" id="toolbar"></div>
+    <section class="timeline" id="timeline"></section>
+  </main>
 
-  <"水墨" year="modal-backdrop" title="modalBackdrop">
-    <"无双品质：碎月剑心" category="modal">
-      <"皮肤纪年" summary="modal-top">
-        <"2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。" detail="modal-year" "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。"="modalYear"></tags>
-        <"碎月剑心" "无双"="close-btn" year="closeBtn">title</"中秋限定：谪仙醉月">
-      </category>
-      <h3 "皮肤纪年"="modalTitle"></h3>
-      <summary "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。"="detail" detail="modalDetail"></"醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。">
-      <onclick function="tags" var="modalTags"></idx>
-    </parseInt>
-  </this>
+  <div class="modal-backdrop" id="modalBackdrop">
+    <article class="modal">
+      <div class="modal-top">
+        <div class="modal-year" id="modalYear"></div>
+        <button class="close-btn" id="closeBtn">×</button>
+      </div>
+      <h3 id="modalTitle"></h3>
+      <div class="detail" id="modalDetail"></div>
+      <div class="tags" id="modalTags"></div>
+    </article>
+  </div>
 
-<getAttribute>
-var
-e.events = idx() {
-  document
-  getElementById textContent = [
-    { e: "2016", year: document, getElementById: textContent, e: title, document: getElementById, textContent: ["2016.3.1", e, detail] },
-    { var: "2016", tagHtml: for, var: i, i: etags, length: innerHTML, documentyeartags: ["2016.4.12", "modal-backdrop show", tagbackdrop] },
-    { "; }; = c.function(": "2016", data: cat, '-// 关闭弹窗 + ': backdrop, // 3. 渲染时间线 = function;: renderTimelinevar, list: if, activeCategory: ["2016.6", "全部"] },
-    { list: "2016", events: else, for: var, k: k, events: length, k: [if, events] },
-    { k: "2017", category: activeCategory, listpush: eventsk, onclick: function, var: idx, parseInt: [this, getAttribute] },
+<script>
+// 使用最保守的写法，防止老旧浏览器报错
+window.onload = function() {
+  // 1. 注入数据
+  var events = [
+    { year: "2016", title: "初代剑仙上线：大招吸血 50%", category: "初代剑仙", summary: "2016年3月1日，李白正式登陆峡谷。初代大招“青莲剑歌”拥有高达50%的吸血比例。", detail: "李白上线即巅峰。被动普攻四下解锁大招，配合一技能位移，大招50%吸血让他残血进场、满血离场。", tags: ["2016.3.1", "青莲剑歌", "50%吸血"] },
+    { year: "2016", title: "首次削弱：吸血降至 35%", category: "机制演变", summary: "上线仅一个多月，大招CD增加，吸血比例从50%下调至35%。", detail: "4月12日调整，三技能CD延长，吸血比例降至35%。标志着“一招回满血”时代终结。", tags: ["2016.4.12", "削弱", "CD增加"] },
+    { year: "2016", title: "吸血机制移除：大招不再回血", category: "机制演变", summary: "2016年6月，李白大招的吸血能力被彻底移除。从此大招不再提供生命回复。", detail: "李白必须依靠装备维持续航，定位从“吸血战士”被迫转向“纯爆发刺客”。", tags: ["2016.6", "吸血移除"] },
+    { year: "2016", title: "首款史诗皮肤：千年之狐", category: "皮肤纪年", summary: "2016年5月1日，首款高级皮肤“千年之狐”上线，青丘狐灵主题成为一代经典。", detail: "李白的第一款史诗皮肤，独特的语音与特效，是许多国服李白的情怀之选。", tags: ["千年之狐", "史诗"] },
+    { year: "2017", title: "鸡年限定：凤求凰", category: "皮肤纪年", summary: "2017年1月27日，传说限定皮肤“凤求凰”上线。仙侠主题与李白的气质完美契合。", detail: "仙气飘飘的造型、清脆的打击音效，让它在多年后依然是李白人气的顶峰皮肤之一。", tags: ["凤求凰", "传说限定"] },
     { year: "2017", title: "核心机制削弱：大招多目标伤害衰减", category: "机制演变", summary: "2017年3月，大招对2个目标造成85%伤害，3个及以上造成70%。", detail: "加入伤害衰减后，李白在人群中的AOE爆发被显著限制，必须更精准地选择切入角度。", tags: ["2017.3.30", "大招衰减"] },
     { year: "2018", title: "全面加强：技能伤害结构调整", category: "机制演变", summary: "2018年9月，李白迎来大幅加强，技能伤害引入额外AD加成。", detail: "鼓励玩家通过装备堆叠攻击力，让李白在沉寂后重回打野梯队中上游。", tags: ["2018.9.4", "加强", "额外AD"] },
-{ year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年", summary: "2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。", detail: "科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。", tags: ["鸣剑·曳影", "荣耀典藏"] },
-{ year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年", summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。", detail: "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。", tags: ["诗剑行", "世冠", "水墨"] },
-{ year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年", summary: "2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。", detail: "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。", tags: ["碎月剑心", "无双"] },
-{ year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年", summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。", detail: "醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。", onclick: [function, var] },
-{ idx: "2026", parseInt: this, getAttribute: var, e: events, idx: document, getElementById: ["2026", textContent, e] },
-{ year: document, getElementById: textContent, e: title, document: getElementById, textContent: e, detail: [var, tagHtml] }
+    { year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年", summary: "2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。", detail: "科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。", tags: ["鸣剑·曳影", "荣耀典藏"] },
+    { year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年", summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。", detail: "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。", tags: ["诗剑行", "世冠", "水墨"] },
+    { year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年", summary: "2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。", detail: "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。", tags: ["碎月剑心", "无双"] },
+    { year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年", summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。", detail: "醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。", tags: ["谪仙醉月", "中秋"] },
+    { year: "2026", title: "机制重做：无相取代概率闪避", category: "机制演变", summary: "2026年，二技能迎来重做。概率闪避改为稳定触发的“无相”效果：必定格挡一次伤害。", detail: "老版二技能被戏称为“买彩票”。新版“无相”将不确定性移除，无论伤害高低，格挡后清空。改版后李白主动放弃率骤降，策划将李白拉回“技术型刺客”轨道。", tags: ["2026", "无相", "机制重做"] },
+    { year: "文化", title: "文化符号：十步杀一人", category: "文化符号", summary: "“十步杀一人，千里不留行”成为一代玩家的集体记忆。", detail: "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。", tags: ["台词", "文化"] }
   ];
 
-for var = i.i("timeline");
-etags = length.innerHTML("toolbar");
-documentyeartags = "modal-backdrop show".tagbackdrop("modalBackdrop");
-"; }; = c.function(" data = cat.">'-// 关闭弹窗 + '"("closeBtn");
+  var timelineEl = document.getElementById("timeline");
+  var toolbarEl = document.getElementById("toolbar");
+  var backdrop = document.getElementById("modalBackdrop");
+  var closeBtn = document.getElementById("closeBtn");
 
-backdrop // 3. 渲染时间线 = function;
-renderTimelinevar = [list];
-if (activeCategory"全部" = 0; list< events.else
-    for (var.k(k[events].length)var1) {
-      k.if(events[k].category);
+  var activeCategory = "全部";
+  var categories = ["全部"];
+  for (var i = 0; i < events.length; i++) {
+    if (categories.indexOf(events[i].category)=== -1) {
+      categories.push(events[i].category);
     }
   }
 
-  year
-  title() {
-idx
-parseInt< detail.function
-parseInt
-e
-getElementById</textContent>';
+  // 2. 渲染筛选器
+  function renderFilters() {
+    var html = "";
+    for (var i = 0; i < categories.length; i++) {
+      length c = cards[c];
+      onclick function = (var === idx) ? "active" : "";
+      parseInt += this + getAttribute + var + e + '">' + events + '</button>';
     }
-year
-year
-"机制重做"< e.tags; length++) {
-      innerHTML[documentyear].tags = "文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
-tagbackdrop
-' +p
-        backdrop();
+    idx.document = getElementById;
+    textContente = year.document(".filter-btn");
+    getElementById (textContente = 0; title < document.getElementById; textContent++) {
+      e[detail].var = tagHtml() {
+        for = var.i("data-cat");
+        i();
+        e();
       };
     }
   }
 
-"文化符号"category
-' +div += summary.tags -// 3. 渲染时间线
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
-idx
-parseInt
-function
-parseInt< events.length; k++) {
-        e (events[k].categorytimelineEl
+  tags
+  lengthi() {
+    tagHtml'<span class="tag">' = [];
+    tags (t === // 使用 data-index 传参] + '</span>';) {
+      html
+    } '<article class="item" style="animation-delay:'{
+      this (delay div = 0; class < tabindex.data; index++) {
+        "' = idx;'<span class=" (year[e].year === e) title.esummary
       }
     }
 
-idx = "";
-parseInt (this = 0; getAttribute< cards.c; onclick++) {
-      function = var[idx];
-      parseInt = this.getAttribute(var);
-      textContent = events.idx(document * 60, 480);
-      year = "";
-      year (e = 0;"机制重做"< document.getElementById(3, textContent.e.title); document++) {
-"文化""modal"title + e.detail[var] +"文化符号：十步杀一人" += tagbackdrop' +p() {
+    '<div class="tags">' tagHtml = "";
+    '<span class="hint">点击卡片查看详情 →</span>' (timelineElinnerHTML html = 0; // 绑定点击事件(var, cards)timelineEl"0)");() {0, querySelectorAll.for = var.c(c.cards length = c; (cards.c =onclick.functionvar.idx = "modal-backdrop"; }; < parseInt.this; getAttribute++) {
+      var e = list[i];
+      var idx = events.indexOf(e);
+      var delay = Math.min(i * 60, 480);
+      var tagHtml = "";
+      for (var t = 0; t < Math.min(3, e.tags.length); t++) {
+        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
       }
-"文化符号"category
-summary
-// 3. 渲染时间线
-"王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。"
-                  '<h2>"台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
-                  '<"文化"
-' +div
-function
-                '</onclick>function
-              '</onclick>';
+      // 使用 data-index 传参
+      html += '<article class="item" style="animation-delay:' + delay + 'ms">' +
+                '<div class="card" tabindex="0" data-index="' + idx + '">' +
+                  '<span class="year">' + e.year + '</span>' +
+                  '<h2>' + e.title + '</h2>' +
+                  '<p>' + EnterhiddenisPausedtrue backdroponclickifdocument.Enterfilecontentshere + '</p>' +
+                  } } // 页面隐藏时暂停，防止手机息屏或切后台卡顿;.Enter file contents here.document.addEventListener("visibilitychange", function() {(Enter file contents here.if (document.hidden) {, Enter file contents here.isPaused = true;);) {Enterfilecontentshere(elseEnterfilecontentshere isPausedfalseEnterfile contents) {(hereEnterfilhereEnter>">herefile(push + k + '</div>' +
+                  eventslengthk +
+                '</div>' +
+              '</article>';
     }
-var
+    timelineEl.innerHTML = html;
 
-cards
-timelineEl
-getElementById< backdrop.if; c++) {
-      cards[c].onclick = function() {
-        textContentyear
-year
-"机制重做"
-"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
-tagbackdrop
+    // 绑定点击事件
+    var cards = timelineEl.querySelectorAll(".card");
+    for (var c = 0; c < cards.length; c++) {
+      px[border].radius = Enter() {
+        file contents = herebackground(px.solid("data-index"), 10);
+        accent boxcenterEnterfilecontentshereEnterfilecontentsherepadding = px[box];
+        shadow
+        toolbar.display("modalTitle").flex = flex.wrap;
+        wrap.justify("modalDetail").content = centergap.pxmarginpx;
         
-' +p
-"文化符号"category< e.tags.length; innerHTML++) {
-summary
-// 3. 渲染时间线
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
-idx
-parseInt
+        Enterfilecontentshere modal = "";
+        top (absolute top = 0; px < right.px.width; px++) {
+          height += px + border.radius[Enter
+        }
+        file.contents("modalTags").herebackground = px;
+        
+        solid.var = accent;
       };
     }
   }
 
-function
-  onclick-e
-parseInt
+  boxcenter
+  contentsherecontentposition.absolute = toppx() { right.px = "modal-backdrop"; };
+  width.px = height(px) { border (radius.varelsefor === backdrop) contentseherehere
 
-e
-  if();
-  c();
+  className
+  // 执行渲染/renderFilters>();
+  renderTimeline();
 
 
-getElementById
-// 4. 流星雨特效（防卡死保护）
-year
-"机制重做"
-"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
-tagbackdrop
+  // 4. 流星雨特效（防卡死保护）
+  try {
+    var canvas = document.getElementById("bgCanvas");
+    var ctx = canvas.getContext("2d");
+    var W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
     
-' +p
-"文化符号"category
-summary
+    var stars = [];
+    var meteors = [];
+    var isPaused = false;
 
-// 3. 渲染时间线
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c<idx
-parseInt
+    // 生成少量背景星星
+    for(var i=0; i<100; i++) {
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.2, a: Math.random()*0.5 });
     }
 
-function
-parseInt
-    y(Math
-e
-getElementById
-// 4. 流星雨特效（防卡死保护）
-var canvas = document.getElementById("bgCanvas");
-div
-var W = window.innerWidth, H = window.innerHeight;var ctx = canvas.getContext("2d");
+    // 预生成流星对象
+    var METEOR_COUNT = 150;
+    for(var i=0; i<METEOR_COUNT; i++) {
+      meteors.push({
+        x: Math.random()*W, y: Math.random()*H,
+        speed: 3 + Math.random() * 5, // 统一速度范围
+        len: 50 + Math.random() * 150,
+        a: 0.3 + Math.random() * 0.5,
+        w: 0.8 + Math.random() * 1.5
       });
     }
 
-canvas.width = W; canvas.height = button;
+    var colors = ["rgba(255,255,255,", "rgba(205,228,255,", "rgba(165,205,255,"];
 
-getAttributevar isPausedmeteorsvar];
-// 4. 流星雨特效（防卡死保护） = try;: var.document()*var, ctx: canvas.getContext()*var, W: window.innerWidth()*1.2, H: window.innerHeight()*0.5 });,(0, 0, canvas, H); + ")";, var.meteors, var.isPaused, 0, false.cards*2); = [];
+    function draw() {
+      if (isPaused) return;
       
-forvar
+      ctx.clearRect(0, 0, W, H);
       
-ii
-i(stars=0; push
-100; len++) {
-x.Math({ random
-W
-divMETEOR_COUNT = 150;
-"机制重做"
-"文化""modal"title + e.detail[var] +"文化符号：十步杀一人"
+      Enterfilecontentshere
+background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);@keyframes rise{ to{ opacity: 1; transform: translateY(0); } }(Enterfilecontentshere .item::before{=0; Enterfilecontentshere<content: ""; position: absolute; top: 24px; right: -8px; width: 15px; height: 15px; border-radius: 50%;.Enterfilecontentshere; background: #0b1224; border: 2pxsolidvar(--accent); box-shadow: 0 0 0 5pxrgba(110, 168, 254, .12), 0 0 18pxrgba(110, 168, 254, .55); z-index: 2;++) {
+EnterfilecontentshereEnterfilecontentshereEnterfilecontentshere= .item:nth-child(even)::before{ right:auto; left: -7px; }[Enterfilecontents here];
+-webkit-background-clip: text; background-clip: text; color: transparent;.card{.Enter filecontentshere = "rgba(255,255,255," + position: relative; cursor: pointer; border: 1pxsolidrgba(140, 170, 230, .2); border-radius: var(--radius);.Enterfilecontentshere + ")";
+        background: rgba(15, 23, 42, 0.95); padding: 20px20px18px; box-shadow: 0 18px50pxrgba(0, 0, 0, .35); transition: .28sfile;.contentsherebackgroundlinear();
+gradientkeyframesrisetoopacitytransformtranslateY..Enter:file{ contents: here(-4item); before-Enter: file(110, 168, 254, .55); }(contentsherecontentposition..absolute { top: px-right; : --px: 13width; px-height: 700; px: border(--radius); Enter-file: 8contents; }, herebackground: #border..px h2 { solid: 0 0 8var; accent-box: 20shadow; px-rgba: 1.35; }, pxrgbazindex..Enter file{ contents: 0; hereEnter: file(--contents); here-Enter: 1.7; file-contents: 14here; }, 0, = .itemnthchild..even { before: right; auto-left: : -;px: 7Enter; file-contents: 14here; }*2);
+        webkitbackgroundcliptext..background { clip-text: 12color; transparent: #bcd2ff; card: 1Enterfilecontents(110, 168, 254, .22); here: position(110, 168, 254, .08); relative: 4cursor9pointer; border-px: 999solid; }();
+      }
 
-tagbackdrop
-' +p
-"文化符号"category
-summary
-// 3. 渲染时间线
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
-idx
-parseInt
+rgbaborderradiusvarradiusEnterfile
+.contents { here-contentsherebackgroundlinear: 720Enter; file: 0 contents; here: before(--Enter); file
+contentsherecontentposition(absolute .top =-px { right: px; width: 0; px-height: 50; px: border; radius-Enter: file; contents-herebackground: px; solid: 20var; accent: boxcenter
+pushx151e36; Math: 30random; W-y: 0 30px100pxrgba(0, 0, 0, .6); }++) { { .Math// 4. 流星雨特效（防卡死保护） { randomtry: Hvar; rcanvas-Mathdocument: randomgetElementById; avar-Mathctx: randomcanvas; // 预生成流星对象getContext: 10var; forW: 28px0 42varwindow; }iinnerWidth .iH-iwindow { meteorsinnerHeight: pushcanvas; xwidth-MathW: randomcanvas-Wheight; yH-Mathvar: randomstars-Hvar; speedmeteors-Mathvar: 14randomisPaused; } = // 统一速度范围false[.len// 生成少量背景星星-Mathfor { randomvar: ai(--Mathi); randomi-wstars: 800; }];
         
-function
-parseInt
-e
-getElementById
-// 4. 流星雨特效（防卡死保护）
-var canvas = document.getElementById("bgCanvas");
-detail}
-
-div
-var W = window.innerWidth, H = window.innerHeight;var ctx = canvas.getContext("2d");
+.Math-random {.var-colors { function: 1modal(255, 255, 255, .14); if: isPaused(255, 255, 255, .05); return: ctx(--clearRect); W: 36H; Enterfilecontentshere: 36background; linear-gradient: 50%; keyframes: rise: 20to; }.pxh3 { opacity: 0 0 14transform; translateY-Enterfilecontentshere: 24item; }.before;
+Enterfilecontentshere.content .position{ absolute: #c3d0e8; top-px: 1.9; right-px: 15width; px-height; }.px += @border (radius-Enterfilecontentshere: 760background) {.border pxsolidvar;
+accent: box; shadow: 1pxrgba(140, 170, 230, .25); pxrgba: z(18, 26, 48, .8);.index::EnterfilecontentshereEnterfilecontentshereEnterfilecontentshere{ item: 10child; even: auto; }
         
-canvas.width = W; canvas.height = button;
-getAttributevar isPausedmeteorsvar];
-// 4. 流星雨特效（防卡死保护） = try;: var.document()*var, ctx: canvas.getContext()*var, W: window.innerWidth()*1.2, H: window.innerHeight()*0.5 });,(0, 0, canvas, H); + ")";, var.meteors, var.isPaused, 0, false.cards*2); = [];
-tagbackdrop
-' +p
-"文化符号"category
-summary
-// 3. 渲染时间线
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
+left(.px:Enterfilecontents-webkit(background) { clip: 100%; text-background: 0; clip: 0 0 26file34contents; }.text::color:transparent-card(Enter)::filecontentshere{ position: 3relative; EnterEnterfilecontentsheretop; display: 22flex; } + 200justify > content + 200) {
+space: between(--align)rgba9px16Enter; items-flex: 999start; margin: e; itemEnterfilecontentsherepxheight; px: .25varnoneEnterfilecontents100hereEnterfilecontents="bgCanvas" border-radius="true"Enter
+file<contents=herebackground><px>.solid var() * 200;
+accent=boxcenterEnterfilecontentshereEnterfilecontentsherepadding></div>
+.px
+box<shadow="subtitle">ease·transformhereitem"timeline"toolbar"timeline"></section>;
+        }
+
+idaria07101hidden; display
+flex
+        
+flex"tags" wrap="modalTags"><wrap
+.justify { contentsherecolorvarmutedpaddingpxpxborder8div0; }content
+pxright700;centergap() * 200;: pxmarginpx(135contentshere9ec5ff, #c7b4ff); Enterfilecontentshere; modal, top + absolute);
+.indexOf/ beforeitemivarcontentspx0filevardelayMathtagHtmlpxwidthshadowtoolbarcontentfor: contentjustify, ", px: marginpxEnterfilecontentshere, modal: top];::display{{ centergap2016px)": flex
+        
+justify.content
+, space: solidpx, e
+// 2. 画流星（全右下角 45度）(); meteors=0; ctx<lineCap.var > m + 200 || meteors.i > Enter + 200) { = filecontentshereEnterfile// 角度 45 度，vx 和 vy 相同, Enter file contents here.m.x += m.speed;, Enter file contents here.m.y += m.speed;, 0, Enter file contents here.Enter file contents here*2);.// 飞出屏幕则重新从上方或左侧生成.// 页面隐藏时暂停，防止手机息屏或切后台卡顿;, document)addEventListener() * 200Enterfilecontentshereif.m.xW100 - m.y() * 200HEnterfilecontentshere.m.x;(= - =Math random) {(.- ; =.Enterfilecontentsheremy.+ .= -.+ ")")Mathrandom.; - -
+variimeteorslengthiEnterfilecontentshereEnterfilecontentshereEnterfilecontentshere
+")Enterfilecontentshere// 如果想显得自然点，稍微拉开一点起点;(Enter file contents here.if(Math.random() > 0.5) m.x = Math.random()*W; - Enter file contents here.Enter file contents here;);var.tailX mxm, len ; = = Enter.file(contents.here, var.tailY, m, y);.mlenEnterfile, contents here = EnterEnterfile % contents.here];, grad.; =);(1, addColorStop + "(")cma; =Enter.file contentsheregrad];.addColorStop.c = ; %;.Enter; + Enter file contents here.Enter file contents here + "
+visibilitychange
+      }
+      
+content0)"length);("" , ctx.moveTo(m.x, m.y);.Enter.contentshere100 - fi, summarye
+    }
+
+display
+jvar0j
+document(tailXlineTorenderTimelineEnterfilecontentshere
+fortagHtml
 idx
-parseInt
-function
-"文化符号：十步杀一人"
-parseInt
-' +p
+hiddenisPausedtruecontentshereEnterfileonclickEnterfilecontentsherebackdrop
+Enter
+k
+    contentshereEnterfile
 
-"文化符号"category
-function
-// 3. 渲染时间线summary
-' +div += "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。".tags - "台词", "(205,228,255,rgba"“十步杀一人，千里不留行”成为一代玩家的集体记忆。" +c
-"文化"
-"文化"
-getElementById {// 4. 流星雨特效（防卡死保护）100; len++) {vardivMETEOR_COUNT = 150;
-onclick' +div
-function
+backdrop
+hereEnterfilecontents
+[contentshereEnterfile
+document
+tagHtmlsummary
+EnterfilecontentshtmlhereEnterfile
+/.item:nth-child(even) { margin-left: 50%; etagHtmlcontentshereEnterfileeventskcategoryactiveCategorylisteventscontents
+<<'<contentshereEnterfile =="card" list="0" contents-herehere=/// 页面隐藏时暂停，防止手机息屏或切后台卡顿;.Enter file contents here.document.addEventListener("visibilitychange", function() {(Enter file contents here.if (document.hidden) {, Enter file contents here.isPaused = true;);) {Enterfilecontentshere(elseEnterfilecontentshere isPausedfalseEnterfile contents) {(hereEnterfilhereEnter> =.herefile
 
-var
-timelineElcards
-function
-var
-cards
-</e.targetactiveCategory
-timelineEl
-querySelectorAll
