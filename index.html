@@ -1,109 +1,827 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#050510">
-<meta name="description" content="群星闪耀：赛博朋克风格的人工智能与大语言模型发展史。">
-<title>群星闪耀｜AI 大模型发展史</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>王者荣耀 · 英雄发展史</title>
 <style>
-:root{--bg:#050510;--panel:rgba(14,17,40,.9);--cyan:#00f5ff;--pink:#ff38c7;--purple:#9870ff;--text:#f1f5ff;--muted:#a1a8c7;--border:rgba(0,245,255,.25)}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans SC","Microsoft YaHei",sans-serif}
-button,input,select{font:inherit}
-button,select{cursor:pointer}
-#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.nebula{position:fixed;inset:-30%;z-index:0;pointer-events:none;filter:blur(35px);background:radial-gradient(ellipse at 20% 30%,rgba(103,35,255,.26),transparent 38%),radial-gradient(ellipse at 78% 38%,rgba(0,220,255,.2),transparent 35%),radial-gradient(ellipse at 55% 75%,rgba(255,0,170,.14),transparent 40%);animation:nebula 25s ease-in-out infinite alternate}
-@keyframes nebula{from{transform:translate(-3%,-2%) rotate(0) scale(1)}to{transform:translate(4%,3%) rotate(8deg) scale(1.1)}}
-.scanlines{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.07;background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(120,160,255,.16) 4px)}
-.page{position:relative;z-index:1;width:min(1050px,100%);margin:auto;padding:16px 16px 42px}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:6px 0 18px}
-.brand{font-weight:900;letter-spacing:1px;font-size:17px}.brand b{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:500;margin-top:4px}
-.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-button,select,input{color:var(--text);background:rgba(12,14,35,.96);border:1px solid var(--border);border-radius:10px;padding:10px 12px;min-height:42px;outline:none}
-button:focus-visible,input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,245,255,.13)}
-.btn{transition:transform .15s,border-color .2s,background .2s}.btn:active{transform:scale(.97)}
-.btn.active,.btn.primary{background:linear-gradient(110deg,rgba(0,170,220,.25),rgba(157,51,255,.28));border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,.1)}
-select{max-width:100%}option{background:#111128}
-.hero{text-align:center;padding:clamp(35px,8vw,78px) 0 38px}
-.eyebrow{display:inline-block;padding:8px 13px;color:var(--cyan);font-size:11px;letter-spacing:2px;border:1px solid rgba(0,245,255,.35);background:rgba(0,245,255,.045)}
-h1{font-size:clamp(42px,10vw,78px);letter-spacing:4px;line-height:1.15;margin:22px 0 15px;color:#fff;text-shadow:0 0 12px rgba(0,245,255,.8),0 0 36px rgba(0,245,255,.28),4px 3px 0 rgba(255,56,199,.4)}
-.subtitle{max-width:650px;margin:auto;color:#b2bad6;font-size:14px;line-height:2}
-.hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:23px}
-.section-line{height:1px;margin:0 auto 28px;max-width:720px;background:linear-gradient(90deg,transparent,var(--cyan),var(--pink),transparent);opacity:.65}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:8px 0 36px}
-.stat{text-align:center;padding:16px 6px;background:linear-gradient(140deg,rgba(17,23,53,.92),rgba(10,11,29,.92));border:1px solid var(--border);position:relative}
-.stat strong{display:block;font-size:clamp(21px,5vw,32px);color:var(--cyan);text-shadow:0 0 14px rgba(0,245,255,.25)}.stat:nth-child(2) strong{color:var(--pink)}.stat:nth-child(3) strong{color:#b6a0ff}.stat span{font-size:12px;color:var(--muted)}
-.section-title{font-size:23px;margin:0;letter-spacing:1px}.section-title span{color:var(--cyan)}.section-desc{font-size:13px;color:var(--muted);line-height:1.8;margin:8px 0 18px}
-.panel{padding:16px;background:var(--panel);border:1px solid var(--border);box-shadow:0 0 32px rgba(0,0,0,.16)}
-.filters{display:grid;grid-template-columns:minmax(0,1fr) 140px 150px auto;gap:9px;margin-bottom:16px}.filters input,.filters select{width:100%;min-width:0}
-.result-line{font-size:12px;color:var(--cyan);margin:0 0 17px}
-.timeline{position:relative;padding-left:24px}.timeline:before{content:"";position:absolute;top:4px;bottom:6px;left:6px;width:2px;background:linear-gradient(var(--cyan),var(--purple),var(--pink),transparent);box-shadow:0 0 10px rgba(0,245,255,.22)}
-.event{position:relative;margin:0 0 16px;padding:16px;background:linear-gradient(120deg,rgba(15,19,45,.97),rgba(12,12,31,.93));border:1px solid rgba(145,156,220,.22);transition:border-color .2s;animation:rise .3s ease both}
-.event:before{content:"";position:absolute;left:-24px;top:21px;width:9px;height:9px;background:var(--cyan);border:2px solid #08111f;border-radius:50%;box-shadow:0 0 11px var(--cyan)}
-.event:hover{border-color:rgba(0,245,255,.58)}
-@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.event-top{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:8px}.year{font-size:20px;font-weight:850;color:var(--cyan)}.tag{font-size:11px;padding:4px 8px;border:1px solid rgba(255,56,199,.35);color:#ff9ce5;background:rgba(255,56,199,.07)}
-.event h3{margin:0 0 8px;font-size:17px;line-height:1.6}.event p{margin:0;color:#b0bad7;font-size:13px;line-height:1.9}.importance{margin-top:11px;padding-top:10px;border-top:1px solid rgba(145,156,220,.14);color:#d1e8ff;font-size:12px;line-height:1.8}
-.empty{display:none;padding:30px 8px;text-align:center;color:var(--muted);font-size:14px}
-footer{margin-top:35px;padding-top:19px;border-top:1px solid var(--border);text-align:center;color:#7782a8;font-size:12px;line-height:2}footer .footbrand{color:var(--cyan);letter-spacing:2px}
-@media(max-width:720px){.page{padding:12px 12px 30px}.topbar{align-items:flex-start}.controls{width:100%}.controls .btn,.controls select{flex:1;min-width:0}.hero{padding-top:35px}h1{letter-spacing:2px}.filters{grid-template-columns:1fr 1fr}.filters input{grid-column:1/-1}.filters button{width:100%}.stats{gap:7px}.stat{padding:12px 3px}.panel{padding:11px}.event{padding:13px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+  :root {
+    --bg: #05080f;
+    --text: #eaf1ff;
+    --muted: #9fb0d0;
+    --accent: #6ea8fe;
+    --gold: #f5c76b;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    overflow-x: hidden;
+  }
+
+  #bgCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  .nebula {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: 50%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nebula-a {
+    width: 75vmax; height: 75vmax;
+    left: -25vmax; top: -28vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(64, 124, 255, .13) 0%, rgba(64, 124, 255, .05) 32%, transparent 72%);
+    animation: drift-a 30s ease-in-out infinite alternate;
+  }
+
+  .nebula-b {
+    width: 65vmax; height: 65vmax;
+    right: -22vmax; top: -12vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, .11) 0%, rgba(139, 92, 246, .04) 34%, transparent 70%);
+    animation: drift-b 38s ease-in-out infinite alternate;
+  }
+
+  .nebula-c {
+    width: 80vmax; height: 80vmax;
+    left: 10vmax; bottom: -45vmax;
+    background: radial-gradient(circle at 50% 50%, rgba(245, 199, 107, .07) 0%, rgba(245, 199, 107, .025) 35%, transparent 70%);
+    animation: drift-c 44s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift-a {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(5vw, 4vh, 0) scale(1.12); }
+  }
+  @keyframes drift-b {
+    from { transform: translate3d(0, 0, 0) scale(1.08); }
+    to   { transform: translate3d(-6vw, 6vh, 0) scale(0.95); }
+  }
+  @keyframes drift-c {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(4vw, -5vh, 0) scale(1.15); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nebula { animation: none !important; }
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  header { text-align: center; margin-bottom: 34px; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border: 1px solid rgba(110, 168, 254, .35);
+    border-radius: 999px;
+    color: #bcd2ff;
+    font-size: 13px;
+    background: rgba(18, 26, 48, 0.8);
+    margin-bottom: 16px;
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 14px var(--gold);
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 5vw, 54px);
+    letter-spacing: .04em;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #ffffff, #b9d1ff 45%, #d8c2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 15px;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 28px 0 42px;
+  }
+
+  .filter-btn {
+    appearance: none;
+    border: 1px solid rgba(140, 170, 230, .25);
+    background: rgba(18, 26, 48, .8);
+    color: var(--muted);
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: .25s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: rgba(110, 168, 254, .55);
+    color: #fff;
+  }
+
+  .filter-btn.active {
+    color: #07101f;
+    background: linear-gradient(135deg, #9ec5ff, #c7b4ff);
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 8px 26px rgba(110, 168, 254, .22);
+  }
+
+  .timeline { position: relative; padding: 8px 0; }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, rgba(110, 168, 254, .55) 8%, rgba(139, 92, 246, .5) 50%, rgba(245, 199, 107, .45) 92%, transparent);
+  }
+
+  .item {
+    position: relative;
+    width: 50%;
+    padding: 0 42px 34px 0;
+    opacity: 0;
+    transform: translateY(18px);
+    animation: rise .55s ease forwards;
+  }
+
+  .item:nth-child(even) {
+    margin-left: 50%;
+    padding: 0 0 34px 42px;
+  }
+
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  .item::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    right: -8px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: #0b1224;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 5px rgba(110, 168, 254, .12), 0 0 18px rgba(110, 168, 254, .55);
+    z-index: 2;
+  }
+
+  .item:nth-child(even)::before { right: auto; left: -7px; }
+
+  .card {
+    position: relative;
+    cursor: pointer;
+    border: 1px solid rgba(140, 170, 230, .2);
+    border-radius: var(--radius);
+    background: rgba(15, 23, 42, 0.95);
+    padding: 20px 20px 18px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+    transition: .28s ease;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(110, 168, 254, .55);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .42), 0 0 0 1px rgba(110, 168, 254, .12);
+  }
+
+  .year {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
+  .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+
+  .tag {
+    font-size: 12px;
+    color: #bcd2ff;
+    border: 1px solid rgba(110, 168, 254, .22);
+    background: rgba(110, 168, 254, .08);
+    padding: 4px 9px;
+    border-radius: 999px;
+  }
+
+  .hint {
+    display: block;
+    margin-top: 14px;
+    color: rgba(159, 176, 208, .72);
+    font-size: 12px;
+  }
+
+  .empty { text-align: center; color: var(--muted); padding: 50px 0; }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(2, 6, 16, .85);
+  }
+
+  .modal-backdrop.show { display: flex; }
+
+  .modal {
+    width: min(640px, 100%);
+    max-height: 85vh;
+    overflow: auto;
+    border: 1px solid rgba(140, 170, 230, .3);
+    border-radius: 24px;
+    background: #151e36;
+    padding: 30px;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, .6);
+    transform: translateY(18px) scale(.98);
+    opacity: 0;
+    transition: .3s ease;
+  }
+
+  .modal-backdrop.show .modal {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .modal-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .modal-year { color: var(--gold); font-weight: 800; letter-spacing: .08em; }
+
+  .close-btn {
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, .14);
+    background: rgba(255, 255, 255, .05);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+
+  .modal h3 { margin: 0 0 14px; font-size: 24px; line-height: 1.3; }
+
+  .modal .detail {
+    color: #c3d0e8;
+    line-height: 1.9;
+    font-size: 15px;
+  }
+
+  .modal .tags { margin-top: 20px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding-top: 38px; }
+    .timeline::before { left: 10px; transform: none; }
+
+    .item,
+    .item:nth-child(even) {
+      width: 100%;
+      margin-left: 0;
+      padding: 0 0 26px 34px;
+    }
+
+    .item::before,
+    .item:nth-child(even)::before {
+      left: 3px; right: auto; top: 22px;
+    }
+
+    .card { padding: 18px; }
+    .modal { padding: 24px; }
+  }
 </style>
 </head>
 <body>
-<div class="nebula" aria-hidden="true"></div><div class="scanlines" aria-hidden="true"></div>
-<canvas id="space" aria-hidden="true"></canvas>
-<div class="page">
-<header class="topbar">
-  <div class="brand"><b>✦</b> 群星闪耀 <small>NEON AI ARCHIVE / 未来档案库</small></div>
-  <div class="controls">
-    <button class="btn active" id="meteorToggle" type="button" aria-pressed="true">流星雨：开启</button>
-    <select id="meteorDensity" aria-label="流星密度"><option value="low">稀疏流星</option><option value="normal">标准流星雨</option><option value="high" selected>密集流星雨</option></select>
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <div class="nebula nebula-a" aria-hidden="true"></div>
+  <div class="nebula nebula-b" aria-hidden="true"></div>
+  <div class="nebula nebula-c" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <header>
+      <div class="eyebrow"><span class="dot"></span> 从青铜亚瑟，到五职业元流之子</div>
+      <h1>王者荣耀 · 英雄发展史</h1>
+      <p class="subtitle">
+        峡谷英雄编年史 · 点击每张卡片，回顾改变王者峡谷格局的英雄里程碑。
+      </p>
+    </header>
+
+    <div class="toolbar" id="toolbar" aria-label="按类别筛选"></div>
+    <section class="timeline" id="timeline" aria-live="polite"></section>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <article class="modal">
+      <div class="modal-top">
+        <div class="modal-year" id="modalYear"></div>
+        <button class="close-btn" id="closeBtn" aria-label="关闭">×</button>
+      </div>
+      <h3 id="modalTitle"></h3>
+      <div class="detail" id="modalDetail"></div>
+      <div class="tags" id="modalTags"></div>
+    </article>
   </div>
-</header>
-<main>
-<section class="hero">
-  <div class="eyebrow">● SYSTEM ONLINE · AI HISTORY DATABASE</div>
-  <h1>群星闪耀</h1>
-  <p class="subtitle">穿越算法与智能的边界。<br>从人工智能的初次构想到大语言模型的时代浪潮，解码每一次改变未来的技术跃迁。</p>
-  <div class="hero-actions"><button class="btn primary" id="exploreBtn" type="button">进入时间线 ↓</button><button class="btn" id="randomBtn" type="button">⌁ 随机探索</button></div>
-</section>
-<div class="section-line"></div>
-<section class="stats" aria-label="发展史概览">
-  <div class="stat"><strong>70+</strong><span>年智能探索历程</span></div>
-  <div class="stat"><strong>1950—2026</strong><span>跨越时代的技术演进</span></div>
-  <div class="stat"><strong>∞</strong><span>未来仍在持续加载</span></div>
-</section>
-<section id="history">
-  <h2 class="section-title"><span>//</span> AI 历史数据库</h2>
-  <p class="section-desc">检索技术节点，追踪大模型进化路径。</p>
-  <div class="panel">
-    <div class="filters">
-      <input id="searchInput" type="search" placeholder="⌕ 搜索 GPT、Transformer、年份……" aria-label="搜索历史">
-      <select id="yearFilter" aria-label="按年份筛选"><option value="all">全部年份</option><option value="1950">1950—1999</option><option value="2000">2000—2016</option><option value="2017">2017—2021</option><option value="2022">2022—至今</option></select>
-      <select id="categoryFilter" aria-label="按分类筛选"><option value="all">全部分类</option><option value="idea">理论与思想</option><option value="learning">机器学习</option><option value="deep">深度学习</option><option value="llm">大语言模型</option><option value="multimodal">多模态与智能体</option></select>
-      <button class="btn" id="resetBtn" type="button">重置</button>
-    </div>
-    <p class="result-line" id="resultCount" aria-live="polite"></p>
-    <div class="timeline" id="timeline"></div>
-    <div class="empty" id="emptyState">未找到匹配记录。请更换关键词或筛选条件。</div>
-  </div>
-</section>
-</main>
-<footer><div class="footbrand">✦ NEON AI ARCHIVE ✦</div><div>群星闪耀 · AI 大模型发展史</div><div>以历史理解技术，以想象探索未来。</div><div>科普时间线：事件年份可能对应提出、发布或重要应用时间。</div></footer>
-</div>
 
 <script>
-(function(){
-  const canvas=document.getElementById("space"),ctx=canvas.getContext("2d");
-  const toggle=document.getElementById("meteorToggle"),density=document.getElementById("meteorDensity");
-  if(!ctx||!toggle||!density)return;
-  let w=0,h=0,dpr=1,stars=[],meteors=[],enabled=true,raf=null,lastTime=0,lastMeteor=0,interval=190;
-  const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,1.5);w=window.innerWidth;h=window.innerHeight;
-    canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count=Math.min(250,Math.max(70,Math.floor(w*h/5200)));
-    stars=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.3+.25,phase:Math.random()*6.28,speed:Math.random()*.0015+.0004,alpha:Math.random()*.65+.2,color:Math.random()>.72?"255
+document.addEventListener("DOMContentLoaded", function () {
+  
+  /* ========== 王者荣耀英雄里程碑数据 ========== */
+  var events = [
+    { year: "2015", title: "王者启航：36位元老英雄", category: "元老奠基",
+      summary: "2015年11月26日公测开服，亚瑟、妲己、鲁班七号、孙尚香等36位英雄构成了峡谷最初的基石。",
+      detail: "公测初期英雄设计奠定了MOBA手游的基本框架。亚瑟作为游戏图标和“第一英雄”，代表了最基础的坦克/战士定位；妲己、安琪拉等提供了简单的爆发法师体验；后羿、鲁班七号则定义了站桩射手的基本玩法。",
+      tags: ["亚瑟", "妲己", "后羿", "鲁班七号"] },
+    { year: "2015", title: "首位新英雄：孙悟空上线", category: "元老奠基",
+      summary: "2015年11月30日，孙悟空作为公测后首位新英雄登场，凭借高爆发和暴击机制迅速成为热门。",
+      detail: "孙悟空的上线开启了王者荣耀“新英雄”的更新节奏。其独特的暴击机制和灵活的位移，让他从一开始就拥有了极高的人气和特殊的身份定位。",
+      tags: ["孙悟空", "刺客", "暴击"] },
+    { year: "2016", title: "SNK联动：不知火舞与橘右京", category: "联动与经典",
+      summary: "2016年，不知火舞（5月）与橘右京（8月）等SNK正版授权英雄陆续上线，开启了峡谷的跨界联动。",
+      detail: "SNK英雄的加入不仅带来了新鲜的操作体验（如不知火舞的多段位移与能量机制），也极大地扩展了王者荣耀的英雄文化边界。随后娜可露露也加入峡谷，成为老玩家心中的经典。",
+      tags: ["不知火舞", "橘右京", "SNK", "联动"] },
+    { year: "2017", title: "战术革新：大乔的全局传送", category: "机制变革",
+      summary: "2017年2月28日，首位拥有4个主动技能（含被动）的辅助大乔上线，其大招“漩涡之门”可全图传送队友。",
+      detail: "大乔的出现彻底改变了辅助的战术地位，让“全球流”和多打少战术成为可能。她也是王者荣耀首位真正意义上的“机制怪”，标志着英雄设计开始向更复杂的战术维度演进。",
+      tags: ["大乔", "辅助", "传送", "全球流"] },
+    { year: "2018", title: "操作天花板：元歌的傀儡双形态", category: "机制变革",
+      summary: "2018年7月4日，元歌上线，其本体与傀儡的双形态切换、以及多达8个技能的复杂机制，重新定义了操作上限。",
+      detail: "元歌的傀儡可以继承装备效果并进行无伤消耗，本体与傀儡的切换带来了极高的操作难度和观赏性。他的出现让“秀儿”英雄成为了一个独立的玩家群体标签。",
+      tags: ["元歌", "刺客", "傀儡", "双形态"] },
+    { year: "2019", title: "附身机制：瑶与云中君的野辅体系", category: "机制变革",
+      summary: "2019年4月16日，瑶上线，其大招“独立兮山之上”可附身队友提供真实护盾，创造了全新的“挂件”辅助玩法。",
+      detail: "瑶的附身机制极大地降低了辅助的操作门槛，同时也催生了“瑶马组合”、“瑶离组合”等特定的双排体系。同年上线的云中君则拥有无视地形的飞行机制，两者共同丰富了野辅联动的战术生态。",
+      tags: ["瑶", "云中君", "辅助", "附身"] },
+    { year: "2020", title: "百英雄达成：镜的镜像美学", category: "里程碑",
+      summary: "2020年3月31日，第100位英雄“镜”上线，其本体与镜像协同攻击的机制，标志着峡谷英雄数量突破三位数。",
+      detail: "镜的被动“铸镜”要求本体和镜像同时命中敌人才能触发斩杀伤害并刷新技能，这种高难度的操作换来了极高的爆发和灵活性，成为了高端局和KPL的常客。",
+      tags: ["镜", "刺客", "第100位英雄", "镜像"] },
+    { year: "2020", title: "鲨之猎刃：澜的河道统治", category: "英雄设计",
+      summary: "2020年12月8日，刺客澜上线，其独特的“下潜”机制使其在河道中拥有极致的机动性和收割能力。",
+      detail: "澜的技能设计围绕“狩猎”展开，对生命值低于30%的敌人造成额外真实伤害，配合下潜状态下的高速移动，使其成为脆皮英雄的噩梦。",
+      tags: ["澜", "刺客", "打野", "下潜"] },
+    { year: "2022", title: "机制融合：赵怀真的太极之道", category: "英雄设计",
+      summary: "2022年12月1日，赵怀真上线，其独特的“气”与“太极”机制，能够借力打力、化解飞行物，为峡谷带来了全新的防御反击理念。",
+      detail: "赵怀真可以吸收敌人的伤害并转化为自身的气，进而打出强力的反击。这种类似“太极”的机制设计，在MOBA英雄中非常罕见，提供了全新的对抗博弈体验。",
+      tags: ["赵怀真", "战士", "太极", "反击"] },
+    { year: "2023", title: "海都来客：姬小满与亚连", category: "英雄设计",
+      summary: "2023年，姬小满（4月）与亚连（6月）等海都阵营英雄陆续登场，带来了更具动作游戏风格的操作体验。",
+      detail: "姬小满的招式组合（如“随变一式”、“随变二式”）需要根据战况灵活选择，拥有极高的机动性和连招自由度；亚连则以其双剑和霸体机制，成为对抗路的新晋强势选择。",
+      tags: ["姬小满", "亚连", "海都", "动作机制"] },
+    { year: "2024", title: "命归缘起：大司命的生死裁决", category: "英雄设计",
+      summary: "2024年4月4日，大司命上线，其能够无视地形飞行、并创造领域进行“生死裁决”的机制，再次拓展了打野英雄的设计边界。",
+      detail: "大司命的技能围绕“生命”与“灵魂”展开，其独特的斩杀机制和地形穿梭能力，使其在野区拥有极强的统治力和独特的节奏带动方式。",
+      tags: ["大司命", "打野", "无视地形", "斩杀"] },
+    { year: "2026", title: "终极变革：元流之子与全职业自由", category: "终极机制",
+      summary: "2026年，元流之子正式上线，作为首位可自由切换坦克、法师、射手、刺客等多职业的英雄，彻底打破了英雄的定位壁垒。",
+      detail: "元流之子在进入对局前可自选职业，不同职业拥有完全独立的技能组和武器系统，甚至在对局中也能回到泉水切换武器。它的出现，标志着王者荣耀的英雄设计从“固定定位”走向了“自由构建”的全新阶段。",
+      tags: ["元流之子", "多职业", "自由切换", "变革"] }
+  ];
+
+  /* ========== 渲染逻辑 ========== */
+  var timelineEl = document.getElementById("timeline");
+  var toolbarEl = document.getElementById("toolbar");
+  var backdrop = document.getElementById("modalBackdrop");
+  var closeBtn = document.getElementById("closeBtn");
+  var modalYear = document.getElementById("modalYear");
+  var modalTitle = document.getElementById("modalTitle");
+  var modalDetail = document.getElementById("modalDetail");
+  var modalTags = document.getElementById("modalTags");
+
+  var activeCategory = "全部";
+  var categories = ["全部"];
+  
+  for (var i = 0; i < events.length; i++) {
+    if (categories.indexOf(events[i].category) === -1) {
+      categories.push(events[i].category);
+    }
+  }
+
+  function renderFilters() {
+    var html = "";
+    for (var i = 0; i < categories.length; i++) {
+      var cat = categories[i];
+      var activeClass = (cat === activeCategory) ? "active" : "";
+      html += '<button class="filter-btn ' + activeClass + '" data-cat="' + cat + '">' + cat + '</button>';
+    }
+    toolbarEl.innerHTML = html;
+
+    var btns = toolbarEl.querySelectorAll(".filter-btn");
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].onclick = function() {
+        activeCategory = this.getAttribute("data-cat");
+        renderFilters();
+        renderTimeline();
+      };
+    }
+  }
+
+  function renderTimeline() {
+    var list = [];
+    if (activeCategory === "全部") {
+      list = events;
+    } else {
+      for (var k = 0; k < events.length; k++) {
+        if (events[k].category === activeCategory) {
+          list.push(events[k]);
+        }
+      }
+    }
+
+    if (list.length === 0) {
+      timelineEl.innerHTML = '<div class="empty">暂无内容</div>';
+      return;
+    }
+
+    var html = "";
+    for (var i = 0; i < list.length; i++) {
+      var e = list[i];
+      var idx = events.indexOf(e);
+      var delay = Math.min(i * 60, 480);
+      
+      var tagHtml = "";
+      for (var t = 0; t < Math.min(3, e.tags.length); t++) {
+        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+      }
+
+      html += '<article class="item" style="animation-delay:' + delay + 'ms">' +
+                '<div class="card" tabindex="0" role="button" data-index="' + idx + '" aria-label="查看 ' + e.year + ' ' + e.title + '">' +
+                  '<span class="year">' + e.year + '</span>' +
+                  '<h2>' + e.title + '</h2>' +
+                  '<p>' + e.summary + '</p>' +
+                  '<div class="tags">' + tagHtml + '</div>' +
+                  '<span class="hint">点击卡片查看详情 →</span>' +
+                '</div>' +
+              '</article>';
+    }
+    timelineEl.innerHTML = html;
+
+    var cards = timelineEl.querySelectorAll(".card");
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].onclick = function() {
+        openModal(parseInt(this.getAttribute("data-index"), 10));
+      };
+    }
+  }
+
+  function openModal(index) {
+    var e = events[index];
+    modalYear.textContent = e.year;
+    modalTitle.textContent = e.title;
+    modalDetail.textContent = e.detail;
+    
+    var tagHtml = "";
+    for (var i = 0; i < e.tags.length; i++) {
+      tagHtml += '<span class="tag">' + e.tags[i] + '</span>';
+    }
+    modalTags.innerHTML = tagHtml;
+
+    backdrop.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    backdrop.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  closeBtn.onclick = closeModal;
+  backdrop.onclick = function(e) {
+    if (e.target === backdrop) closeModal();
+  };
+
+  renderFilters();
+  renderTimeline();
+
+
+  /* ========== 冷白流星雨背景（全右下角方向） ========== */
+  try {
+    var canvas = document.getElementById("bgCanvas");
+    var ctx = canvas.getContext("2d");
+    var TAU = Math.PI * 2;
+
+    var PALETTES = [
+      { head: "rgba(255,255,255,", tail: "rgba(205,228,255,", weight: 30 },
+      { head: "rgba(248,252,255,", tail: "rgba(185,215,255,", weight: 30 },
+      { head: "rgba(255,255,255,", tail: "rgba(220,238,255,", weight: 20 },
+      { head: "rgba(238,246,255,", tail: "rgba(165,205,255,", weight: 20 }
+    ];
+    var PALETTE_WEIGHT_SUM = 0;
+    for (var i = 0; i < PALETTES.length; i++) PALETTE_WEIGHT_SUM += PALETTES[i].weight;
+
+    var SPRITE_LEN = 420;
+    var SPRITE_H = 32;
+    var SPRITE_DPR = Math.min(window.devicePixelRatio || 1, 2);
+    var WIDTHS = [0.8, 1.3, 1.9];
+    var sprites = [];
+
+    for (var pi = 0; pi < PALETTES.length; pi++) {
+      for (var wi = 0; wi < WIDTHS.length; wi++) {
+        var p = PALETTES[pi];
+        var width = WIDTHS[wi];
+        
+        var c = document.createElement("canvas");
+        c.width = SPRITE_LEN * SPRITE_DPR;
+        c.height = SPRITE_H * SPRITE_DPR;
+        var g = c.getContext("2d");
+        g.scale(SPRITE_DPR, SPRITE_DPR);
+
+        var cy = SPRITE_H / 2;
+        var headX = SPRITE_LEN - 4;
+
+        var grad = g.createLinearGradient(headX, cy, 0, cy);
+        grad.addColorStop(0,    p.head + "1)");
+        grad.addColorStop(0.08, p.head + "0.85)");
+        grad.addColorStop(0.3,  p.tail + "0.42)");
+        grad.addColorStop(0.65, p.tail + "0.12)");
+        grad.addColorStop(1,    p.tail + "0)");
+
+        g.strokeStyle = grad;
+        g.lineWidth = width;
+        g.lineCap = "round";
+        g.beginPath();
+        g.moveTo(headX, cy);
+        g.lineTo(2, cy);
+        g.stroke();
+
+        var haloR = width * 4.5;
+        var halo = g.createRadialGradient(headX, cy, 0, headX, cy, haloR);
+        halo.addColorStop(0,   p.head + "0.9)");
+        halo.addColorStop(0.35, p.tail + "0.35)");
+        halo.addColorStop(1,   p.tail + "0)");
+        g.fillStyle = halo;
+        g.beginPath();
+        g.arc(headX, cy, haloR, 0, TAU);
+        g.fill();
+
+        sprites.push(c);
+      }
+    }
+
+    var LAYERS = [
+      { share: 0.58, widthIdx: 0, speed: [280, 560], len: [70, 150], alpha: [0.28, 0.48], decay: [0.07, 0.11] },
+      { share: 0.30, widthIdx: 1, speed: [480, 880], len: [110, 220], alpha: [0.42, 0.65], decay: [0.10, 0.15] },
+      { share: 0.12, widthIdx: 2, speed: [700, 1150], len: [170, 320], alpha: [0.60, 0.85], decay: [0.14, 0.20] }
+    ];
+
+    var W = 0, H = 0, DPR = 1;
+    var isMobile = false;
+    var maxMeteors = 200;
+    var METEOR_RATE = 99;
+
+    var stars = [];
+    var meteors = [];
+    var rafId = null;
+    var lastTime = 0;
+    var spawnAccum = 0;
+
+    function pick(arr) { return arr[0] + Math.random() * (arr[1] - arr[0]); }
+
+    function pickLayer() {
+      var r = Math.random();
+      var acc = 0;
+      for (var i = 0; i < LAYERS.length; i++) {
+        acc += LAYERS[i].share;
+        if (r <= acc) return LAYERS[i];
+      }
+      return LAYERS[0];
+    }
+
+    function createStars() {
+      var count = isMobile ? 70 : 140;
+      stars = [];
+      for (var i = 0; i < count; i++) {
+        var depth = Math.random();
+        stars.push({
+          x: -20 + Math.random() * (W + 40),
+          y: -20 + Math.random() * (H + 40),
+          r: 0.3 + depth * 1.2,
+          baseAlpha: 0.16 + depth * 0.42,
+          twinkle: 0.5 + Math.random() * 1.6,
+          phase: Math.random() * TAU,
+          vy: 1.2 + depth * 4,
+          vx: (Math.random() - 0.5) * 1.2,
+          color: Math.random() < 0.5 ? "#e8f2ff" : "#ffffff"
+        });
+      }
+    }
+
+    function createMeteor(layer) {
+      var L = layer || pickLayer();
+      
+      var angleDeg = 45 + Math.random() * 30;
+      var angle = angleDeg * Math.PI / 180;
+
+      var speed = pick(L.speed);
+      var vx = Math.cos(angle) * speed;
+      var vy = Math.sin(angle) * speed;
+
+      var x, y;
+      if (Math.random() < 0.7) {
+        x = -W * 0.3 + Math.random() * W * 1.2;
+        y = -40 - Math.random() * H * 0.35;
+      } else {
+        x = -40 - Math.random() * W * 0.4;
+        y = -H * 0.1 + Math.random() * H * 0.8;
+      }
+
+      var r = Math.random() * PALETTE_WEIGHT_SUM;
+      var pi = 0;
+      for (var i = 0; i < PALETTES.length; i++) {
+        r -= PALETTES[i].weight;
+        if (r <= 0) { pi = i; break; }
+      }
+      
+      var sprite = sprites[pi * WIDTHS.length + L.widthIdx];
+
+      return {
+        x: x, y: y, vx: vx, vy: vy,
+        life: 1,
+        len: pick(L.len),
+        baseAlpha: pick(L.alpha),
+        decay: pick(L.decay),
+        sprite: sprite
+      };
+    }
+
+    function seedMeteors() {
+      meteors = [];
+      spawnAccum = 0;
+      var initial = Math.floor(maxMeteors * 0.8);
+      for (var i = 0; i < initial; i++) {
+        var m = createMeteor();
+        m.x = Math.random() * W;
+        m.y = Math.random() * H;
+        m.life = 0.3 + Math.random() * 0.7;
+        meteors.push(m);
+      }
+    }
+
+    function draw(t, dt) {
+      ctx.clearRect(0, 0, W, H);
+
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        if (dt > 0) {
+          s.y -= s.vy * dt;
+          s.x += s.vx * dt;
+          if (s.y < -20) { s.y = H + 20; s.x = -20 + Math.random() * (W + 40); }
+          if (s.x < -20) s.x = W + 20;
+          if (s.x > W + 20) s.x = -20;
+        }
+        var a = s.baseAlpha * (0.55 + 0.45 * Math.sin(t * s.twinkle + s.phase));
+        ctx.globalAlpha = Math.max(0, Math.min(1, a));
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, TAU);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      if (dt > 0 && meteors.length < maxMeteors) {
+        spawnAccum += dt * METEOR_RATE;
+        if (spawnAccum > 6) spawnAccum = 6;
+        while (spawnAccum >= 1 && meteors.length < maxMeteors) {
+          spawnAccum -= 1;
+          meteors.push(createMeteor());
+        }
+      }
+
+      for (var j = meteors.length - 1; j >= 0; j--) {
+        var m = meteors[j];
+        m.x += m.vx * dt;
+        m.y += m.vy * dt;
+        m.life -= m.decay * dt;
+
+        if (m.life <= 0 || m.x > W * 1.5 || m.y > H * 1.5) {
+          meteors.splice(j, 1);
+          continue;
+        }
+
+        var alpha = m.baseAlpha * Math.min(1, m.life * 2.2);
+        var angle = Math.atan2(m.vy, m.vx);
+        var lenScale = (m.len * (0.45 + 0.55 * m.life)) / SPRITE_LEN;
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(m.x, m.y);
+        ctx.rotate(angle);
+        ctx.scale(lenScale, 1);
+        ctx.drawImage(m.sprite, -SPRITE_LEN, -SPRITE_H / 2, SPRITE_LEN, SPRITE_H);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function frame(now) {
+      if (!lastTime) lastTime = now;
+      var dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      draw(now / 1000, dt);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (rafId) return;
+      lastTime = 0;
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function stop() {
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    }
+
+    function resize() {
+      DPR = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.floor(W * DPR);
+      canvas.height = Math.floor(H * DPR);
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+      isMobile = W < 760;
+      var area = W * H;
+      var densityFactor = isMobile ? 1 : Math.min(1.5, Math.max(0.9, area / (1600 * 900)));
+      maxMeteors = Math.round((isMobile ? 120 : 200) * densityFactor);
+
+      createStars();
+      seedMeteors();
+    }
+
+    var resizeTimer;
+    window.addEventListener("resize", function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 150);
+    });
+
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) stop(); else start();
+    });
+
+    resize();
+    start();
+  } catch (err) {
+    console.warn("背景动画加载失败", err);
+  }
+
+});
+</script>
+</body>
+</html>
