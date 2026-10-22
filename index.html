@@ -1,111 +1,748 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#07120f">
-<title>王者峡谷 · 战场探索</title>
+<meta name="theme-color" content="#07111b">
+<title>深夜便利店 · 第一人称互动游戏</title>
 <style>
-:root{--aqua:#8df8dc;--gold:#ffd58c;--glass:rgba(7,19,20,.83);--edge:rgba(160,235,206,.24)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07120f;color:#eafff4;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;touch-action:none}#map{position:fixed;inset:0;width:100%;height:100%;display:block}
-.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,7,6,.18) 70%,rgba(0,5,5,.8) 125%)}
-header{position:fixed;z-index:5;left:14px;right:14px;top:calc(12px + env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:flex-start;gap:10px;pointer-events:none}
-.logo,.state,.panel,.detail,.tool{border:1px solid var(--edge);background:var(--glass);backdrop-filter:blur(15px);box-shadow:0 10px 34px #0004}
-.logo{border-radius:15px;padding:11px 14px;pointer-events:auto}.eyebrow{font-size:9px;letter-spacing:.24em;color:var(--aqua);font-weight:800}.logo h1{font-size:clamp(18px,4vw,25px);margin:4px 0 2px;letter-spacing:.08em}.logo p{font-size:10px;color:#a8c9b9;margin:0}.state{border-radius:999px;padding:9px 12px;font-size:10px;color:#c6eee0;white-space:nowrap}
-.panel{position:fixed;z-index:5;right:14px;top:50%;transform:translateY(-50%);width:218px;max-height:68vh;overflow:auto;border-radius:16px;padding:10px;scrollbar-width:none}.panel::-webkit-scrollbar{display:none}.panelhead{display:flex;align-items:center;justify-content:space-between;padding:3px 4px 8px}.panelhead strong{font-size:10px;letter-spacing:.16em;color:var(--aqua)}.panelhead span{font-size:9px;color:#8aafa0}
-.place{display:flex;align-items:center;gap:9px;width:100%;padding:9px 7px;border:1px solid transparent;border-radius:10px;background:transparent;color:#e8fff4;text-align:left;font:inherit;cursor:pointer}.place.active{border-color:#8df8dc59;background:#8df8dc13}.gem{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--c);box-shadow:0 0 9px var(--c),0 0 20px color-mix(in srgb,var(--c),transparent 55%)}.place b{display:block;font-size:11px;font-weight:650}.place small{display:block;color:#8fb3a2;font-size:9px;margin-top:2px}
-footer{position:fixed;z-index:5;left:14px;bottom:calc(13px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:7px;max-width:calc(100% - 28px);flex-wrap:wrap}.detail{border-radius:14px;padding:10px 12px;width:min(250px,48vw)}.detail .eyebrow{font-size:8px}.detail strong{display:block;font-size:13px;margin-top:4px}.detail p{font-size:10px;color:#a4c4b3;line-height:1.45;margin:4px 0 0}
-.tool{border-radius:999px;color:#e7fff3;padding:9px 12px;font-size:10px;cursor:pointer}.tool:active{background:#8df8dc24}.mini{display:none;position:fixed;z-index:6;right:14px;top:calc(88px + env(safe-area-inset-top))}
-.hint{position:fixed;z-index:2;left:50%;bottom:20px;transform:translateX(-50%);font-size:10px;color:#9cc5b0;white-space:nowrap;text-shadow:0 2px 8px #000;pointer-events:none}
-@media(max-width:620px){header{left:9px;right:9px;top:calc(8px + env(safe-area-inset-top))}.logo{padding:8px 10px}.logo p{display:none}.state{padding:8px 9px;font-size:9px}.panel{right:9px;top:auto;bottom:calc(105px + env(safe-area-inset-bottom));transform:none;width:150px;max-height:42vh;padding:7px}.panelhead{padding:3px 3px 5px}.place{padding:7px 4px;gap:7px}.place b{font-size:10px}.place small{font-size:8px}footer{left:9px;bottom:calc(9px + env(safe-area-inset-bottom));gap:5px}.detail{width:150px;padding:8px 9px}.detail strong{font-size:11px}.detail p{font-size:9px}.tool{padding:8px 9px;font-size:9px}.hint{display:none}.mini{right:9px;top:calc(78px + env(safe-area-inset-top))}}
-@media(max-height:540px){.panel{max-height:42vh}.logo p{display:none}.detail p{display:none}footer{bottom:6px}}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07111b;color:#eef6ff;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;touch-action:none}
+#game{position:fixed;inset:0}
+canvas{display:block;width:100%;height:100%;touch-action:none}
+button{font:inherit;color:#fff;border:1px solid #ffffff35;background:#0c1b2cdb;border-radius:12px;padding:10px 14px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+button:active{background:#31536c}
+#loading,#startScreen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at center,#183448,#050b12 75%);padding:24px}
+#startScreen{display:none}
+.panel{width:min(440px,100%);padding:25px;border:1px solid #9ddcff35;border-radius:20px;background:#071522eF;box-shadow:0 0 50px #0009}
+h1{font-size:28px;letter-spacing:3px;margin:0 0 10px}
+.sub{color:#9eb8cb;font-size:13px;line-height:1.8}
+.primary{background:#c9edff;color:#071522;font-weight:800;border:0;padding:13px 24px;margin-top:16px;width:100%}
+#hud{position:fixed;inset:0;pointer-events:none;display:none}
+.hudBtn,.interact,#phonePanel,#dialog,#toast,#objective,#reticle,#controls,#topInfo{pointer-events:auto}
+#topInfo{position:absolute;top:env(safe-area-inset-top,8px);left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.glass{background:#06121cbb;border:1px solid #c7eaff26;backdrop-filter:blur(8px);border-radius:12px;padding:9px 12px;font-size:12px}
+#clock{font-size:15px;font-weight:800;letter-spacing:1px}
+#objective{position:absolute;top:66px;left:12px;max-width:min(270px,70vw);font-size:12px;line-height:1.6}
+#objective strong{color:#9fe4ff;display:block;margin-bottom:3px}
+#reticle{position:absolute;left:50%;top:50%;width:9px;height:9px;border:1px solid #fff;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 0 8px #fff9;pointer-events:none}
+#prompt{position:absolute;left:50%;top:calc(50% + 20px);transform:translateX(-50%);white-space:nowrap;background:#06121ccc;padding:5px 10px;border-radius:7px;font-size:12px}
+#controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom,14px));height:160px;pointer-events:none}
+#movePad{position:absolute;left:16px;bottom:0;width:144px;height:144px;pointer-events:auto}
+.move{position:absolute;width:44px;height:44px;padding:0;font-size:20px;border-radius:13px;background:#071a2dcc}
+#forward{left:50px;top:0}
+#back{left:50px;bottom:0}
+#left{left:0;top:50px}
+#right{right:0;top:50px}
+#actionPad{position:absolute;right:14px;bottom:4px;display:flex;flex-direction:column;align-items:flex-end;gap:9px;pointer-events:auto}
+#interact{background:#c5ecff;color:#081624;border:0;font-weight:800;min-width:105px}
+#phoneBtn{min-width:105px}
+#lookHint{position:absolute;right:14px;top:125px;font-size:10px;color:#d6e9f7a8;text-align:right;pointer-events:none}
+#dialog{display:none;position:absolute;left:12px;right:12px;bottom:190px;max-width:520px;margin:auto;background:#071522f2;border:1px solid #9edfff44;border-radius:16px;padding:16px;box-shadow:0 12px 45px #0008}
+#speaker{font-size:12px;color:#93dfff;margin-bottom:8px}
+#dialogText{font-size:14px;line-height:1.8}
+#choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#choices button{font-size:12px}
+#phonePanel{display:none;position:absolute;right:12px;top:65px;bottom:80px;width:min(340px,calc(100vw - 24px));background:#071521f5;border:1px solid #9bdfff55;border-radius:22px;padding:17px;overflow:auto;box-shadow:0 20px 60px #000b}
+#phonePanel h2{font-size:19px;margin:4px 0 12px}
+.phoneRow{padding:11px;margin:8px 0;border-radius:10px;background:#13283a;border:1px solid #ffffff12;font-size:12px;line-height:1.7}
+.phoneRow b{color:#9fe4ff}
+#phoneHeader{display:flex;justify-content:space-between;align-items:center}
+#toast{position:absolute;left:50%;top:25%;transform:translateX(-50%);max-width:85vw;background:#071521eF;border:1px solid #a5e5ff55;border-radius:10px;padding:10px 14px;font-size:13px;display:none;text-align:center}
+#soundState{color:#b8d6e9}
+@media(min-width:800px){
+ #movePad{left:28px;bottom:16px}
+ #actionPad{right:28px;bottom:20px}
+ #dialog{bottom:35px}
+ #objective{top:72px}
+}
 </style>
 </head>
 <body>
-<canvas id="map"></canvas><div class="shade"></div>
-<header><div class="logo"><div class="eyebrow">BATTLEFIELD ATLAS · 5V5</div><h1>王者峡谷</h1><p>峡谷地形 · 三路推进 · 野区资源探索</p></div><div class="state" id="state">● 自动巡游中</div></header>
-<aside class="panel" id="panel"><div class="panelhead"><strong>峡谷坐标 / LANDMARKS</strong><span>08 LOCATIONS</span></div><div id="list"></div><button class="tool" id="hide" style="width:100%;margin-top:6px">收起地点列表 −</button></aside><button class="tool mini" id="show">地点列表 ☰</button>
-<footer><div class="detail"><div class="eyebrow">FOCUS POINT</div><strong id="focusName">中央河道</strong><p id="focusDesc">河道横贯峡谷，连接两侧野区与三条兵线。</p></div><button class="tool" id="auto">自动巡游：开</button><button class="tool" id="reset">重置视角</button><button class="tool" id="labels">标记名称：开</button></footer>
-<div class="hint">拖动地图浏览 · 点击发光地标聚焦 · 双指缩放</div>
-<script>
-(()=>{
-'use strict';
-const canvas=document.getElementById('map'),c=canvas.getContext('2d',{alpha:false}),$=id=>document.getElementById(id);
-const P=[
-{id:'river',n:'中央河道',s:'峡谷中轴 · 水域',d:'河道横贯峡谷，连接两侧野区与三条兵线。',x:0,y:0,col:'#8df8dc'},
-{id:'blue',n:'蓝方蓝区',s:'蓝 Buff · 魔法资源',d:'蓝色能量石阵深藏于林木之间，周围分布野怪营地与蜿蜒小径。',x:-.51,y:-.27,col:'#76bfff'},
-{id:'red',n:'红方红区',s:'红 Buff · 战斗资源',d:'赤红晶核照亮岩壁，红区道路连接边路与河道入口。',x:.51,y:.27,col:'#ff9b76'},
-{id:'dragon',n:'暴君巢穴',s:'河道资源 · 争夺区域',d:'古老石环与金色符文围绕巢穴，河面映出温暖的能量光。',x:-.36,y:.28,col:'#ffd48a'},
-{id:'lord',n:'主宰巢穴',s:'史诗资源 · 暗影区域',d:'紫色能量在深处缓慢流动，岩石平台与暗色植被构成巢穴。',x:.36,y:-.29,col:'#c9a0ff'},
-{id:'top',n:'上路防御塔',s:'上路 · 边线推进',d:'石板兵线沿峡谷北侧延伸，防御塔伫立在高地与野区交界。',x:-.72,y:-.52,col:'#a6f0cf'},
-{id:'mid',n:'中路防御塔',s:'中路 · 核心通道',d:'中路连接双方高地，是峡谷最直接的推进路线。',x:0,y:.51,col:'#9eeaff'},
-{id:'bot',n:'下路防御塔',s:'下路 · 边线推进',d:'南侧石道穿过密林与防御工事，通往河道和外侧高地。',x:.72,y:.52,col:'#a6f0cf'}
-];
-let W=innerWidth,H=innerHeight,ratio=1,camX=0,camY=0,zoom=1,tx=0,ty=0,tz=1,drag=false,px=0,py=0,downX=0,downY=0,moved=false,auto=true,showLabels=true,selected='river',lastAction=0,frameId=0,stars=[],fireflies=[],pointers=new Map(),pinch=0;
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function resize(){W=innerWidth;H=innerHeight;ratio=Math.min(devicePixelRatio||1,1.65);canvas.width=W*ratio;canvas.height=H*ratio;canvas.style.width=W+'px';canvas.style.height=H+'px';c.setTransform(ratio,0,0,ratio,0,0);stars=Array.from({length:Math.max(65,Math.floor(W*H/7500))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.15,a:Math.random()*.42+.08,p:Math.random()*6.28}));fireflies=Array.from({length:120},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.8+.3,p:Math.random()*6.28}));}
-function pos(x,y){let s=Math.min(W,H)*.43*zoom;return{x:W/2+(x+camX)*s,y:H/2+(y+camY)*s,s}}
-function rounded(x,y,w,h,r,fill,stroke){c.beginPath();c.roundRect(x,y,w,h,r);if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.stroke()}}
-function drawTerrain(t){
- const scale=Math.min(W,H)*.43*zoom,cx=W/2+camX*scale,cy=H/2+camY*scale;
- c.save();c.translate(cx,cy);c.scale(scale,scale);
- // Outer island silhouette and layered relief
- const land=[[-.03,-.02,.97,.88],[-.62,-.45,.34,.46],[-.66,.42,.36,.45],[.65,-.43,.36,.48],[.65,.42,.37,.46],[0,-.72,.65,.21],[0,.72,.68,.22]];
- land.forEach((b,i)=>{let [x,y,rx,ry]=b;let g=c.createRadialGradient(x-.12,y-.15,.03,x,y,Math.max(rx,ry));g.addColorStop(0,i%2?'#2d5944':'#315d43');g.addColorStop(.48,'#1c4938');g.addColorStop(.82,'#15392e');g.addColorStop(1,'#0b2925');c.fillStyle=g;c.beginPath();for(let k=0;k<=80;k++){let a=k*Math.PI*2/80,w=1+.055*Math.sin(a*3+i*1.2)+.035*Math.cos(a*7+i);let xx=x+Math.cos(a)*rx*w,yy=y+Math.sin(a)*ry*w;k?c.lineTo(xx,yy):c.moveTo(xx,yy)}c.closePath();c.fill();c.strokeStyle='rgba(152,210,149,.12)';c.lineWidth=.006;c.stroke()});
- // rocky ridges / cliff contours
- for(let i=0;i<9;i++){c.beginPath();for(let k=0;k<55;k++){let a=k*Math.PI*2/54,rx=.25+i*.074,ry=.18+i*.061,x=Math.cos(a)*rx-.02,y=Math.sin(a)*ry+.02;k?c.lineTo(x,y):c.moveTo(x,y)}c.closePath();c.strokeStyle=`rgba(143,190,132,${.04+i*.003})`;c.lineWidth=.004;c.stroke()}
- // river bed, water and luminous current
- const river=[[-1.05,-.12],[-.82,-.19],[-.59,-.1],[-.38,-.02],[-.16,.02],[.05,.09],[.28,.13],[.48,.21],[.72,.27],[1.02,.39]];
- function strokeLine(points,color,width){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.strokeStyle=color;c.lineWidth=width;c.lineCap='round';c.lineJoin='round';c.stroke()}
- strokeLine(river,'rgba(45,237,212,.12)',.25);strokeLine(river,'#103d3e',.19);strokeLine(river,'#1b6861',.135);strokeLine(river,'rgba(112,242,214,.25)',.012);
- // three lanes and paths to each base
- const lanes=[
- [[-.9,-.62],[-.65,-.47],[-.4,-.28],[-.18,-.08],[0,.09],[.22,.3],[.5,.49],[.83,.66]],
- [[-.9,.65],[-.62,.48],[-.4,.29],[-.18,.16],[0,.09],[.22,-.1],[.44,-.29],[.68,-.48],[.9,-.65]],
- [[-.76,-.86],[-.73,-.59],[-.68,-.36],[-.46,-.16],[-.18,.03],[0,.09],[.2,.25],[.48,.4],[.72,.57],[.77,.84]]
- ];
- lanes.forEach((l,i)=>{strokeLine(l,'rgba(5,13,12,.72)',.065);strokeLine(l,'#5d7657',.044);strokeLine(l,'rgba(196,201,151,.28)',.004);strokeLine(l,'rgba(224,217,165,.12)',.002)});
- // stone paths and camp rings
- P.forEach((p,i)=>{if(p.id==='river')return;c.beginPath();c.ellipse(p.x,p.y,i<5?.092:.065,i<5?.065:.05,-.3,0,Math.PI*2);c.fillStyle='rgba(8,19,17,.45)';c.fill();c.strokeStyle='rgba(178,205,151,.45)';c.lineWidth=.007;c.stroke();for(let j=0;j<7;j++){let a=j*Math.PI*2/7;c.beginPath();c.arc(p.x+Math.cos(a)*.077,p.y+Math.sin(a)*.052,.008,0,Math.PI*2);c.fillStyle='#6f8961';c.fill()}});
- // forest canopy clusters, deliberate uneven groves
- for(let i=0;i<650;i++){let x=Math.sin(i*127.1+2)*.88,y=Math.cos(i*61.7+1)*.78;let riverY=.09+.29*x;if(Math.abs(y-riverY)<.13)continue;let r=.004+(i%5)*.0013;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fillStyle=i%5===0?'rgba(113,176,102,.42)':i%3===0?'rgba(6,27,24,.6)':'rgba(25,70,43,.45)';c.fill();if(i%11===0){c.beginPath();c.arc(x-.002,y-.002,r*.4,0,Math.PI*2);c.fillStyle='rgba(165,211,126,.24)';c.fill()}}
- // base citadels
- [-.83,.83].forEach((x,i)=>{let y=i?-.69:.69;c.beginPath();c.arc(x,y,.115,0,Math.PI*2);c.fillStyle='#172c28';c.fill();c.strokeStyle='rgba(194,215,161,.55)';c.lineWidth=.012;c.stroke();for(let k=0;k<6;k++){let a=k*Math.PI/3;c.beginPath();c.arc(x+Math.cos(a)*.075,y+Math.sin(a)*.075,.012,0,Math.PI*2);c.fillStyle=i?'#f19a78':'#78c6ff';c.fill()}});
- c.restore();
+<div id="game"></div>
+
+<div id="loading">
+ <div class="panel">
+  <h1>深夜便利店</h1>
+  <p class="sub">正在准备雨夜场景……</p>
+  <p class="sub">如果加载失败，请检查网络是否可以访问 Three.js CDN。</p>
+ </div>
+</div>
+
+<div id="startScreen">
+ <div class="panel">
+  <h1>深夜便利店</h1>
+  <p class="sub">凌晨 02:17 · 暴雨 · 城市街角</p>
+  <p class="sub">你只是进来买一瓶水，却发现收银台上有一张时间不对的收据。店员似乎在隐瞒什么。</p>
+  <p class="sub">手机：左侧方向键移动，拖动画面转动视角。靠近物品后点击“交互”。</p>
+  <button class="primary" id="startBtn">进入便利店</button>
+  <p class="sub">建议佩戴耳机。音效需要点击开始后才能启用。</p>
+ </div>
+</div>
+
+<div id="hud">
+ <div id="topInfo">
+  <div class="glass"><div id="clock">02:17 AM</div><div style="color:#9bb9cc;margin-top:3px">雨夜 · 便利店</div></div>
+  <button class="hudBtn" id="phoneBtn">▣ 手机 / 笔记</button>
+ </div>
+ <div class="glass" id="objective"><strong>当前目标</strong><span id="objectiveText">调查收银台附近。</span></div>
+ <div id="reticle"></div>
+ <div id="prompt">探索环境</div>
+ <div id="lookHint">拖动屏幕转动视角<br>靠近物品后点击交互</div>
+ <div id="controls">
+  <div id="movePad">
+   <button class="move" id="forward">▲</button>
+   <button class="move" id="back">▼</button>
+   <button class="move" id="left">◀</button>
+   <button class="move" id="right">▶</button>
+  </div>
+  <div id="actionPad">
+   <button id="interact">交互 / 调查</button>
+   <button id="phoneBtn2">手机线索</button>
+  </div>
+ </div>
+ <div id="dialog">
+  <div id="speaker">系统</div>
+  <div id="dialogText"></div>
+  <div id="choices"></div>
+ </div>
+ <div id="phonePanel">
+  <div id="phoneHeader"><h2>手机 · 线索笔记</h2><button id="closePhone">关闭</button></div>
+  <div class="phoneRow"><b>时间</b><br>02:17 AM。雨势没有减弱。</div>
+  <div id="notes"></div>
+  <div class="phoneRow"><b>调查进度</b><div id="progress">0 / 4 条关键线索</div></div>
+  <button id="callButton" style="width:100%;margin-top:8px">尝试拨打报警电话</button>
+  <p class="sub">这是一款虚构剧情游戏，不会拨打真实电话。</p>
+ </div>
+ <div id="toast"></div>
+</div>
+
+<script type="importmap">
+{
+ "imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+ }
 }
-function marker(p,t){let q=pos(p.x,p.y),active=p.id===selected,r=active?6.3:4.4; c.save();c.globalAlpha=active?1:.83;
- const glow=c.createRadialGradient(q.x,q.y,0,q.x,q.y,active?34:22);glow.addColorStop(0,p.col+'70');glow.addColorStop(1,p.col+'00');c.fillStyle=glow;c.beginPath();c.arc(q.x,q.y,active?34:22,0,Math.PI*2);c.fill();
- c.shadowColor=p.col;c.shadowBlur=active?22:13;c.fillStyle=p.col;c.beginPath();c.arc(q.x,q.y,r+Math.sin(t*.004+p.x*4)*.8,0,Math.PI*2);c.fill();c.shadowBlur=0;
- c.strokeStyle=p.col;c.globalAlpha=.22+Math.sin(t*.003+p.y*4)*.1;c.lineWidth=1;c.beginPath();c.arc(q.x,q.y,r+7+(t*.012%9),0,Math.PI*2);c.stroke();c.globalAlpha=1;
- if(showLabels||active){c.font='600 11px system-ui,sans-serif';let w=c.measureText(p.n).width,lx=q.x+12,ly=q.y-12;if(lx+w+15>W)lx=q.x-w-18;if(ly<60)ly=q.y+22;rounded(lx-6,ly-13,w+12,21,6,'rgba(4,16,15,.86)','rgba(160,235,206,.26)');c.fillStyle='#e8fff3';c.fillText(p.n,lx,ly+1)}
- c.restore()}
-function render(t){c.clearRect(0,0,W,H);let bg=c.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#102923');bg.addColorStop(.52,'#091d19');bg.addColorStop(1,'#040d0d');c.fillStyle=bg;c.fillRect(0,0,W,H);
- stars.forEach(s=>{c.globalAlpha=s.a*(.75+.25*Math.sin(t*.001+s.p));c.fillStyle='#c8f7dd';c.beginPath();c.arc(s.x,s.y,s.r,0,Math.PI*2);c.fill()});c.globalAlpha=1;
- let light=c.createRadialGradient(W*.46,H*.45,4,W*.46,H*.45,Math.max(W,H)*.7);light.addColorStop(0,'rgba(80,166,113,.19)');light.addColorStop(.6,'rgba(36,98,78,.08)');light.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=light;c.fillRect(0,0,W,H);
- drawTerrain(t);
- fireflies.forEach(f=>{let x=f.x*W,y=((f.y+t*.000006)%1)*H;c.globalAlpha=.12+.22*(.5+.5*Math.sin(t*.0015+f.p));c.fillStyle='#a8f6cf';c.beginPath();c.arc(x,y,f.r*.45,0,Math.PI*2);c.fill()});c.globalAlpha=1;
- P.forEach(p=>marker(p,t));
- // selected target rings and compass-like guide
- const sp=P.find(p=>p.id===selected);if(sp){let q=pos(sp.x,sp.y);c.strokeStyle='rgba(210,255,236,.32)';c.lineWidth=1;c.beginPath();c.arc(q.x,q.y,19+Math.sin(t*.003)*2,0,Math.PI*2);c.stroke()}
-}
-function tick(t){frameId=requestAnimationFrame(tick);if(!drag){if(auto&&performance.now()-lastAction>1600){camX+=(tx-camX)*.035;camY+=(ty-camY)*.035;zoom+=(tz-zoom)*.035;if(selected==='river'){camX+=Math.sin(t*.00013)*.00015;camY+=Math.cos(t*.0001)*.0001}}else{camX+=vx;camY+=vy;vx*=.91;vy*=.91;if(Math.abs(vx)<.000008)vx=0;if(Math.abs(vy)<.000008)vy=0}}render(t)}
-let vx=0,vy=0;
-function pause(){lastAction=performance.now();$('state').textContent='● 手动探索中'}
-function focus(id){let p=P.find(v=>v.id===id);if(!p)return;selected=id;tx=-p.x;ty=-p.y;tz=1.12;lastAction=performance.now();auto=true;$('state').textContent='● 镜头聚焦中';$('focusName').textContent=p.n;$('focusDesc').textContent=p.d;$('auto').textContent='自动巡游：开';document.querySelectorAll('.place').forEach(b=>b.classList.toggle('active',b.dataset.id===id));setTimeout(()=>{if(auto)$('state').textContent='● 自动巡游中'},1800)}
-function build(){let list=$('list');P.forEach(p=>{let b=document.createElement('button');b.className='place'+(p.id===selected?' active':'');b.dataset.id=p.id;b.innerHTML=`<i class="gem" style="--c:${p.col}"></i><span><b>${p.n}</b><small>${p.s}</small></span>`;b.addEventListener('click',()=>focus(p.id));list.appendChild(b)})}
-canvas.addEventListener('pointerdown',e=>{pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){drag=true;px=downX=e.clientX;py=downY=e.clientY;moved=false;vx=vy=0;try{canvas.setPointerCapture(e.pointerId)}catch{}pause()}else if(pointers.size===2){let a=[...pointers.values()];pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);drag=false;pause()}});
-canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size>=2){let a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(pinch>0){zoom=clamp(zoom*d/pinch,.65,1.75);tz=zoom;pinch=d;pause()}return}if(!drag)return;let dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;if(Math.abs(e.clientX-downX)+Math.abs(e.clientY-downY)>4)moved=true;let s=Math.min(W,H)*.43*zoom;camX+=dx/s;camY+=dy/s;tx=camX;ty=camY;vx=dx/s*.14;vy=dy/s*.14;});
-function pointerEnd(e){pointers.delete(e.pointerId);if(pointers.size<2)pinch=0;if(pointers.size===0)drag=false}
-canvas.addEventListener('pointerup',e=>{if(!moved&&pointers.size<=1){let best=null,dist=1e9;P.forEach(p=>{let q=pos(p.x,p.y),d=Math.hypot(q.x-e.clientX,q.y-e.clientY);if(d<dist){dist=d;best=p}});if(best&&dist<32)focus(best.id)}pointerEnd(e)});
-canvas.addEventListener('pointercancel',pointerEnd);
-canvas.addEventListener('wheel',e=>{e.preventDefault();pause();zoom=clamp(zoom*(e.deltaY>0?.92:1.08),.65,1.75);tz=zoom},{passive:false});
-$('auto').onclick=()=>{auto=!auto;lastAction=performance.now();$('auto').textContent='自动巡游：'+(auto?'开':'关');$('state').textContent=auto?'● 自动巡游中':'● 巡游已暂停'};
-$('reset').onclick=()=>{camX=camY=tx=ty=0;zoom=tz=1;focus('river')};
-$('labels').onclick=()=>{showLabels=!showLabels;$('labels').textContent='标记名称：'+(showLabels?'开':'关')};
-$('hide').onclick=()=>{$('panel').style.display='none';$('show').style.display='block'};
-$('show').onclick=()=>{$('panel').style.display='block';$('show').style.display='none'};
-build();resize();addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(frameId);else frameId=requestAnimationFrame(tick)});frameId=requestAnimationFrame(tick);
-})();
 </script>
-</body>
-</html>
+
+<script type="module">
+import * as THREE from "three";
+
+const $=id=>document.getElementById(id);
+const game=$("game");
+let scene,camera,renderer,clock;
+let started=false,phoneOpen=false,dialogOpen=false;
+let yaw=Math.PI,pitch=0;
+let audioCtx=null,rainSource=null,rainGain=null;
+const keys={forward:false,back:false,left:false,right:false};
+const interactables=[];
+const movingCars=[];
+const pedestrians=[];
+const rainSystems=[];
+const notes=[];
+const found=new Set();
+const story={receipt:false,cctv:false,clerk:false,driver:false,alarm:false,ending:false};
+let elapsed=0,lastPrompt="",currentTarget=null;
+const player={speed:3.0,radius:.32};
+const raycaster=new THREE.Raycaster();
+const center=new THREE.Vector2(0,0);
+const tmpV=new THREE.Vector3();
+
+function mat(color,roughness=.7,metalness=0,extra={}){
+ return new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
+}
+function box(name,x,y,z,sx,sy,sz,material,opts={}){
+ const mesh=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);
+ mesh.name=name;mesh.position.set(x,y,z);
+ if(opts.cast!==false)mesh.castShadow=true;
+ mesh.receiveShadow=true;
+ scene.add(mesh);return mesh;
+}
+function sphere(name,x,y,z,r,material){
+ const m=new THREE.Mesh(new THREE.SphereGeometry(r,14,10),material);
+ m.name=name;m.position.set(x,y,z);m.castShadow=true;scene.add(m);return m;
+}
+function pointLight(color,intensity,distance,x,y,z){
+ const l=new THREE.PointLight(color,intensity,distance,2);
+ l.position.set(x,y,z);scene.add(l);return l;
+}
+function addInteractable(mesh,id,title,description,callback){
+ mesh.userData.interaction={id,title,description,callback};
+ interactables.push(mesh);
+ return mesh;
+}
+function note(id,title,text){
+ if(found.has(id))return;
+ found.add(id);notes.push({title,text});
+ renderNotes();toast("已记录线索："+title);
+}
+function renderNotes(){
+ $("notes").innerHTML=notes.length?notes.map(n=>
+  `<div class="phoneRow"><b>${escapeHtml(n.title)}</b><br>${escapeHtml(n.text)}</div>`
+ ).join(""):'<div class="phoneRow">暂无线索。靠近可疑物品并点击“交互 / 调查”。</div>';
+ $("progress").textContent=found.size+" / 4 条关键线索";
+}
+function escapeHtml(s){
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+let toastTimer=null;
+function toast(msg){
+ const el=$("toast");el.textContent=msg;el.style.display="block";
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display="none",2300);
+}
+function showDialog(speaker,text,choices=[]){
+ dialogOpen=true;$("dialog").style.display="block";
+ $("speaker").textContent=speaker;$("dialogText").textContent=text;
+ const c=$("choices");c.innerHTML="";
+ const list=choices.length?choices:[{text:"继续",run:closeDialog}];
+ for(const choice of list){
+  const b=document.createElement("button");b.textContent=choice.text;
+  b.onclick=()=>{if(choice.run)choice.run();};c.appendChild(b);
+ }
+}
+function closeDialog(){dialogOpen=false;$("dialog").style.display="none";}
+function finishStory(){
+ if(found.size>=4&&!story.ending){
+  story.ending=true;
+  $("objectiveText").textContent="返回店员身边，弄清 02:22 发生了什么。";
+  showDialog("手机通知",
+   "你把收据、监控时间和司机的证词拼在了一起。凌晨 02:22，监控记录了一次不存在于当前时间线的进店事件。",
+   [{text:"去问店员",run:()=>{closeDialog();toast("继续调查店员。");}}]);
+ }
+}
+
+function setup(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x07111b);
+ scene.fog=new THREE.FogExp2(0x091827,.022);
+
+ camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,150);
+ camera.position.set(0,1.65,1.0);
+ camera.rotation.order="YXZ";
+ camera.rotation.y=yaw;
+
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.shadowMap.enabled=true;
+ renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.12;
+ renderer.outputColorSpace=THREE.SRGBColorSpace;
+ game.appendChild(renderer.domElement);
+ clock=new THREE.Clock();
+
+ scene.add(new THREE.HemisphereLight(0x9cbddc,0x15202a,1.05));
+ const moon=new THREE.DirectionalLight(0x7eacdf,1.1);
+ moon.position.set(-8,12,-10);scene.add(moon);
+ moon.castShadow=false;
+
+ buildStreet();
+ buildStore();
+ buildProps();
+ buildRain();
+ buildCars();
+ buildPedestrians();
+ buildInteractables();
+ window.addEventListener("resize",resize);
+ $("loading").style.display="none";
+ $("startScreen").style.display="flex";
+}
+
+function buildStreet(){
+ const asphalt=mat(0x111d28,.24,.22);
+ box("wet road",0,-.18,-14,70,.3,26,asphalt,{cast:false});
+ const sidewalk=mat(0x39434a,.48);
+ box("sidewalk",0,-.05,-5.6,20,.22,2.1,sidewalk,{cast:false});
+ for(let x=-30;x<=30;x+=5){
+  box("road marking",x,.0,-13.3,2.2,.015,.08,mat(0x9aadb8,.35),{cast:false});
+ }
+ const building=mat(0x17222d,.88);
+ box("left building",-13,4,-11,10,8,18,building);
+ box("right building",13,4,-11,10,8,18,building);
+ for(let i=0;i<5;i++){
+  const x=-22+i*11;
+  box("distant building",x,3,-23,7,6+Math.random()*5,6,mat(0x182634,.9));
+  for(let j=0;j<5;j++){
+   const win=box("window",x-2+j,3,-19.94,.32,.45,.04,
+    mat(Math.random()>.65?0x9cbbcb:0x273747,.4,0,{emissive:Math.random()>.65?0x284052:0x000000}));
+  }
+ }
+ const lampMat=mat(0x9bbfff,.3,0,{emissive:0x5a8bff});
+ for(const x of [-9,9]){
+  box("street lamp pole",x,2.7,-9,.12,5.4,.12,mat(0x263643,.5));
+  box("street lamp head",x,5.4,-9,.65,.13,.28,lampMat);
+  const l=pointLight(0x679bff,16,14,x,5.15,-9);
+  l.castShadow=false;
+ }
+ // 雨夜积水：用低粗糙度的深色地面表现湿路。
+ for(let i=0;i<18;i++){
+  const puddle=new THREE.Mesh(new THREE.CircleGeometry(.35+Math.random()*1.1,24),
+   new THREE.MeshStandardMaterial({color:0x253a4b,roughness:.13,metalness:.4,transparent:true,opacity:.42}));
+  puddle.rotation.x=-Math.PI/2;puddle.position.set((Math.random()-.5)*22,.006,-6-Math.random()*15);
+  puddle.scale.y=.35;scene.add(puddle);
+ }
+}
+
+function buildStore(){
+ const floor=mat(0x353d40,.28,.12);
+ box("store floor",0,-.04,1,12,.18,12,floor,{cast:false});
+ const wall=mat(0x28343b,.75);
+ // 左右与后墙，正面敞开，方便进入街道。
+ box("left wall",-6,2.1,1, .22,4.2,12,wall);
+ box("right wall",6,2.1,1,.22,4.2,12,wall);
+ box("back wall",0,2.1,7,12,4.2,.22,wall);
+ box("ceiling",0,4.22,1,12,.18,12,mat(0x202d35,.8),{cast:false});
+ // 店面上方招牌
+ box("sign board",0,3.75,-5.12,7.2,.65,.2,mat(0x143e49,.42,0,{emissive:0x0c222b}));
+ // 门框及玻璃侧窗
+ const frame=mat(0x263d48,.4,.35);
+ box("door frame left",-2.5,1.6,-4.9,.12,3.2,.18,frame);
+ box("door frame right",2.5,1.6,-4.9,.12,3.2,.18,frame);
+ box("door top",0,3.18,-4.9,5,.12,.18,frame);
+ const glass=new THREE.MeshStandardMaterial({color:0x6d9db3,roughness:.15,metalness:.1,transparent:true,opacity:.17});
+ box("front glass left",-4.1,1.7,-4.92,2.8,3.25,.06,glass,{cast:false});
+ box("front glass right",4.1,1.7,-4.92,2.8,3.25,.06,glass,{cast:false});
+ // 天花灯
+ for(const x of [-3,0,3]){
+  box("light panel",x,4.08,1.5,1.8,.04,.5,mat(0xffe8bd,.25,0,{emissive:0xffdca1,emissiveIntensity:1.6}),{cast:false});
+  const l=pointLight(0xffdfad,20,9,x,3.8,1.5);l.castShadow=false;
+ }
+ pointLight(0xffd8a1,14,8,0,2.6,5.8);
+ // 收银台
+ const counter=mat(0x493d32,.5);
+ box("counter",0,.65,4.15,4.1,1.3,.9,counter);
+ box("counter top",0,1.34,4.1,4.3,.12,1.05,mat(0x252b2d,.28,.22));
+ box("register",-.8,1.55,3.9,.65,.35,.48,mat(0x111c24,.35));
+ box("register screen",-.8,1.78,3.67,.5,.25,.04,mat(0x4cb5bb,.25,0,{emissive:0x124b50}));
+ // 冰柜
+ for(const x of [-4.9,4.9]){
+  box("refrigerator",x,1.55,0,1.2,3.1,4.3,mat(0x243843,.3,.25));
+  for(let j=0;j<4;j++){
+   box("fridge shelf",x,0.55+j*.63,-1.6,1.08,.035,1.5,mat(0x78909a,.3,.2));
+  }
+  box("fridge glass",x,1.6,-2.12,1.05,2.8,.035,
+   new THREE.MeshStandardMaterial({color:0x9acbdc,roughness:.14,metalness:.08,transparent:true,opacity:.16}),{cast:false});
+ }
+}
+
+function buildProps(){
+ const shelf=mat(0x4a5458,.72);
+ const bottleMats=[0x7fc4d4,0xe4b96e,0x8ac5a1,0xd9857e,0x9baee3].map(c=>mat(c,.3,.1));
+ for(const x of [-3.6,3.6]){
+  for(const z of [-1.6,1.0]){
+   box("aisle shelf",x,1.05,z,1.35,2.1,2.2,shelf);
+   for(let level=0;level<3;level++){
+    box("shelf plank",x,0.45+level*.62,z,1.4,.06,2.25,mat(0x737b7d,.55));
+    for(let n=0;n<5;n++){
+     const bx=x-.48+n*.24;
+     const b=new THREE.Mesh(new THREE.CylinderGeometry(.055,.065,.32,8),bottleMats[(n+level)%bottleMats.length]);
+     b.position.set(bx,.64+level*.62,z-.7+Math.random()*1.4);b.castShadow=true;scene.add(b);
+     const cap=new THREE.Mesh(new THREE.CylinderGeometry(.027,.027,.045,8),mat(0xd6d7cf,.35));
+     cap.position.set(b.position.x,b.position.y+.18,b.position.z);scene.add(cap);
+    }
+   }
+  }
+ }
+ // 货架顶上的小价签
+ for(let i=0;i<8;i++){
+  box("price label",-4.1+i*1.17,2.25,2.1,.25,.13,.025,mat(0xf3e7bd,.8));
+ }
+ // 门旁垃圾桶与纸箱
+ const bin=mat(0x293e47,.65);
+ const trash=box("trash bin",4.6,.5,-3.9,.55,1,.55,bin);
+ box("cardboard box",-4.7,.3,3.2,.7,.6,.7,mat(0x8a6848,.95));
+}
+
+function buildRain(){
+ const count=1300;
+ const positions=new Float32Array(count*3);
+ const speeds=new Float32Array(count);
+ for(let i=0;i<count;i++){
+  positions[i*3]=(Math.random()-.5)*34;
+  positions[i*3+1]=Math.random()*13;
+  positions[i*3+2]=-5-Math.random()*27;
+  speeds[i]=8+Math.random()*9;
+ }
+ const geo=new THREE.BufferGeometry();
+ geo.setAttribute("position",new THREE.BufferAttribute(positions,3));
+ const rain=new THREE.Points(geo,new THREE.PointsMaterial({
+  color:0x9ac8e5,size:.045,transparent:true,opacity:.66,depthWrite:false
+ }));
+ rain.userData={speeds,positions,count};scene.add(rain);rainSystems.push(rain);
+ // 玻璃雨痕与偶尔闪过的水滴光点
+ const dropMat=new THREE.MeshBasicMaterial({color:0x7baac2,transparent:true,opacity:.35});
+ for(let i=0;i<50;i++){
+  const d=new THREE.Mesh(new THREE.SphereGeometry(.018+Math.random()*.018,6,6),dropMat);
+  d.position.set((Math.random()-.5)*5,Math.random()*2.7,-4.82);scene.add(d);
+  d.userData.phase=Math.random()*6;
+  rainSystems.push(d);
+ }
+}
+
+function makeCar(x,z,color){
+ const root=new THREE.Group();root.position.set(x,.05,z);scene.add(root);
+ const body=mat(color,.25,.35);
+ const dark=mat(0x101820,.38,.12);
+ const shell=new THREE.Mesh(new THREE.BoxGeometry(2.1,.62,1.02),body);
+ shell.position.y=.42;shell.castShadow=true;root.add(shell);
+ const roof=new THREE.Mesh(new THREE.BoxGeometry(1.05,.42,.82),mat(0x344c5c,.24,.15));
+ roof.position.set(-.12,.91,0);root.add(roof);
+ const windshield=new THREE.Mesh(new THREE.BoxGeometry(.8,.27,.025),mat(0x7da6b9,.16,.12));
+ windshield.position.set(.35,.9,-.42);root.add(windshield);
+ for(const xx of [-.68,.68])for(const zz of [-.53,.53]){
+  const w=new THREE.Mesh(new THREE.CylinderGeometry(.23,.23,.12,12),dark);
+  w.rotation.x=Math.PI/2;w.position.set(xx,.24,zz);root.add(w);
+ }
+ const headmat=new THREE.MeshBasicMaterial({color:0xffe8bd});
+ for(const zz of [-.34,.34]){
+  const h=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.04),headmat);
+  h.position.set(1.06,.46,zz);root.add(h);
+ }
+ const tailmat=new THREE.MeshBasicMaterial({color:0xff3838});
+ for(const zz of [-.34,.34]){
+  const t=new THREE.Mesh(new THREE.BoxGeometry(.08,.12,.04),tailmat);
+  t.position.set(-1.06,.46,zz);root.add(t);
+ }
+ root.userData.speed=2.3+Math.random()*1.5;
+ root.userData.startX=x;
+ movingCars.push(root);
+}
+function buildCars(){
+ makeCar(-15,-8,0x293e51);
+ makeCar(13,-12,0x6c3933);
+ makeCar(-4,-17,0x69716f);
+}
+
+function makePerson(x,z,color,kind="pedestrian"){
+ const root=new THREE.Group();root.position.set(x,0,z);scene.add(root);
+ const coat=mat(color,.9);
+ const skin=mat(0xd1a58b,.85);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.15,12,10),skin);
+ head.position.y=1.55;root.add(head);
+ const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.22,.62,4,8),coat);
+ torso.position.y=1.05;root.add(torso);
+ for(const side of [-1,1]){
+  const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.5,3,6),mat(0x1c2934,.9));
+  leg.position.set(side*.11,.43,0);root.add(leg);
+  const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.06,.4,3,6),coat);
+  arm.position.set(side*.25,1.08,0);arm.rotation.z=side*.15;root.add(arm);
+ }
+ if(kind==="umbrella"){
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.8,6),mat(0x28333c));
+  pole.position.set(.05,2.0,0);root.add(pole);
+  const canopy=new THREE.Mesh(new THREE.SphereGeometry(.68,16,8,0,Math.PI*2,0,Math.PI/2),
+   new THREE.MeshStandardMaterial({color:0x253a4d,roughness:.45,side:THREE.DoubleSide}));
+  canopy.position.y=2.3;canopy.scale.y=.35;root.add(canopy);
+ }
+ root.userData={kind,originX:x,originZ:z,phase:Math.random()*6,walk:kind==="umbrella"};
+ pedestrians.push(root);return root;
+}
+function buildPedestrians(){
+ makePerson(-4.4,-5.5,0x253e52,"umbrella");
+ makePerson(7,-10,0x60483f,"umbrella");
+ const clerk=makePerson(.6,5.0,0x425b63,"clerk");
+ clerk.rotation.y=Math.PI;
+ pedestrians.push(clerk);
+}
+
+function buildInteractables(){
+ // 收据
+ const paper=box("receipt",.95,1.43,3.78,.22,.018,.32,mat(0xe7dfc8,.95));
+ paper.rotation.y=.16;
+ addInteractable(paper,"receipt","异常收据","收据上的时间比当前时间晚了五分钟。",()=>{
+  if(!story.receipt){
+   story.receipt=true;
+   note("receipt","异常收据","收据打印时间：02:22。可现在明明才 02:17。");
+   showDialog("线索 · 收据","纸张被雨水打湿了一角，但时间印得很清楚：02:22。收银系统的时钟似乎比墙上的时钟快了五分钟。",[
+    {text:"收起收据",run:()=>{closeDialog();updateObjective();}}
+   ]);
+  }else showDialog("收据","你已经检查过收据。时间仍然是 02:22。");
+ });
+ // 监控屏
+ const monitor=box("cctv monitor",-1.45,2.15,4.05,.65,.42,.12,mat(0x111a22,.25));
+ const screen=box("cctv screen",-1.45,2.16,3.975,.55,.3,.025,mat(0x244c57,.3,0,{emissive:0x0a2529}));
+ addInteractable(screen,"cctv","监控屏幕","监控画面出现短暂的时间跳跃。",()=>{
+  if(!story.cctv){
+   story.cctv=true;
+   note("cctv","异常监控","监控在 02:22 出现了 11 秒的黑屏，恢复后门口多了一道模糊的人影。");
+   showDialog("监控屏幕","你调出最近一段录像。02:22，画面黑了十一秒。恢复时，门口多了一个人影，但门口感应器没有记录开门。",[
+    {text:"保存监控记录",run:()=>{closeDialog();updateObjective();}}
+   ]);
+  }else showDialog("监控屏幕","录像停留在那道模糊的人影上。");
+ });
+ // 店员
+ const clerk=pedestrians.find(p=>p.userData.kind==="clerk");
+ addInteractable(clerk,"clerk","疲惫的店员","他一直在看墙上的时钟。",()=>{
+  if(!story.clerk){
+   showDialog("店员","这么大的雨，你怎么还没回去？……别管那张收据，系统偶尔会出错。",[
+    {text:"你在害怕什么？",run:()=>{
+     story.clerk=true;
+     note("clerk","店员的反应","店员极力否认收据异常，却在听到 02:22 时明显紧张。");
+     showDialog("店员","我没害怕。只是……如果有人敲门，先看看监控。不要直接开门。",[
+      {text:"记下他说的话",run:()=>{closeDialog();updateObjective();}}
+     ]);
+    }},
+    {text:"只是买瓶水",run:()=>{closeDialog();toast("店员没有继续说话。");}}
+   ]);
+  }else{
+   showDialog("店员",found.size>=3?
+    "你已经知道得够多了。02:22 那个人……他不应该出现在录像里。":
+    "别盯着时钟看。雨停了就回家。",[
+     {text:"问他 02:22 的事",run:()=>{
+      showDialog("店员","五年前，也是这个时间，有个司机进店买水。第二天，他的车在路边找到了，人却再也没出现。",[
+       {text:"继续调查",run:()=>{closeDialog();updateObjective();}}
+      ]);
+     }},
+     {text:"离开对话",run:closeDialog}
+    ]);
+  }
+ });
+ // 门边的湿脚印
+ const print=box("wet footprints",1.8,.012,-3.8,.7,.015,.26,
+  new THREE.MeshStandardMaterial({color:0x111e29,roughness:.2,transparent:true,opacity:.6}));
+ addInteractable(print,"footprints","门边的脚印","脚印从雨里延伸进来，却没有延伸出去。",()=>{
+  note("footprints","奇怪的脚印","门边有一串湿脚印，朝店内延伸，却没有任何朝外的脚印。");
+  showDialog("门边","脚印在收银台前突然中断。地面还湿着，像是有人刚刚站在这里。",[
+   {text:"拍下照片并记录",run:()=>{closeDialog();updateObjective();}}
+  ]);
+ });
+ // 店外出租车司机
+ const driver=makePerson(-3.5,-6.5,0x5c5144,"umbrella");
+ addInteractable(driver,"driver","雨中的司机","他站在街边，像是在等某个人。",()=>{
+  if(!story.driver){
+   showDialog("雨中司机","你也看见那张收据了？我五年前在这里等过一个人。他说自己马上出来，可便利店里的人都说他从没进来过。",[
+    {text:"那个人长什么样？",run:()=>{
+     story.driver=true;
+     note("driver","司机的证词","司机称五年前曾在此等人，对方进入便利店后消失；店员却否认见过他。");
+     showDialog("雨中司机","穿着深色外套，手里拿着一瓶水。奇怪的是……那晚和今晚一样，收据时间都是 02:22。",[
+      {text:"记录证词",run:()=>{closeDialog();updateObjective();}}
+     ]);
+    }},
+    {text:"你是不是认错地方了？",run:()=>{closeDialog();toast("司机没有回答，只看向便利店。");}}
+   ]);
+  }else showDialog("雨中司机","如果你看到他出来，别追过去。雨会把一切都冲走。");
+ });
+ // 可购买的水瓶
+ const water=sphere("water bottle",-.3,1.52,3.72,.12,mat(0x78c8df,.2,.12,{transparent:true,opacity:.85}));
+ addInteractable(water,"water","矿泉水","一瓶冷藏矿泉水。",()=>{
+  showDialog("矿泉水","瓶身冰凉，标签上的生产日期却被刮掉了。你决定先把它放回去。",[
+   {text:"放回货架",run:()=>{closeDialog();toast("你把矿泉水放回了收银台。");}}
+  ]);
+ });
+}
+
+function updateObjective(){
+ let text="检查收银台，找到异常的收据。";
+ if(story.receipt&&!story.cctv)text="调查收银台旁的监控屏幕。";
+ else if(story.cctv&&!story.clerk)text="问问店员，他知道什么。";
+ else if(story.clerk&&!story.driver)text="走到店外，询问雨中的司机。";
+ else if(story.driver&&found.size<4)text="检查门边湿脚印，并用手机整理线索。";
+ else if(found.size>=4)text="带着四条线索返回店员身边。";
+ $("objectiveText").textContent=text;
+ finishStory();
+}
+
+function getTarget(){
+ let best=null,bestD=2.65;
+ const forward=new THREE.Vector3();
+ camera.getWorldDirection(forward);
+ for(const obj of interactables){
+  if(!obj.visible)continue;
+  const p=new THREE.Vector3();obj.getWorldPosition(p);
+  const d=p.distanceTo(camera.position);
+  if(d>bestD)continue;
+  const dir=p.sub(camera.position).normalize();
+  const dot=dir.dot(forward);
+  if(dot<.12)continue;
+  bestD=d;best=obj;
+ }
+ return best;
+}
+function interact(){
+ if(!started||dialogOpen||phoneOpen)return;
+ const target=getTarget();
+ if(!target){
+  toast("附近没有可调查的物品。靠近目标后再试。");return;
+ }
+ const data=target.userData.interaction;
+ if(data&&data.callback)data.callback();
+}
+
+function togglePhone(){
+ if(!started||dialogOpen)return;
+ phoneOpen=!phoneOpen;
+ $("phonePanel").style.display=phoneOpen?"block":"none";
+}
+function startAudio(){
+ try{
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==="suspended")audioCtx.resume();
+  const length=2*audioCtx.sampleRate;
+  const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){
+   // 低音量宽带噪声模拟持续雨声
+   data[i]=(Math.random()*2-1)*.22;
+  }
+  rainSource=audioCtx.createBufferSource();
+  rainSource.buffer=buffer;rainSource.loop=true;
+  const filter=audioCtx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=1800;
+  rainGain=audioCtx.createGain();rainGain.gain.value=.055;
+  rainSource.connect(filter);filter.connect(rainGain);rainGain.connect(audioCtx.destination);
+  rainSource.start();
+  $("soundState").textContent="雨声已启用";
+ }catch(e){console.warn("音频不可用",e);}
+}
+function beep(freq=620,duration=.09){
+ if(!audioCtx)return;
+ try{
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+  osc.type="sine";osc.frequency.value=freq;
+  gain.gain.setValueAtTime(.045,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+  osc.connect(gain);gain.connect(audioCtx.destination);
+  osc.start();osc.stop(audioCtx.currentTime+duration);
+ }catch(e){}
+}
+
+function begin(){
+ started=true;
+ $("startScreen").style.display="none";$("hud").style.display="block";
+ startAudio();beep(500,.12);
+ toast("雨声已开启。开始调查这家便利店。");
+}
+function resize(){
+ if(!camera||!renderer)return;
+ camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+ renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+}
+
+function bindControls(){
+ $("startBtn").addEventListener("click",begin);
+ $("interact").addEventListener("click",interact);
+ $("phoneBtn").addEventListener("click",togglePhone);
+ $("phoneBtn2").addEventListener("click",togglePhone);
+ $("closePhone").addEventListener("click",()=>{phoneOpen=false;$("phonePanel").style.display="none";});
+ $("callButton").addEventListener("click",()=>{
+  story.alarm=true;
+  showDialog("手机","你尝试拨打报警电话，但手机没有信号。屏幕上却出现一条陌生短信：‘不要让他在 02:22 出门。’",[
+   {text:"保存短信",run:()=>{
+    note("message","未知短信","手机无信号时收到一条短信：不要让他在 02:22 出门。");
+    closeDialog();
+   }},
+   {text:"关闭手机",run:closeDialog}
+  ]);
+ });
+ for(const [id,key] of [["forward","forward"],["back","back"],["left","left"],["right","right"]]){
+  const el=$(id);
+  const down=e=>{e.preventDefault();keys[key]=true;};
+  const up=e=>{e.preventDefault();keys[key]=false;};
+  el.addEventListener("pointerdown",down);
+  el.addEventListener("pointerup",up);
+  el.addEventListener("pointercancel",up);
+  el.addEventListener("pointerleave",up);
+ }
+ window.addEventListener("keydown",e=>{
+  if(e.code==="KeyW"||e.code==="ArrowUp")keys.forward=true;
+  if(e.code==="KeyS"||e.code==="ArrowDown")keys.back=true;
+  if(e.code==="KeyA"||e.code==="ArrowLeft")keys.left=true;
+  if(e.code==="KeyD"||e.code==="ArrowRight")keys.right=true;
+  if(e.code==="KeyE"||e.code==="Enter")interact();
+  if(e.code==="KeyQ"||e.code==="KeyN")togglePhone();
+  if(e.code==="Escape"){closeDialog();phoneOpen=false;$("phonePanel").style.display="none";}
+ });
+ window.addEventListener("keyup",e=>{
+  if(e.code==="KeyW"||e.code==="ArrowUp")keys.forward=false;
+  if(e.code==="KeyS"||e.code==="ArrowDown")keys.back=false;
+  if(e.code==="KeyA"||e.code==="ArrowLeft")keys.left=false;
+  if(e.code==="KeyD"||e.code==="ArrowRight")keys.right=false;
+ });
+ let pointerDown=false,lastX=0,lastY=0,dragged=false;
+ renderer.domElement.addEventListener("pointerdown",e=>{
+  if(e.clientX>innerWidth*.42&&e.clientY>innerHeight*.16){
+   pointerDown=true;lastX=e.clientX;lastY=e.clientY;dragged=false;
+   try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
+  }
+ });
+ renderer.domElement.addEventListener("pointermove",e=>{
+  if(!pointerDown||!started||phoneOpen||dialogOpen)return;
+  const dx=e.clientX-lastX,dy=e.clientY-lastY;
+  lastX=e.clientX;lastY=e.clientY;
+  if(Math.abs(dx)+Math.abs(dy)>1)dragged=true;
+  yaw-=dx*.004;
+  pitch-=dy*.003;
+  pitch=THREE.MathUtils.clamp(pitch,-1.15,1.15);
+ });
+ const release=()=>{pointerDown=false;};
+ renderer.domElement.addEventListener("pointerup",release);
+ renderer.domElement.addEventListener("pointercancel",release);
+ // 电脑鼠标点击画面也可交互；手机使用屏幕按钮。
+ renderer.domElement.addEventListener("dblclick",interact);
+}
+
+function movePlayer(dt){
+ if(!started||phoneOpen||dialogOpen)return;
+ let f=(keys.forward?1:0)-(keys.back?1:0);
+ let s=(keys.right?1:0)-(keys.left?1:0);
+ if(!f&&!s)return;
+ const len=Math.hypot(f,s);f/=len;s/=len;
+ const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));
+ const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
+ const dx=(forward.x*f+right.x*s)*player.speed*dt;
+ const dz=(forward.z*f+right.z*s)*player.speed*dt;
+ let nx=camera.position.x+dx,nz=camera.position.z+dz;
+ // 店内边界和街道边界。门口区域可以正常进出。
+ nx=THREE.MathUtils.clamp(nx,-5.55,5.55);
+ nz=THREE.MathUtils.clamp(nz,-20,6.35);
+ // 货架与收银台的简易碰撞，避免穿过大型家具。
+ const obstacles=[
+  [-4.9,-1.6,1.0,2.2],[-4.9,1.0,1.0,2.2],
+  [4.9,-1.6,1.0,2.2],[4.9,1.0,1.0,2.2],
+  [0,4.15,4.5,.9]
+ ];
+ let blocked=false;
+ for(const [ox,oz,rx,rz] of obstacles){
+  if(Math.abs(nx-ox)<rx*.5+.3&&Math.abs(nz-oz)<rz*.5+.3){blocked=true;break;}
+ }
+ if(!blocked){camera.position.x=nx;camera.position.z=nz;}
+}
+
+function animateWorld(dt){
+ elapsed+=dt;
+ // 雨滴持续下落，离开视野后重新从高处生成。
+ for(const obj of rainSystems){
+  if(obj.isPoints){
+   const a=obj.geometry.attributes.position.array;
+   for(let i=0;i<obj.userData.count;i++){
+    a[i*3+1]-=obj.userData.speeds[i]*dt;
+    a[i*3]+=.25*dt;
+    if(a[i*3+1]<0){
+     a[i*3+1]=10+Math.random()*4;
+     a[i*3]=-17+Math.random()*34;
+     a[i*3+2]=-5-Math.random()*27;
+    }
+   }
+   obj.geometry.attributes.position.needsUpdate=true;
+  }else{
+   obj.position.y+=Math.sin(elapsed*1.8+obj.userData.phase)*.0008;
+  }
+ }
+ // 汽车持续在湿漉漉的道路上穿行。
+ for(const car of movingCars){
+  car.position.x+=car.userData.speed*dt;
+  if(car.position.x>22)car.position.x=-22;
+  car.position.y=.045+Math.sin(elapsed*7+car.position.x)*.008;
+ }
+ // 雨伞行人缓慢行走，店员留在柜台后。
+ for(const p of pedestrians){
+  const u=p.userData;
+  if(u.walk){
+   p.position.x=u.originX+Math.sin(elapsed*.32+u.phase)*.75;
+   p.position.z=u.originZ+Math.cos(elapsed*.22+u.phase)*.4;
+   p.rotation.y=Math.sin(elapsed*.32+u.phase)*.25;
+  }
+ }
+ //
