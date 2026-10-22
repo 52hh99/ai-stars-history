@@ -60,7 +60,6 @@ button.active{background:rgba(15,94,160,.75);border-color:#60c7ff}
  #settings{top:80px;right:10px;width:190px}
 }
 </style>
-<!-- 引入垫片，确保微信等环境100%不黑屏 -->
 <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
 <script type="importmap">
 {
@@ -112,25 +111,24 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 const $=id=>document.getElementById(id);
 const isMobile = innerWidth < 600;
 
-// === 场景与相机初始化 ===
+// === 场景与相机 ===
 const scene=new THREE.Scene();
 scene.background=new THREE.Color(0x050a16);
-scene.fog=new THREE.FogExp2(0x07101e,.012);
+scene.fog=new THREE.FogExp2(0x07101e,.012); // 微调雾浓度
 
 const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,180);
 camera.position.set(11,7,15);
 
 const renderer=new THREE.WebGLRenderer({
- antialias:!isMobile, // 移动端关闭抗锯齿以提升帧率
+ antialias:!isMobile,
  powerPreference:'high-performance',
- preserveDrawingBuffer:true // 允许截图
+ preserveDrawingBuffer:true 
 });
 renderer.setSize(innerWidth,innerHeight);
-// 移动端极限锁帧，防止发烫
 renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile?1.2:1.5)); 
 renderer.outputColorSpace=THREE.SRGBColorSpace;
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.25;
+renderer.toneMappingExposure=1.6; // 【亮度优化】大幅提高整体曝光
 document.body.appendChild(renderer.domElement);
 
 const controls=new OrbitControls(camera,renderer.domElement);
@@ -145,11 +143,11 @@ controls.autoRotateSpeed=.32;
 controls.enablePan=false;
 
 // === 光照系统 ===
-scene.add(new THREE.HemisphereLight(0x9bbcff,0x11131c,1.05));
-const moon=new THREE.DirectionalLight(0x6a9bff,1.1);
+scene.add(new THREE.HemisphereLight(0x9bbcff,0x11131c,2.0)); // 【亮度优化】环境光翻倍
+const moon=new THREE.DirectionalLight(0x6a9bff,1.8); // 【亮度优化】月光增强
 moon.position.set(-10,18,-8);scene.add(moon);
 
-// === 材质缓存池（大幅降低内存占用） ===
+// 材质缓存
 const matCache={};
 const mat=(color,roughness=.7,metalness=0,extra={})=>{
  const key=`${color}_${roughness}_${metalness}`;
@@ -179,7 +177,7 @@ function panel(parent,text,pos,w,h,color='#ffffff',bg='#092447'){
  m.position.set(...pos);parent.add(m);return m;
 }
 
-// === 场景搭建 ===
+// === 地面 ===
 const ground=box(scene,'湿漉漉的路面',[0,-.15,-2],[100,.25,100],
  mat(0x171e2b,.23,.48,{clearcoat:1,clearcoatRoughness:.12}));
 const road=box(scene,'柏油路',[0,-.015,6],[70,.025,24],
@@ -187,13 +185,13 @@ const road=box(scene,'柏油路',[0,-.015,6],[70,.025,24],
 for(let x=-30;x<35;x+=7)
  box(scene,'车道标线',[x,.005,6],[3,.012,.10],mat(0x8594a9,.6));
 
+// === 便利店主体 ===
 const store=new THREE.Group();scene.add(store);
 const wall=mat(0x263044,.68);
 const dark=mat(0x101a2b,.35,.3);
 const floorMat=mat(0x9ba4b4,.32,.15);
-const shelfMat=mat(0x313d50,.42,.22);
+const shelfMat=mat(0x4a586d,.4,.2); // 货架稍微提亮
 
-// 便利店主体
 box(store,'店铺地板',[0,.12,0],[9,.22,6],floorMat);
 box(store,'后墙',[0,2.4,-2.95],[9,4.6,.22],wall);
 box(store,'左墙',[-4.48,2.35,0],[.18,4.5,6],wall);
@@ -202,8 +200,8 @@ box(store,'屋顶',[0,4.65,0],[9.1,.22,6.1],dark);
 
 // 玻璃与框架
 const glass=new THREE.MeshPhysicalMaterial({
- color:0x8dcfff,transparent:true,opacity:.10,
- roughness:.15,metalness:.25,side:THREE.DoubleSide
+ color:0x8dcfff,transparent:true,opacity:.05, // 【内部优化】更透明，减少镜面反光
+ roughness:.05,metalness:.1,side:THREE.DoubleSide
 });
 box(store,'左玻璃框',[-2.7,2.25,3],[.06,4, .1],dark);
 box(store,'中玻璃框',[0,2.25,3],[.06,4,.1],dark);
@@ -220,40 +218,53 @@ box(store,'遮雨棚',[0,3.64,3.75],[9.8,.14,1.5],mat(0x20324a,.3,.4));
 for(let i=-4;i<=4;i++)
  box(store,'遮雨棚灯',[i*1.05,3.53,4.3],[.75,.045,.045],glow(0xffd9a1,2));
 
-// 室内光源（精简以省性能）
-const insideLight=new THREE.PointLight(0xffcf8c,90,17,1.7);
+// === 室内光照升级 ===
+const insideLight=new THREE.PointLight(0xffcf8c,200,22,1.7); // 【内部优化】主灯从90提升到200
 insideLight.position.set(0,3,0);store.add(insideLight);
-const blueLight=new THREE.PointLight(0x329cff,26,10,2);
+const blueLight=new THREE.PointLight(0x329cff,50,12,2);
 blueLight.position.set(-3,2,2);store.add(blueLight);
 for(let z=-1.8;z<=1.8;z+=1.8){
  box(store,'室内灯管',[0,4.45,z],[7,.045,.10],glow(0xffe4b5,2));
 }
+// 增加货架专用射灯
+for(let x=-3; x<=1; x+=2) {
+  const sp = new THREE.PointLight(0xffffff, 40, 6, 2);
+  sp.position.set(x, 3.5, -1); store.add(sp);
+}
 
-// 货架和商品
+// === 便利店内部陈设优化（往前移，让人看清） ===
 const productColors=[0xe64b52,0x34a7ed,0xf4c64f,0x53cf91,0xb277ed,0xff8b46,0xf2e9dc];
-for(const x of [-3,-.9,1.2]){
- box(store,'货架立柱',[x,1.55,-2.15],[.10,2.9,.55],dark);
+for(const x of [-3.2, -1.6, 0]){
+ // 货架往前移到 Z=-1.5
+ box(store,'货架立柱',[x,1.55,-1.5],[.10,2.9,.55],dark);
  for(const y of [.55,1.4,2.25,3.1]){
-  box(store,'货架层板',[x+.5,y,-2.12],[1.1,.07,.65],shelfMat);
+  box(store,'货架层板',[x+.5,y,-1.47],[1.1,.07,.65],shelfMat);
   for(let k=0;k<4;k++){
    const c=productColors[(Math.random()*productColors.length)|0];
-   box(store,'商品',[x+.12+k*.25,y+.19,-1.91],[.16,.28+Math.random()*.13,.2],mat(c,.34,.08));
+   // 【内部优化】商品尺寸变大，颜色更亮
+   box(store,'商品',[x+.12+k*.25,y+.22,-1.26],[.18,.36,.22],mat(c,.3,.05));
   }
  }
 }
-box(store,'饮料柜',[3.15,1.7,-2.1],[1.1,3.15,.75],mat(0x16334a,.22,.2));
-box(store,'冰柜玻璃',[3.15,1.8,-1.7],[.94,2.8,.035],glass);
+
+// 饮料柜往前移
+box(store,'饮料柜',[3.15,1.7,-1.5],[1.1,3.15,.75],mat(0x16334a,.22,.2));
+box(store,'冰柜玻璃',[3.15,1.8,-1.1],[.94,2.8,.035],glass);
 for(let y=.65;y<3;y+=.65){
- box(store,'冰柜层板',[3.15,y,-1.64],[.85,.035,.06],glow(0x56c6ff,1.5));
+ box(store,'冰柜层板',[3.15,y,-1.04],[.85,.035,.06],glow(0x56c6ff,1.5));
  for(let i=0;i<5;i++){
-  box(store,'饮料瓶',[2.79+i*.18,y+.22,-1.65],[.11,.38,.11],mat(productColors[(Math.random()*6)|0],.2));
+  box(store,'饮料瓶',[2.79+i*.18,y+.24,-1.05],[.11,.42,.11],mat(productColors[(Math.random()*6)|0],.2));
  }
 }
+
 box(store,'收银台',[2.65,.72,.8],[1.8,1.35,.9],mat(0x35445a,.4));
 box(store,'收银机',[2.6,1.55,.65],[.6,.34,.45],dark);
 box(store,'收银屏幕',[2.6,1.58,.41],[.45,.23,.025],glow(0x57c7ff,1.5));
+// 增加一点台面小物件（热饮机/关东煮）
+box(store,'热饮机',[1.8,1.6,.7],[.4,.5,.4],mat(0x8b3a3a,.4));
+box(store,'热饮指示灯',[1.8,1.88,.7],[.2,.02,.2],glow(0xff4d4d,2));
 
-// === 建筑窗户合并优化（极大提升移动端流畅度） ===
+// 建筑窗户优化
 const windowGeo = new THREE.PlaneGeometry(0.32, 0.48);
 const windowMatWarm = glow(0xffbd69, 1.2);
 const windowMatCool = glow(0x399bff, 1.2);
@@ -290,13 +301,13 @@ function streetLamp(x,z){
  box(scene,'路灯杆',[x,2.6,z],[.12,5.2,.12],mat(0x252e40,.35,.7));
  box(scene,'路灯横臂',[x+.45,5.1,z],[.9,.09,.09],dark);
  box(scene,'灯罩',[x+.75,5.04,z],[.48,.12,.3],glow(0xffd59b,2.2));
- const l=new THREE.PointLight(0xffbf72,22,13,2);
+ const l=new THREE.PointLight(0xffbf72,50,20,2); // 增强路灯光照
  l.position.set(x+.75,4.9,z);scene.add(l);
  return l;
 }
 const lamps=[streetLamp(-7,5),streetLamp(9,1),streetLamp(-12,-4)];
 
-// 动态汽车
+// === 动态汽车（修正朝向） ===
 const cars=[];
 function createCar(z,offset,speed,color){
  const g=new THREE.Group();scene.add(g);
@@ -311,9 +322,14 @@ function createCar(z,offset,speed,color){
   box(g,'前车灯',[x*.8,.68,1.86],[.35,.18,.06],glow(0xffe4b3,2.4));
   box(g,'尾灯',[x*.8,.7,-1.86],[.26,.15,.06],glow(0xff243f,1.8));
  }
- const hl=new THREE.PointLight(0xffe0aa,9,8,2);
+ const hl=new THREE.PointLight(0xffe0aa,12,10,2);
  hl.position.set(0,.7,2.2);g.add(hl);
  g.position.set(offset,0,z);
+ 
+ // 【核心修正】根据行驶方向旋转车头
+ if(speed > 0) g.rotation.y = -Math.PI / 2; // 向右开
+ else if(speed < 0) g.rotation.y = Math.PI / 2; // 向左开
+ 
  cars.push({g,speed,baseZ:z,offset});
 }
 createCar(7,-20,3.1,0x152d4b);
@@ -340,8 +356,8 @@ function createPerson(x,z,speed,phase){
 }
 createPerson(-5,4,.45,0); createPerson(6,6,-.35,1); createPerson(-10,9,.27,2); createPerson(12,3,-.3,3);
 
-// === 雨滴系统（InstancedMesh） ===
-let rainCount=isMobile?600:1200; // 移动端减少雨滴
+// 雨滴
+let rainCount=isMobile?600:1200; 
 const rainGeo=new THREE.BoxGeometry(.018,.4,.018);
 const rainMat=new THREE.MeshBasicMaterial({color:0x9bcfff,transparent:true,opacity:.43});
 let rainMesh,drops=[];
@@ -375,7 +391,7 @@ function updateRain(dt){
  rainMesh.instanceMatrix.needsUpdate=true;
 }
 
-// 地面涟漪
+// 涟漪
 const rippleMat=new THREE.MeshBasicMaterial({color:0x8bcaff,transparent:true,opacity:.38,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending});
 const ripples=[];
 for(let i=0;i<15;i++){
@@ -392,7 +408,7 @@ function updateRipples(dt){
  }
 }
 
-// === 音频（修复微信兼容） ===
+// 音频系统
 let audioCtx=null,rainGain=null,musicGain=null,master=null,noiseSource=null,musicTimer=null,musicNodes=[];
 function stopMusic(){ if(musicTimer)clearInterval(musicTimer); musicTimer=null; for(const n of musicNodes){try{n.stop()}catch(e){}} musicNodes=[]; }
 function startAudio(){
@@ -433,7 +449,6 @@ function startAudio(){
  applyVolumes();
 }
 
-// 微信切后台可能导致音频断开，恢复时重连
 document.addEventListener('visibilitychange', () => {
  if (!document.hidden && audioCtx && audioCtx.state === 'suspended') {
   audioCtx.resume();
@@ -447,7 +462,7 @@ function applyVolumes(){
  $('rainNum').textContent=$('rainVol').value+'%';$('musicNum').textContent=$('musicVol').value+'%';
 }
 
-// === 交互 ===
+// 交互
 let toastTimer;
 function toast(msg){ $('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1900); }
 
@@ -467,8 +482,8 @@ $('rainPower').oninput=e=>{
 
 $('lightPower').oninput=e=>{
  const v=+e.target.value/100;
- insideLight.intensity=90*v;blueLight.intensity=26*v;
- lamps.forEach(l=>l.intensity=22*v);$('lightLabel').textContent=e.target.value+'%';
+ insideLight.intensity=200*v;blueLight.intensity=50*v;
+ lamps.forEach(l=>l.intensity=50*v);$('lightLabel').textContent=e.target.value+'%';
 };
 
 $('quality').oninput=e=>{
@@ -501,7 +516,7 @@ $('audioToggle').onclick=async()=>{
 $('soundBtn').onclick=()=> $('audioToggle').click();
 $('rainVol').oninput=applyVolumes;$('musicVol').oninput=applyVolumes;
 
-// === 动画循环 ===
+// 动画循环
 const clock=new THREE.Clock();let frame=0;
 function animate(){
  requestAnimationFrame(animate);
@@ -521,7 +536,7 @@ function animate(){
   p.g.position.z=p.baseZ+Math.sin(p.phase*.65)*.3;
   p.g.children[1].position.y=1.58+Math.sin(p.phase*4)*.025;
  }
- insideLight.intensity=90+Math.sin(t*2.1)*2;
+ insideLight.intensity=200+Math.sin(t*2.1)*4; // 店内灯光动态微闪
  frame++;
  renderer.render(scene,camera);
 }
