@@ -4,815 +4,476 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08131c">
-<meta name="description" content="雨夜便利店：沉浸式电影风雨夜互动场景">
-<title>雨夜便利店 | MIDNIGHT STORE</title>
+<meta name="theme-color" content="#08131e">
+<title>雨夜便利店 · Midnight Store</title>
 <style>
-:root{
-  --cyan:#91eaff;
-  --gold:#ffdf9b;
-  --glass:#9bdfff;
-  --panel:rgba(7,16,25,.91);
-}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  background:#08131c;color:#eef5fa;
-  font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07111b;color:#effaff;font-family:system-ui,"Microsoft YaHei",sans-serif}
 button,select,input{font:inherit}
-button{color:inherit;touch-action:manipulation}
-#app{position:fixed;inset:0;overflow:hidden;background:#0b1923;isolation:isolate}
-#sky{
- position:absolute;inset:0 0 25%;
- background:
- radial-gradient(ellipse at 50% 55%,#526d7b3a,transparent 48%),
- linear-gradient(180deg,#07101b 0%,#142431 55%,#334653 100%);
-}
-#sky:after{
- content:"";position:absolute;inset:0;opacity:.22;
- background:repeating-linear-gradient(0deg,transparent 0 3px,#9bb5c008 4px 5px);
-}
-#haze{
- position:absolute;inset:20% -10% 10%;
- background:radial-gradient(ellipse,#a3d9f012,transparent 70%);
- animation:haze 12s ease-in-out infinite alternate;
- pointer-events:none;
-}
-@keyframes haze{to{transform:translateX(3%) scale(1.05);opacity:.5}}
-#city{position:absolute;inset:0 0 26%;overflow:hidden}
-.tower{
- position:absolute;bottom:0;
- background:linear-gradient(90deg,#101b25,#20313c 55%,#111c26);
- border-top:1px solid #718b9a25;
-}
-.tower:before{
- content:"";position:absolute;inset:8px 5px;
- background:repeating-linear-gradient(0deg,transparent 0 13px,#ffd58b22 14px 17px);
-}
-.tower:after{
- content:"";position:absolute;inset:8px 5px;
- background:repeating-linear-gradient(90deg,transparent 0 11px,#a6ddf018 12px 15px);
-}
-#road{
- position:absolute;bottom:0;left:0;right:0;height:35%;
- background:
- linear-gradient(180deg,#26313a 0%,#101820 55%,#090f15 100%);
- clip-path:polygon(27% 0,73% 0,100% 100%,0 100%);
- overflow:hidden;
-}
-#road:before{
- content:"";position:absolute;inset:0;
- background:repeating-linear-gradient(0deg,transparent 0 32px,#c4e4f009 33px 35px);
-}
-#roadLines{
- position:absolute;top:8%;bottom:0;left:49.5%;width:1%;
- background:repeating-linear-gradient(180deg,#e3edf1 0 10px,transparent 10px 27px);
- opacity:.65;
-}
-.puddle{
- position:absolute;border-radius:50%;
- background:linear-gradient(100deg,#b6e9ff10,#7ec9e72a,#d9efff0b);
- border:1px solid #b5e8ff25;
- box-shadow:inset 0 0 12px #80d9ff0b;
-}
-#reflections{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.reflection{
- position:absolute;bottom:0;height:27%;
- width:7%;opacity:.22;filter:blur(10px);
- background:linear-gradient(180deg,var(--color),transparent);
- transform:perspective(100px) rotateX(-8deg);
-}
-#store{
- position:absolute;left:50%;top:43%;
- width:min(82vw,680px);height:min(45vh,390px);min-height:245px;
- transform:translate(-50%,-50%);
- transform-origin:center;
- transition:width .35s,filter .35s;
- filter:drop-shadow(0 16px 25px #0008);
-}
-#roof{
- position:absolute;top:10%;left:-3%;right:-3%;height:12%;
- background:linear-gradient(#607785,#253844 65%,#14222c);
- border:1px solid #849aa5;
- box-shadow:0 6px 12px #0005;
- transform:perspective(500px) rotateX(-4deg);
-}
-#sign{
- position:absolute;z-index:3;top:0;left:0;right:0;height:20%;
- display:flex;justify-content:center;align-items:center;gap:9px;
- background:linear-gradient(180deg,#101d2b,#091521);
- border:2px solid #8eeaff;
- box-shadow:0 0 12px #65dfff8a,inset 0 0 16px #3bcfff18;
- color:#c5f6ff;font-weight:900;
- font-size:clamp(14px,2.7vw,24px);letter-spacing:3px;
- text-shadow:0 0 9px #65e8ff;
-}
-#sign small{font-size:9px;color:#ff9bd5;letter-spacing:1px}
-#awning{
- position:absolute;top:19%;left:-2%;right:-2%;height:8%;
- background:repeating-linear-gradient(90deg,#e3e0d6 0 9%,#a5484d 9% 18%);
- border-bottom:3px solid #594047;
- box-shadow:0 5px 9px #0005;
-}
-#front{
- position:absolute;top:25%;left:0;right:0;bottom:0;
- padding:6px;background:linear-gradient(135deg,#344b59,#172632);
- border:2px solid #78909c;
- box-shadow:inset 0 0 22px #80dfff12;
-}
-#interior{
- position:relative;width:100%;height:100%;
- display:grid;grid-template-columns:1fr 1fr .62fr;gap:5px;
- padding:4px;background:#172733;
-}
-.window{
- position:relative;overflow:hidden;
- border:2px solid #7e9ba8;
- background:
- linear-gradient(110deg,#c5eaff08,transparent 32%,#d1f2ff09 58%,transparent),
- linear-gradient(180deg,#172f3d,#0e1c28);
-}
-.window:before{
- content:"";position:absolute;z-index:2;top:0;left:0;right:0;height:7%;
- background:linear-gradient(#fff1c5,#ffdc92);
- box-shadow:0 0 14px #ffda8d;
-}
-.window:after{
- content:"";position:absolute;inset:0;pointer-events:none;
- background:linear-gradient(112deg,#fff2,transparent 24%,transparent 74%,#c7f0ff09);
-}
-#shelves{
- position:absolute;top:13%;left:5%;right:5%;height:64%;
- display:flex;flex-direction:column;justify-content:space-between;
-}
-.shelf{
- position:relative;height:28%;display:flex;align-items:flex-end;
- gap:2px;border-bottom:5px solid #8b999c;
- background:linear-gradient(#172a35,#263641);
- box-shadow:0 4px 5px #0004;
-}
-.product{
- position:relative;flex:1;min-width:2px;height:var(--height);
- border-radius:3px 3px 1px 1px;background:var(--product);
- box-shadow:inset -3px 0 2px #0005;
-}
-.product:before{
- content:"";position:absolute;top:-8%;left:18%;width:64%;height:10%;
- background:inherit;border-radius:3px 3px 0 0;
-}
-.product:after{
- content:"";position:absolute;top:27%;left:9%;right:9%;height:18%;
- background:#fff9;
-}
-#counter{
- position:absolute;left:7%;right:7%;bottom:8%;height:22%;
- background:linear-gradient(#9b8976,#57483e 18%,#332a27);
- border-top:4px solid #c5b39d;
- box-shadow:0 4px 10px #0007;
-}
-#register{
- position:absolute;left:30%;top:-33%;width:32%;height:31%;
- background:#17232b;border:2px solid #8ca4ae;
- box-shadow:inset 0 0 9px #8ce8ff28;
-}
-#register:after{
- content:"";position:absolute;inset:28% 15%;
- background:#70dbb0;box-shadow:0 0 7px #70dbb0;
-}
-#fridge{
- position:absolute;inset:13% 5% 7%;
- display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
- padding:4px;border:2px solid #9cc6d2;
- background:linear-gradient(90deg,#0d2634,#1d4050,#0c2432);
- box-shadow:0 0 10px #77e7ff20;
-}
-.fridge-door{
- position:relative;border:1px solid #b2e9f05c;
- background:linear-gradient(90deg,#ffffff05,#7ddcff16,#ffffff05);
-}
-.bottle{
- position:absolute;bottom:8%;width:23%;height:var(--bh);
- border-radius:3px 3px 5px 5px;
- background:var(--bottle);
- box-shadow:inset -2px 0 2px #0004,0 0 3px #9eefff30;
-}
-.bottle:before{
- content:"";position:absolute;top:-9%;left:28%;width:44%;height:12%;
- background:#b5e7eb;border-radius:2px 2px 0 0;
-}
-#door{
- position:relative;width:100%;height:100%;overflow:hidden;
- background:linear-gradient(90deg,#b2e9ff08,#fff1,#b2e9ff06);
- border:1px solid #b0e3ef88;
- cursor:pointer;
-}
-#door.open{background:#c0f8ff35}
-#door:after{
- content:"";position:absolute;inset:0;
- background:linear-gradient(115deg,transparent 30%,#fff2 45%,transparent 55%);
- pointer-events:none;
-}
-#handle{
- position:absolute;right:14%;top:42%;height:25%;width:3px;
- background:#e6f9ff;box-shadow:0 0 6px #9beaff;
-}
-#doorLabel{
- position:absolute;bottom:8%;width:100%;
- text-align:center;font-size:8px;color:#e0edf2;
-}
-#step{
- position:absolute;bottom:-3%;right:0;width:32%;height:6%;
- background:linear-gradient(#b9cbd1,#718895);
- border-top:2px solid #dcecf1;
-}
-#rain,#glassRain{
- position:absolute;inset:0;width:100%;height:100%;
- pointer-events:none;
-}
-#glassRain{opacity:.45}
+button{touch-action:manipulation;color:inherit;cursor:pointer}
+#scene{position:fixed;inset:0;overflow:hidden;background:linear-gradient(#08121f,#1b3444 65%,#09141d)}
+#sky{position:absolute;inset:0 0 24%;background:radial-gradient(ellipse at 50% 52%,#52758855,transparent 65%),linear-gradient(#07111e,#263c4b)}
+#city{position:absolute;inset:0 0 27%;overflow:hidden}
+.building{position:absolute;bottom:0;background:linear-gradient(90deg,#0c1823,#203442,#101c28)}
+.building:after{content:"";position:absolute;inset:7px;background:repeating-linear-gradient(0deg,transparent 0 13px,#e8c58b20 14px 17px),repeating-linear-gradient(90deg,transparent 0 13px,#a6e6ff18 14px 17px)}
+#road{position:absolute;bottom:0;left:0;width:100%;height:38%;background:linear-gradient(#243744,#101c27 60%,#080e14);clip-path:polygon(26% 0,74% 0,100% 100%,0 100%)}
+#road:after{content:"";position:absolute;inset:5% 49.3% 0;background:repeating-linear-gradient(180deg,#eaf6fa 0 10px,transparent 10px 29px);opacity:.6}
+.reflection{position:absolute;bottom:0;height:28%;width:8%;filter:blur(9px);opacity:.26;pointer-events:none}
+#store{position:absolute;z-index:3;left:50%;top:43%;width:min(88vw,660px);height:min(43vh,350px);min-height:220px;transform:translate(-50%,-50%);transition:transform .3s}
+#sign{height:19%;position:relative;z-index:3;display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid #9aeaff;background:#0b1929;box-shadow:0 0 18px #53dfff8c;color:#d4faff;font-weight:900;letter-spacing:3px;font-size:clamp(15px,3.2vw,24px);text-shadow:0 0 9px #61e5ff}
+#sign small{font-size:9px;letter-spacing:1px;color:#ff8fc9}
+#awning{height:8%;margin:0 -2%;background:repeating-linear-gradient(90deg,#e8d8b6 0 12%,#a94b50 12% 24%);border-bottom:3px solid #6b5552;box-shadow:0 5px 10px #0007}
+#front{height:73%;padding:5px;border:2px solid #8199a7;background:#182b39;box-shadow:0 12px 28px #0008}
+#inside{height:100%;display:grid;grid-template-columns:1fr 1fr .62fr;gap:5px;padding:4px;background:#10212e}
+.window{position:relative;overflow:hidden;border:2px solid #7896a4;background:linear-gradient(115deg,#d7f4ff0b,transparent 45%),linear-gradient(#254352,#0b1b27)}
+.window:before{content:"";position:absolute;top:0;left:0;right:0;height:7%;background:#ffe0a0;box-shadow:0 0 13px #ffd37a;z-index:2}
+#shelves{position:absolute;top:13%;left:5%;right:5%;height:65%;display:flex;flex-direction:column;justify-content:space-between}
+.shelf{height:28%;display:flex;align-items:flex-end;gap:2px;border-bottom:5px solid #a5aeb1;background:#293d49;box-shadow:0 4px 5px #0007}
+.product{flex:1;height:var(--h);background:var(--c);border-radius:3px 3px 0 0;position:relative}
+.product:after{content:"";position:absolute;top:30%;left:10%;right:10%;height:18%;background:#fff9}
+#counter{position:absolute;bottom:7%;left:5%;right:5%;height:20%;background:linear-gradient(#b2a08d,#59483d 30%,#322824);border-top:4px solid #dfc7a4}
+#register{position:absolute;left:30%;top:-36%;width:32%;height:34%;background:#12232d;border:2px solid #a4c6ce}
+#register:after{content:"";position:absolute;inset:25%;background:#8ce8c0;box-shadow:0 0 7px #8ce8c0}
+#fridge{position:absolute;inset:14% 5% 7%;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border:2px solid #a4d5df;background:#102c3b}
+.fridgeDoor{position:relative;border:1px solid #b9eaff70;background:linear-gradient(90deg,#ffffff08,#81dcff18,#ffffff08)}
+.bottle{position:absolute;bottom:8%;width:20%;height:var(--h);background:var(--c);border-radius:3px 3px 4px 4px;box-shadow:inset -2px 0 2px #0006}
+.bottle:before{content:"";position:absolute;top:-10%;left:28%;width:44%;height:12%;background:#d5eff5}
+#door{width:100%;height:100%;position:relative;cursor:pointer;background:linear-gradient(90deg,#d9f5ff08,#fff1,#c5efff09);border:1px solid #b5e5f4;transition:background .2s}
+#door.open{background:#a7edff3b;box-shadow:inset 0 0 20px #7ceaff33}
+#handle{position:absolute;right:15%;top:40%;height:25%;width:4px;background:#e5fbff;box-shadow:0 0 8px #9aeaff}
+#doorText{position:absolute;bottom:7%;width:100%;font-size:9px;text-align:center}
+#step{height:5%;width:32%;margin-left:auto;background:#9bafb9;border-top:2px solid #dcebf0}
+#rain,#glass{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#rain{z-index:8}
+#glass{z-index:7;opacity:.6}
 #people,#cars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.person{
- position:absolute;left:-12%;bottom:19%;
- width:clamp(13px,2vw,21px);height:clamp(42px,7vw,68px);
- animation:walk var(--speed) linear var(--delay) infinite;
- filter:drop-shadow(0 0 4px #0008);
-}
-.umbrella{
- position:absolute;left:-30%;top:0;width:160%;height:25%;
- border-radius:90% 90% 8% 8%;background:var(--umbrella);
- border-bottom:2px solid #c4e9f0;
-}
-.head{
- position:absolute;top:19%;left:33%;width:34%;height:12%;
- border-radius:50%;background:#b59a87;
-}
-.coat{
- position:absolute;top:28%;left:18%;width:64%;height:48%;
- background:var(--coat);border-radius:35% 35% 8% 8%;
-}
-.legs{
- position:absolute;bottom:0;left:27%;width:17%;height:25%;
- background:#111820;box-shadow:7px 0 #111820;
-}
+#people{z-index:5}
+#cars{z-index:4}
+.person{position:absolute;left:-12%;bottom:20%;width:23px;height:65px;animation:walk var(--duration) linear var(--delay) infinite;filter:drop-shadow(0 3px 5px #000a)}
+.umbrella{position:absolute;top:0;left:-25%;width:150%;height:24%;border-radius:90% 90% 5% 5%;background:var(--umbrella);border-bottom:2px solid #d8f1f5}
+.head{position:absolute;top:19%;left:33%;width:34%;height:13%;border-radius:50%;background:#c2a28a}
+.coat{position:absolute;top:30%;left:18%;width:64%;height:45%;border-radius:30% 30% 5% 5%;background:var(--coat)}
+.legs{position:absolute;bottom:0;left:27%;width:18%;height:28%;background:#0a1016;box-shadow:8px 0 #0a1016}
 @keyframes walk{from{left:-12%}to{left:112%}}
-.car{
- position:absolute;left:-28%;bottom:var(--bottom);
- width:clamp(75px,13vw,135px);height:clamp(25px,4vw,40px);
- animation:drive var(--speed) linear var(--delay) infinite;
- filter:drop-shadow(0 4px 4px #0008);
-}
-.carBody{
- position:absolute;left:2%;right:2%;bottom:12%;height:53%;
- background:var(--car);border-radius:8px 12px 3px 3px;
- border-top:2px solid #ffffff70;
-}
-.carRoof{
- position:absolute;left:24%;bottom:57%;width:50%;height:32%;
- background:linear-gradient(100deg,#badce8a0,#2c4859);
- clip-path:polygon(18% 0,77% 0,100% 100%,0 100%);
-}
-.wheel{
- position:absolute;bottom:0;width:17%;height:30%;
- border-radius:50%;background:#080c10;border:2px solid #8696a0;
-}
-.wheel.left{left:17%}.wheel.right{right:15%}
-.headlamp{
- position:absolute;right:0;top:37%;height:20%;width:9%;
- background:#fff4c4;box-shadow:0 0 10px 5px #fff0a455;
-}
-.tailLamp{
- position:absolute;left:0;top:37%;height:20%;width:7%;
- background:#ff4054;box-shadow:0 0 9px #ff4054;
-}
-@keyframes drive{from{left:-28%}to{left:120%}}
-#header{
- position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;
- padding:13px 14px;display:flex;justify-content:space-between;
- align-items:flex-start;gap:8px;pointer-events:none;
-}
-#header>*{pointer-events:auto}
-h1{margin:0;font-size:clamp(18px,4vw,26px);letter-spacing:2px;text-shadow:0 0 12px #6adfff55}
-.subtitle{margin-top:4px;font-size:9px;letter-spacing:1px;color:#9bb1bf}
-#status{
- padding:7px 10px;border:1px solid #85dfff3b;border-radius:20px;
- background:#06111bbd;font-size:10px;white-space:nowrap;
-}
-#weather{
- position:absolute;top:85px;left:13px;padding:8px 10px;
- border-left:2px solid var(--cyan);background:#07131dc2;
- font-size:10px;line-height:1.8;color:#c1d3df;
-}
-#weather strong{color:#fff}
-#caption{
- position:absolute;left:50%;bottom:calc(153px + env(safe-area-inset-bottom,0px));
- transform:translateX(-50%);width:max-content;max-width:92%;
- padding:8px 13px;border:1px solid #b5e7ff27;
- border-radius:24px;background:#07121bcc;
- color:#e5f2f8;font-size:11px;text-align:center;
-}
-#panel{
- position:absolute;bottom:0;left:0;right:0;
- padding:12px 8px calc(12px + env(safe-area-inset-bottom,0px));
- background:linear-gradient(transparent,#07111de8 23%,#07111df8);
-}
-#buttons{
- display:flex;flex-wrap:wrap;justify-content:center;gap:6px;
- max-width:720px;margin:auto;
-}
-.ctrl{
- min-width:57px;padding:8px 6px;border:1px solid #81dfff3d;
- border-radius:10px;background:linear-gradient(#172c3be8,#0b1926f5);
- display:flex;flex-direction:column;align-items:center;gap:4px;
- font-size:10px;transition:background .15s,border-color .15s;
-}
-.ctrl .ico{font-size:18px;line-height:1.1}
-.ctrl.active{border-color:#91edff;background:#164052;box-shadow:0 0 10px #49dfff20}
+.car{position:absolute;left:-30%;bottom:var(--bottom);width:clamp(80px,15vw,145px);height:42px;animation:drive var(--duration) linear var(--delay) infinite;filter:drop-shadow(0 4px 5px #000b)}
+.carRoof{position:absolute;left:24%;bottom:55%;width:53%;height:32%;background:linear-gradient(90deg,#7599a8,#1b3547);clip-path:polygon(15% 0,78% 0,100% 100%,0 100%)}
+.carBody{position:absolute;bottom:12%;left:2%;right:2%;height:52%;background:var(--car);border-radius:9px 13px 4px 4px;border-top:2px solid #b6d4e2}
+.wheel{position:absolute;bottom:0;width:18%;height:29%;border:2px solid #8b9ca4;border-radius:50%;background:#080b10}
+.wheel.l{left:15%}.wheel.r{right:15%}
+.headlamp{position:absolute;right:0;top:40%;width:9%;height:18%;background:#fff6cb;box-shadow:0 0 13px 7px #fff1a95c}
+.taillamp{position:absolute;left:0;top:40%;width:8%;height:18%;background:#ff4054;box-shadow:0 0 12px #ff304c}
+@keyframes drive{from{left:-30%}to{left:125%}}
+#header{position:absolute;z-index:10;top:env(safe-area-inset-top,0px);left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;padding:12px;pointer-events:none}
+h1{margin:0;font-size:clamp(19px,4vw,27px);letter-spacing:2px;text-shadow:0 0 10px #7deaff66}
+.sub{margin-top:4px;font-size:9px;letter-spacing:1px;color:#9db4c3}
+#clock{font-size:10px;padding:7px 10px;border:1px solid #9aeaff50;border-radius:20px;background:#07131ddf}
+#weather{position:absolute;z-index:10;top:77px;left:12px;font-size:10px;line-height:1.8;padding:8px 10px;background:#081520cc;border-left:2px solid #91eaff}
+#caption{position:absolute;z-index:10;bottom:155px;left:50%;transform:translateX(-50%);width:max-content;max-width:92%;text-align:center;font-size:11px;padding:8px 12px;border:1px solid #b9e9ff30;border-radius:20px;background:#07121ddd}
+#controls{position:absolute;z-index:12;left:0;right:0;bottom:0;padding:12px 7px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#07111df2 22%,#07111dfc)}
+#buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;max-width:720px;margin:auto}
+.ctrl{min-width:54px;padding:8px 5px;border:1px solid #83dfff50;border-radius:9px;background:linear-gradient(#183141,#0b1926);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px}
+.ctrl .ico{font-size:18px}
+.ctrl.active{border-color:#a2f0ff;background:#17465a;box-shadow:0 0 10px #55dfff26}
 .ctrl:active{transform:scale(.96)}
-#settings{
- display:flex;justify-content:center;align-items:center;
- flex-wrap:wrap;gap:11px;margin:10px auto 0;
- font-size:10px;color:#c7d8e2;
-}
-.setting{display:flex;align-items:center;gap:5px}
-select{
- max-width:85px;background:#122738;color:#e6f6ff;
- border:1px solid #78dfff4c;border-radius:6px;padding:5px;font-size:10px;
-}
-input[type=range]{width:70px;accent-color:#83eaff}
-#toast{
- position:absolute;z-index:15;top:47%;left:50%;
- transform:translate(-50%,-50%);max-width:86%;
- padding:13px 18px;background:#081925f5;
- border:1px solid #8deaff88;border-radius:12px;
- color:#e8faff;text-align:center;font-size:13px;
- opacity:0;pointer-events:none;transition:opacity .2s;
-}
+#settings{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;margin-top:9px;font-size:10px;color:#c9dbe5}
+select{max-width:80px;padding:5px;color:#eefaff;background:#122839;border:1px solid #8bdfff50;border-radius:6px;font-size:10px}
+input[type=range]{width:65px;accent-color:#8deaff}
+#volumeText{min-width:28px}
+#toast{position:absolute;z-index:20;top:48%;left:50%;transform:translate(-50%,-50%);max-width:90%;padding:12px 16px;border:1px solid #8deaff;background:#071925f5;border-radius:10px;text-align:center;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.show{opacity:1}
-#photoFrame{
- display:none;position:absolute;inset:12px;
- border:1px solid #f0faff9c;pointer-events:none;
-}
-#exitPhoto{
- display:none;position:absolute;z-index:20;right:12px;top:65px;
- padding:10px 14px;border:1px solid #8ceaff;
- border-radius:10px;background:#0b1c29ed;
-}
-body.photo #photoFrame,body.photo #exitPhoto{display:block}
-body.photo #header,body.photo #weather,body.photo #caption,body.photo #panel{display:none}
-body.low #haze{display:none}
-body.low .person,body.low .car{animation-duration:calc(var(--speed,20s) * 1.2)}
+#error{display:none;position:absolute;z-index:30;left:8px;right:8px;top:115px;background:#591e28;color:#fff;padding:10px;border:1px solid #ff9ba7;border-radius:8px;font-size:12px;overflow-wrap:anywhere}
+#exitPhoto{display:none;position:absolute;z-index:25;right:12px;top:65px;padding:9px 12px;border:1px solid #a0edff;border-radius:9px;background:#0a1928}
+#photoFrame{display:none;position:absolute;z-index:22;inset:10px;border:1px solid #e7f9ff99;pointer-events:none}
+body.photo #header,body.photo #weather,body.photo #caption,body.photo #controls{display:none}
+body.photo #exitPhoto,body.photo #photoFrame{display:block}
+body.low #glass{display:none}
+body.low .reflection{filter:blur(4px)}
 @media(max-width:430px){
- #store{width:94vw;height:35vh;min-height:220px;top:43%}
- #header{padding:10px}
- #weather{top:77px;left:9px;padding:7px 8px;font-size:9px}
- #buttons{gap:5px}
- .ctrl{min-width:52px;padding:7px 4px;font-size:9px}
+ #store{width:94vw;height:35vh;min-height:215px;top:43%}
+ #buttons{gap:4px}
+ .ctrl{min-width:49px;padding:7px 3px;font-size:9px}
  .ctrl .ico{font-size:16px}
- #settings{gap:7px;margin-top:8px}
- input[type=range]{width:60px}
- #caption{bottom:calc(150px + env(safe-area-inset-bottom,0px));font-size:10px}
+ #settings{gap:6px}
+ #caption{bottom:151px;font-size:10px}
 }
 @media(max-height:560px){
- #store{height:52vh;min-height:185px;top:42%}
- #weather{top:65px}
- #panel{padding-top:5px}
- .ctrl{padding:5px}
- #settings{margin-top:5px}
- #caption{bottom:112px}
-}
-@media(prefers-reduced-motion:reduce){
- #haze{animation:none}
+ #store{height:52vh;min-height:175px;top:40%}
+ #controls{padding-top:4px}
+ .ctrl{padding:4px}
+ #weather{top:62px}
+ #caption{bottom:108px}
 }
 </style>
 </head>
 <body>
-<div id="app">
- <div id="sky"></div>
- <div id="city"></div>
- <div id="haze"></div>
- <div id="road"><div id="roadLines"></div></div>
-
- <div id="reflections">
-  <div class="reflection" style="--color:#43d9ed;left:31%"></div>
-  <div class="reflection" style="--color:#f65eaf;left:47%;width:6%"></div>
-  <div class="reflection" style="--color:#ffdc91;left:60%;width:10%"></div>
- </div>
- <div class="puddle" style="width:27%;height:3%;left:8%;bottom:7%"></div>
- <div class="puddle" style="width:22%;height:2.5%;right:8%;bottom:15%"></div>
- <div class="puddle" style="width:29%;height:2%;left:38%;bottom:3%"></div>
+<div id="scene">
+ <div id="sky"></div><div id="city"></div>
+ <div id="road"></div>
+ <div class="reflection" style="left:30%;background:#43d9ed"></div>
+ <div class="reflection" style="left:46%;background:#f65eaf;width:6%"></div>
+ <div class="reflection" style="left:62%;background:#ffdc91;width:10%"></div>
 
  <div id="store">
-  <div id="roof"></div>
   <div id="sign">雨夜便利店 <small>OPEN 24H</small></div>
   <div id="awning"></div>
   <div id="front">
-   <div id="interior">
-    <div class="window">
-     <div id="shelves"></div>
-     <div id="counter"><div id="register"></div></div>
-    </div>
+   <div id="inside">
+    <div class="window"><div id="shelves"></div><div id="counter"><div id="register"></div></div></div>
     <div class="window"><div id="fridge"></div></div>
-    <div class="window">
-     <div id="door" role="button" tabindex="0" aria-label="进入或离开便利店">
-      <div id="handle"></div><div id="doorLabel">点击进店</div>
-     </div>
-    </div>
+    <div class="window"><div id="door" role="button" tabindex="0" aria-label="进出便利店"><div id="handle"></div><div id="doorText">点击进店</div></div></div>
    </div>
   </div>
   <div id="step"></div>
  </div>
 
- <div id="cars"></div>
- <div id="people"></div>
- <canvas id="rain"></canvas>
- <canvas id="glassRain"></canvas>
+ <div id="cars"></div><div id="people"></div>
+ <canvas id="glass"></canvas><canvas id="rain"></canvas>
 
- <div id="header">
-  <div><h1>雨夜便利店</h1><div class="subtitle">MIDNIGHT CONVENIENCE STORE</div></div>
-  <div id="status">● <span id="clock">23:48</span> · 营业中</div>
- </div>
- <div id="weather"><strong>☔ 城市夜雨</strong><br><span id="rainText">中雨 · 18°C</span><br>路面湿滑 · 夜间出行</div>
+ <header id="header">
+  <div><h1>雨夜便利店</h1><div class="sub">MIDNIGHT CONVENIENCE STORE</div></div>
+  <div id="clock">23:48 · 营业中</div>
+ </header>
+ <div id="weather">☔ <b>城市夜雨</b><br><span id="weatherText">中雨 · 18°C</span><br>路面湿滑 · 夜间出行</div>
  <div id="caption">雨声很轻，城市很远。今晚，慢一点也没关系。</div>
  <div id="toast" role="status" aria-live="polite"></div>
+ <div id="error" role="alert"></div>
  <div id="photoFrame"></div>
  <button id="exitPhoto">退出拍照模式 ✕</button>
 
- <div id="panel">
+ <div id="controls">
   <div id="buttons">
    <button class="ctrl active" id="viewBtn"><span class="ico">◉</span><span>切换视角</span></button>
    <button class="ctrl" id="rotateBtn"><span class="ico">⟳</span><span>自动旋转</span></button>
    <button class="ctrl" id="enterBtn"><span class="ico">🚪</span><span>进店体验</span></button>
    <button class="ctrl active" id="rainBtn"><span class="ico">🌧</span><span>雨幕开关</span></button>
    <button class="ctrl" id="musicBtn"><span class="ico">♫</span><span>背景音乐</span></button>
-   <button class="ctrl" id="soundBtn"><span class="ico">🌧</span><span>雨声音效</span></button>
+   <button class="ctrl" id="soundBtn"><span class="ico">💧</span><span>雨声音效</span></button>
    <button class="ctrl" id="photoBtn"><span class="ico">▣</span><span>拍照模式</span></button>
   </div>
   <div id="settings">
-   <label class="setting">雨量
-    <select id="rainLevel">
-     <option value="1">细雨</option><option value="2" selected>中雨</option>
-     <option value="3">大雨</option><option value="4">暴雨</option>
-    </select>
-   </label>
-   <label class="setting">音量
-    <input id="volume" type="range" min="0" max="100" value="35">
-    <span id="volumeText">35%</span>
-   </label>
-   <label class="setting">画质
-    <select id="quality">
-     <option value="high">精细</option><option value="medium" selected>均衡</option><option value="low">省电</option>
-    </select>
-   </label>
+   <label>雨量 <select id="rainLevel"><option value="1">细雨</option><option value="2" selected>中雨</option><option value="3">大雨</option><option value="4">暴雨</option></select></label>
+   <label>音量 <input id="volume" type="range" min="0" max="100" value="35"><span id="volumeText">35%</span></label>
+   <label>画质 <select id="quality"><option value="high">精细</option><option value="medium" selected>均衡</option><option value="low">省电</option></select></label>
   </div>
  </div>
 </div>
 
 <script>
 (function(){
-'use strict';
+"use strict";
 const $=id=>document.getElementById(id);
-const app=$('app');
-let toastTimer=0;
-function toast(message){
- const el=$('toast');el.textContent=message;el.classList.add('show');
+const toastEl=$("toast");
+let toastTimer;
+function toast(s){
+ toastEl.textContent=s;
+ toastEl.classList.add("show");
  clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>el.classList.remove('show'),1900);
+ toastTimer=setTimeout(()=>toastEl.classList.remove("show"),1800);
 }
-function setActive(id,value){$(id).classList.toggle('active',value)}
-function setLabel(id,value){$(id).lastElementChild.textContent=value}
+function active(id,on){$(id).classList.toggle("active",!!on)}
+function fail(err){
+ const e=$("error");
+ e.style.display="block";
+ e.textContent="网页运行错误："+(err&&err.message?err.message:String(err));
+}
 
-// 城市楼宇
+// 页面级错误可见化，避免静默失效
+window.addEventListener("error",e=>fail(e.message||e.error));
+window.addEventListener("unhandledrejection",e=>fail(e.reason||"异步任务失败"));
+
+try{
+// 城市建筑
 for(let i=0;i<25;i++){
- const el=document.createElement('div');el.className='tower';
- el.style.left=(i*4.2)+'%';
- el.style.width=(3+Math.random()*3)+'%';
- el.style.height=(18+Math.random()*65)+'%';
- $('city').appendChild(el);
+ const b=document.createElement("div");
+ b.className="building";
+ b.style.left=(i*4.15)+"%";
+ b.style.width=(3+Math.random()*3)+"%";
+ b.style.height=(20+Math.random()*60)+"%";
+ $("city").appendChild(b);
 }
 
-// 商品货架
-const productColors=['#d44749','#e4ae48','#359bbd','#5b9c73','#c56b98','#d87543','#e4d6a2','#e9eceb'];
+// 便利店商品
+const colors=["#df4148","#e8b447","#3e9fc2","#55a274","#d36b9a","#d8793e","#eee0b2","#e8eeee"];
 for(let r=0;r<3;r++){
- const shelf=document.createElement('div');shelf.className='shelf';
+ const s=document.createElement("div");s.className="shelf";
  for(let i=0;i<13;i++){
-  const item=document.createElement('div');item.className='product';
-  item.style.setProperty('--product',productColors[Math.floor(Math.random()*productColors.length)]);
-  item.style.setProperty('--height',(48+Math.random()*49)+'%');
-  shelf.appendChild(item);
+  const p=document.createElement("div");p.className="product";
+  p.style.setProperty("--c",colors[Math.floor(Math.random()*colors.length)]);
+  p.style.setProperty("--h",(48+Math.random()*48)+"%");
+  s.appendChild(p);
  }
- $('shelves').appendChild(shelf);
+ $("shelves").appendChild(s);
 }
-
-// 饮料冰柜
-const bottleColors=[
- 'linear-gradient(#d9f7dd 0 10%,#36ad75 11% 72%,#176b4c 73%)',
- 'linear-gradient(#d5f1ff 0 10%,#268fc3 11% 72%,#17517e 73%)',
- 'linear-gradient(#ffe6ad 0 10%,#dc8739 11% 72%,#984c2c 73%)',
- 'linear-gradient(#f4d8e9 0 10%,#c55c91 11% 72%,#7e355c 73%)'
-];
+const bottleColors=["#38af76","#299bd0","#df8a3a","#c45c90"];
 for(let i=0;i<3;i++){
- const door=document.createElement('div');door.className='fridge-door';
+ const d=document.createElement("div");d.className="fridgeDoor";
  for(let j=0;j<4;j++){
-  const b=document.createElement('div');b.className='bottle';
-  b.style.left=(4+j*24)+'%';
-  b.style.setProperty('--bh',(55+Math.random()*25)+'%');
-  b.style.setProperty('--bottle',bottleColors[(i+j)%bottleColors.length]);
-  door.appendChild(b);
+  const b=document.createElement("div");b.className="bottle";
+  b.style.left=(5+j*24)+"%";
+  b.style.setProperty("--h",(55+Math.random()*30)+"%");
+  b.style.setProperty("--c",bottleColors[(i+j)%4]);
+  d.appendChild(b);
  }
- $('fridge').appendChild(door);
+ $("fridge").appendChild(d);
 }
 
-// 行人
+// 明显可见的动态人物
 for(let i=0;i<5;i++){
- const p=document.createElement('div');p.className='person';
- const speed=(20+Math.random()*16)+'s';
- p.style.setProperty('--speed',speed);
- p.style.setProperty('--delay',(-Math.random()*30)+'s');
- p.style.setProperty('--coat',['#192a3b','#44343b','#263a36','#313c51','#39352e'][i]);
- p.style.setProperty('--umbrella',['#4e9da8','#a84d60','#b8a06a','#7774a8','#9aadb4'][i]);
+ const p=document.createElement("div");p.className="person";
+ p.style.setProperty("--duration",(19+Math.random()*13)+"s");
+ p.style.setProperty("--delay",(-Math.random()*28)+"s");
+ p.style.setProperty("--coat",["#344c67","#67404c","#31554c","#44465f","#554a3c"][i]);
+ p.style.setProperty("--umbrella",["#56aeb9","#ce6579","#c5ad68","#9187ca","#a9c8d1"][i]);
  p.innerHTML='<div class="umbrella"></div><div class="head"></div><div class="coat"></div><div class="legs"></div>';
- $('people').appendChild(p);
+ $("people").appendChild(p);
 }
-
-// 汽车
+// 行人后方汽车
 for(let i=0;i<3;i++){
- const car=document.createElement('div');car.className='car';
- car.style.setProperty('--speed',(20+i*7)+'s');
- car.style.setProperty('--delay',(-i*8-2)+'s');
- car.style.setProperty('--bottom',(8+i*7)+'%');
- car.style.setProperty('--car',['#263b4b','#5c333d','#66757e'][i]);
- car.innerHTML='<div class="carRoof"></div><div class="carBody"></div><div class="wheel left"></div><div class="wheel right"></div><div class="headlamp"></div><div class="tailLamp"></div>';
- $('cars').appendChild(car);
+ const c=document.createElement("div");c.className="car";
+ c.style.setProperty("--duration",(18+i*6)+"s");
+ c.style.setProperty("--delay",(-i*7-2)+"s");
+ c.style.setProperty("--bottom",(8+i*7)+"%");
+ c.style.setProperty("--car",["#2b4b61","#75404a","#63747d"][i]);
+ c.innerHTML='<div class="carRoof"></div><div class="carBody"></div><div class="wheel l"></div><div class="wheel r"></div><div class="headlamp"></div><div class="taillamp"></div>';
+ $("cars").appendChild(c);
 }
 
-// Canvas 雨幕，限制设备像素比与帧率
-const rainCanvas=$('rain'),rainCtx=rainCanvas.getContext('2d');
-const glassCanvas=$('glassRain'),glassCtx=glassCanvas.getContext('2d');
-let W=0,H=0,dpr=1;
-let rainDrops=[],glassDrops=[];
-let rainLevel=2,quality='medium',rainEnabled=true;
-let lastFrame=0,frameId=0,frameNo=0;
+// 雨滴 Canvas
+const rc=$("rain"),rx=rc.getContext("2d");
+const gc=$("glass"),gx=gc.getContext("2d");
+let W=0,H=0,dpr=1,drops=[],beads=[];
+let rainLevel=2,quality="medium",rainOn=true;
+let raf=0,last=0,lastGlass=0;
+function makeDrops(){
+ const n=(quality==="low"?90:quality==="medium"?190:330)*rainLevel/2;
+ drops=Array.from({length:Math.round(n)},()=>({
+  x:Math.random()*W,y:Math.random()*H,
+  len:8+Math.random()*19,speed:450+Math.random()*650,
+  drift:-25-Math.random()*55,a:.15+Math.random()*.28
+ }));
+}
+function makeBeads(){
+ const n=quality==="low"?8:quality==="medium"?22:38;
+ beads=Array.from({length:n},()=>({x:Math.random()*W,y:Math.random()*H,r:1+Math.random()*3,s:8+Math.random()*24}));
+}
 function resize(){
- W=innerWidth;H=innerHeight;
- dpr=Math.min(devicePixelRatio||1,quality==='high'?1.5:1);
- for(const c of [rainCanvas,glassCanvas]){
-  c.width=Math.round(W*dpr);c.height=Math.round(H*dpr);
-  c.style.width=W+'px';c.style.height=H+'px';
- }
- rainCtx.setTransform(dpr,0,0,dpr,0,0);
- glassCtx.setTransform(dpr,0,0,dpr,0,0);
- makeRain();makeGlass();
-}
-function makeRain(){
- const base=quality==='low'?85:quality==='medium'?200:380;
- rainDrops=Array.from({length:Math.round(base*rainLevel/2)},()=>({
-  x:Math.random()*W,y:Math.random()*H,
-  length:8+Math.random()*19,
-  speed:420+Math.random()*680,
-  drift:-35-Math.random()*55,
-  alpha:.13+Math.random()*.3
- }));
-}
-function makeGlass(){
- const n=quality==='low'?10:quality==='medium'?22:38;
- glassDrops=Array.from({length:n},()=>({
-  x:Math.random()*W,y:Math.random()*H,
-  r:1+Math.random()*3,
-  speed:8+Math.random()*24,
-  wobble:Math.random()*6
- }));
+ W=window.innerWidth;H=window.innerHeight;
+ dpr=Math.min(window.devicePixelRatio||1,quality==="high"?1.5:1);
+ [rc,gc].forEach(c=>{
+  c.width=Math.max(1,Math.round(W*dpr));
+  c.height=Math.max(1,Math.round(H*dpr));
+  c.style.width=W+"px";c.style.height=H+"px";
+ });
+ rx.setTransform(dpr,0,0,dpr,0,0);
+ gx.setTransform(dpr,0,0,dpr,0,0);
+ makeDrops();makeBeads();
 }
 function drawRain(dt){
- rainCtx.clearRect(0,0,W,H);
- if(!rainEnabled)return;
- rainCtx.lineWidth=quality==='low'?.65:.9;
- rainCtx.lineCap='round';
- for(const d of rainDrops){
-  rainCtx.strokeStyle='rgba(190,222,239,'+(d.alpha*rainLevel/2)+')';
-  rainCtx.beginPath();rainCtx.moveTo(d.x,d.y);
-  rainCtx.lineTo(d.x+d.drift*.025,d.y+d.length);rainCtx.stroke();
+ rx.clearRect(0,0,W,H);
+ if(!rainOn)return;
+ rx.lineWidth=quality==="low"?.7:1;
+ rx.lineCap="round";
+ for(const d of drops){
+  rx.strokeStyle="rgba(192,225,245,"+(d.a*rainLevel/2)+")";
+  rx.beginPath();rx.moveTo(d.x,d.y);rx.lineTo(d.x+d.drift*.03,d.y+d.len);rx.stroke();
   d.x+=d.drift*dt;d.y+=d.speed*dt;
-  if(d.y>H+25||d.x<-30){d.y=-d.length;d.x=Math.random()*(W+30)}
+  if(d.y>H+25||d.x<-30){d.y=-d.len;d.x=Math.random()*(W+30)}
  }
 }
 function drawGlass(dt){
- glassCtx.clearRect(0,0,W,H);
- if(!rainEnabled||quality==='low')return;
- for(const d of glassDrops){
-  d.y+=d.speed*dt;
-  if(d.y>H+10){d.y=-10;d.x=Math.random()*W}
-  glassCtx.beginPath();
-  glassCtx.ellipse(d.x,d.y,d.r*.65,d.r*1.5,0,0,Math.PI*2);
-  glassCtx.fillStyle='rgba(195,232,248,.12)';
-  glassCtx.fill();
-  glassCtx.strokeStyle='rgba(213,242,255,.3)';
-  glassCtx.lineWidth=.7;glassCtx.stroke();
-  glassCtx.beginPath();
-  glassCtx.arc(d.x-d.r*.2,d.y-d.r*.4,Math.max(.4,d.r*.2),0,Math.PI*2);
-  glassCtx.fillStyle='rgba(255,255,255,.55)';glassCtx.fill();
+ gx.clearRect(0,0,W,H);
+ if(!rainOn||quality==="low")return;
+ for(const d of beads){
+  d.y+=d.s*dt;
+  if(d.y>H+8){d.y=-8;d.x=Math.random()*W}
+  gx.beginPath();gx.ellipse(d.x,d.y,d.r*.65,d.r*1.4,0,0,Math.PI*2);
+  gx.fillStyle="rgba(185,225,246,.12)";gx.fill();
+  gx.strokeStyle="rgba(225,245,255,.38)";gx.lineWidth=.8;gx.stroke();
  }
 }
-function animate(time){
- frameId=requestAnimationFrame(animate);
+function loop(t){
+ raf=requestAnimationFrame(loop);
  if(document.hidden)return;
- const interval=quality==='low'?50:quality==='medium'?30:17;
- if(time-lastFrame<interval)return;
- const dt=Math.min((time-lastFrame)/1000,.05);lastFrame=time;
+ const interval=quality==="low"?55:quality==="medium"?30:17;
+ if(t-last<interval)return;
+ const dt=Math.min((t-last)/1000,.05);last=t;
  drawRain(dt);
- if(++frameNo%2===0)drawGlass(dt*2);
+ if(t-lastGlass>35){drawGlass(dt*2);lastGlass=t}
 }
-addEventListener('resize',resize,{passive:true});
-resize();frameId=requestAnimationFrame(animate);
+window.addEventListener("resize",resize,{passive:true});
+resize();
+raf=requestAnimationFrame(loop);
 
-// 雨量、画质
-$('rainLevel').addEventListener('change',e=>{
- rainLevel=Number(e.target.value);makeRain();
- $('weather').querySelector('#rainText').textContent=
- ['','细雨 · 18°C','中雨 · 18°C','大雨 · 17°C','暴雨 · 16°C'][rainLevel];
- toast('雨量已调整：'+e.target.options[e.target.selectedIndex].text);
+// 雨量和画质
+$("rainLevel").addEventListener("change",e=>{
+ rainLevel=Number(e.target.value);makeDrops();
+ $("weatherText").textContent=["","细雨 · 18°C","中雨 · 18°C","大雨 · 17°C","暴雨 · 16°C"][rainLevel];
+ toast("雨量已调整："+e.target.options[e.target.selectedIndex].text);
 });
-$('quality').addEventListener('change',e=>{
+$("quality").addEventListener("change",e=>{
  quality=e.target.value;
- document.body.classList.toggle('low',quality==='low');
- resize();toast('画质已切换：'+e.target.options[e.target.selectedIndex].text);
+ document.body.classList.toggle("low",quality==="low");
+ resize();toast("画质已切换："+e.target.options[e.target.selectedIndex].text);
 });
-$('rainBtn').addEventListener('click',()=>{
- rainEnabled=!rainEnabled;setActive('rainBtn',rainEnabled);
- toast(rainEnabled?'动态雨幕已开启':'动态雨幕已关闭');
+$("rainBtn").addEventListener("click",()=>{
+ rainOn=!rainOn;active("rainBtn",rainOn);
+ toast(rainOn?"动态雨幕已开启":"动态雨幕已关闭");
 });
 
-// 视角控制：近景、标准、远景与自动旋转共用状态
-let view=0,rotating=false,rotationStart=0;
+// 视角与旋转
+let view=0,rotating=false,rotStart=performance.now();
 function applyView(){
- const scale=[1,1.16,.87][view];
- const offset=rotating?Math.sin((performance.now()-rotationStart)/2600)*1.2:0;
- $('store').style.transform=
- `translate(calc(-50% + ${offset}%),-50%) scale(${scale})`;
+ const scales=[1,1.15,.86];
+ const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;
+ $("store").style.transform="translate(calc(-50% + "+offset+"%),-50%) scale("+scales[view]+")";
 }
-$('viewBtn').addEventListener('click',()=>{
- rotating=false;setActive('rotateBtn',false);
+$("viewBtn").addEventListener("click",()=>{
+ rotating=false;active("rotateBtn",false);
  view=(view+1)%3;applyView();
- toast(['标准视角','近景视角','远景视角'][view]);
+ toast(["标准视角","近景视角","远景视角"][view]);
 });
-$('rotateBtn').addEventListener('click',()=>{
- rotating=!rotating;rotationStart=performance.now();
- setActive('rotateBtn',rotating);
- if(!rotating)applyView();
- toast(rotating?'自动镜头已开启':'自动镜头已关闭');
+$("rotateBtn").addEventListener("click",()=>{
+ rotating=!rotating;rotStart=performance.now();
+ active("rotateBtn",rotating);
+ toast(rotating?"自动旋转已开启":"自动旋转已关闭");
 });
-function rotateLoop(){
+function rotationLoop(){
  if(rotating)applyView();
- requestAnimationFrame(rotateLoop);
+ requestAnimationFrame(rotationLoop);
 }
-requestAnimationFrame(rotateLoop);
+requestAnimationFrame(rotationLoop);
 
-// 进店互动，按钮和门共用同一函数
+// 进店与离店
 let inside=false;
-function toggleInside(){
+function toggleDoor(){
  inside=!inside;
- document.body.classList.toggle('inside',inside);
- $('door').classList.toggle('open',inside);
- $('doorLabel').textContent=inside?'点击离店':'点击进店';
- $('enterBtn').querySelector('.ico').textContent=inside?'🚶':'🚪';
- $('enterBtn').lastElementChild.textContent=inside?'离开店内':'进店体验';
- $('caption').textContent=inside
-  ?'欢迎光临。暖灯、饮料和热咖啡，让雨夜慢下来。'
-  :'雨声很轻，城市很远。今晚，慢一点也没关系。';
- toast(inside?'欢迎来到雨夜便利店':'你已回到雨夜街头');
+ $("door").classList.toggle("open",inside);
+ $("doorText").textContent=inside?"点击离店":"点击进店";
+ $("enterBtn").lastElementChild.textContent=inside?"离开店内":"进店体验";
+ $("enterBtn").querySelector(".ico").textContent=inside?"🚶":"🚪";
+ $("caption").textContent=inside?
+ "欢迎光临。暖灯、饮料和热咖啡，让雨夜慢下来。":
+ "雨声很轻，城市很远。今晚，慢一点也没关系。";
+ toast(inside?"欢迎来到雨夜便利店":"你已回到雨夜街头");
 }
-$('enterBtn').addEventListener('click',toggleInside);
-$('door').addEventListener('click',toggleInside);
-$('door').addEventListener('keydown',e=>{
- if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleInside()}
+$("enterBtn").addEventListener("click",toggleDoor);
+$("door").addEventListener("click",toggleDoor);
+$("door").addEventListener("keydown",e=>{
+ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleDoor()}
 });
 
-// 拍照模式始终保留独立退出按钮
-function setPhoto(enabled){
- document.body.classList.toggle('photo',enabled);
- setActive('photoBtn',enabled);
+// 拍照模式
+function photo(on){
+ document.body.classList.toggle("photo",on);
+ active("photoBtn",on);
 }
-$('photoBtn').addEventListener('click',()=>setPhoto(true));
-$('exitPhoto').addEventListener('click',()=>setPhoto(false));
+$("photoBtn").addEventListener("click",()=>photo(true));
+$("exitPhoto").addEventListener("click",()=>photo(false));
 
 // 时钟
-function updateClock(){
+function clock(){
  const d=new Date();
- $('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+ $("clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+" · 营业中";
 }
-updateClock();setInterval(updateClock,15000);
+clock();setInterval(clock,15000);
 
-// 音频统一管理。需用户主动点击才初始化 AudioContext
-let audio=null,master=null,rainGain=null,musicGain=null,noiseSource=null;
-let rainSoundOn=false,musicOn=false,volume=.35,musicTimer=null;
-let musicOscillators=[];
-function setupAudio(){
- if(audio){
-  if(audio.state==='suspended')audio.resume();
-  return true;
- }
+// Web Audio：用户点击后启动，不依赖外部音频文件
+let ctx=null,master=null,rainGain=null,musicGain=null,noise=null;
+let rainSound=false,music=false,volume=.35,musicTimer=null,step=0;
+let activeOscillators=[];
+const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
+
+function initAudio(){
+ if(ctx)return true;
  const AC=window.AudioContext||window.webkitAudioContext;
- if(!AC){toast('当前浏览器不支持网页音频');return false}
+ if(!AC){toast("当前浏览器不支持网页音频");return false}
  try{
-  audio=new AC();
-  master=audio.createGain();master.gain.value=volume;master.connect(audio.destination);
-  const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate);
+  ctx=new AC();
+  master=ctx.createGain();master.gain.value=volume;master.connect(ctx.destination);
+
+  // 连续雨声：过滤白噪声
+  const buffer=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);
   const data=buffer.getChannelData(0);
   for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-  noiseSource=audio.createBufferSource();noiseSource.buffer=buffer;noiseSource.loop=true;
-  const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1250;
-  rainGain=audio.createGain();rainGain.gain.value=0;
-  noiseSource.connect(filter);filter.connect(rainGain);rainGain.connect(master);
-  noiseSource.start();
-  musicGain=audio.createGain();musicGain.gain.value=0;musicGain.connect(master);
+  noise=ctx.createBufferSource();noise.buffer=buffer;noise.loop=true;
+  const filter=ctx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=1300;
+  rainGain=ctx.createGain();rainGain.gain.value=0;
+  noise.connect(filter);filter.connect(rainGain);rainGain.connect(master);noise.start();
+
+  musicGain=ctx.createGain();musicGain.gain.value=0;musicGain.connect(master);
   return true;
- }catch(err){
-  toast('音频初始化失败，请刷新后重试');return false;
- }
+ }catch(e){fail(e);return false}
 }
-async function resumeAudio(){
- if(!setupAudio())return false;
- try{if(audio.state!=='running')await audio.resume()}catch(err){}
- if(audio.state!=='running'){
-  toast('请再次点击声音按钮允许播放');return false;
+async function unlockAudio(){
+ if(!initAudio())return false;
+ try{
+  if(ctx.state!=="running")await ctx.resume();
+ }catch(e){fail(e)}
+ if(ctx.state!=="running"){
+  toast("音频未启动，请再点击一次声音按钮");
+  return false;
  }
  return true;
 }
-$('soundBtn').addEventListener('click',async()=>{
- if(!await resumeAudio())return;
- rainSoundOn=!rainSoundOn;
- rainGain.gain.setTargetAtTime(rainSoundOn?.2:0,audio.currentTime,.08);
- setActive('soundBtn',rainSoundOn);
- $('soundBtn').lastElementChild.textContent=rainSoundOn?'雨声已开':'雨声音效';
- toast(rainSoundOn?'雨声音效已开启':'雨声音效已关闭');
+<div id="caption">雨声很轻，城市很远。今晚，慢一点也没关系。</div>Enter file contents here("soundBtn").Enter file contents here("click",<div id="toast" role="status" aria-live="polite"></div>()=>{
+<div class="window"><div id="door" role="button" tabindex="0" aria-label="进出便利店"><div id="handle"></div><div id="doorText">点击进店</div></div></div>Enter file contents here(!<div id="error" role="alert"></div> Enter file contents here())<div id="photoFrame"></div>;
+ Enter file contents here=!<button id="exitPhoto">退出拍照模式 ✕</button>;
+ Enter file contents here.<div id="controls">.Enter file contents here(<div id="buttons">?.22:0,Enter file contents here.<addEventListenerasyncidspan class="viewBtn"><◉="ico">/span><span>切换视角</s<pan></button>,.08);
+ Enter("soundBtn",<file="ctrl" contents="rotateBtn"><here="ico">button<classid></button>);
+spanclass⟳/span><span>自动旋转</s("soundBtn").<pan="ctrl" Enter="enterBtn"><file="ico">contents<hereEnter><file><contents>here</span></button>?classidspan:<class="ctrl" 🚪="musicBtn"></span><span>进店体验</s="ico">pan</button>.Enter file contents here=<button class="ctrl active" id="rainBtn"><span class="ico">🌧</s></button>;
+pan(<span="ctrl" 雨幕开关="soundBtn"><button="ico">Enter<file><contents><button>class</span></id>);
 });
-const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
-function stopMusic(){
- if(musicTimer){clearInterval(musicTimer);musicTimer=null}
- musicOscillators.forEach(osc=>{try{osc.stop()}catch(err){}});
- musicOscillators=[];
- if(audio&&musicGain)musicGain.gain.setTargetAtTime(0,audio.currentTime,.1);
+span(){
+ <class="settings">(♫/span><span>背景音乐</s" value="35"><span id="volumeText">35%</span></label>=Enter file contents here}if){<await>unlockAudio <return="rainLevel"><$="1">lastElementChild<textContent><rainSound="3">"雨声已开"<"雨声音效"></select></stoast>(rainSound"雨声音效已开启" "雨声音效已关闭");<function>stopMusic <function="volume" playNote="range" const="0" osc="100visibilitychange
+<label>画质 <select id="quality"><option value="high">精细</option><option value="medium" selected>均衡</option><option value="low">省电</option></select></label>.Enter file contents here(Enter file contents here=>{Enter file contents here{Enter file contents here.Enter file contents here()}Enter file contents here("use strict";){}});
+Enter file contents here=[];
+const $=id=>document.getElementById(id);(Enter file contents here&&const toastEl=$("toast");)Enter file contents here.let toastTimer;.Enter file contents here(0,function fileEnterawait){.contents,.08);
 }
-toast(rainSoundOn?'雨声音效已开启':'雨声音效已关闭');
- stopMusic();
- if(!audio||!musicOn)return;
- musicGain.gain.setTargetAtTime(.65,audio.currentTime,.15);
-const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
-function stopMusic(){
-  if(!musicOn||!audio)return;
-function startMusic(){
-  osc.type='sine';osc.frequency.value=notes[i%notes.length];
-let i=0;
-  amp.gain.setValueAtTime(.0001,now);
-  amp.gain.exponentialRampToValueAtTime(.055,now+.18);
-  if.audio.musicGain(.0001,musicGain+1.25);
-  gain.setTargetAtTime(audio);currentTime.toast('雨声音效已开启');
-  '雨声音效已关闭'.stopMusic(if);audio.musicOn(return+1.3);
-  musicGain.gain(setTargetAtTime);
-  audio(currentTime.const>24)notes.function(0,8);
-  stopMusic++;
- }
- if();musicOn=audio(return,1100);
+here<let"toastTimer"="Enter"><toastrainSound
+filecontentshere(!function||!toast||sEnter(file,contents){here(Enter).file.contents("active",!!here)}.divid!=="running")/div> Enter file contents here(){Enter(file){;
+contentshere=Enter("error");=file.contents here(),Enter.file=contents+(here&&function.activeStringerr.Enter:file(contents));=here.Enter file contents here();
+Enter file contents here// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;
+$("store").style.transform="translate(calc(-50% + "+offset+"%),-50%) scale("+scales[view]+")";.Enter file contents here="sine";return.Enter file contents here.$("viewBtn").addEventListener("click",()=>{=Enter file contents here[Enter file contents here%Enter file contents here.toast(["标准视角","近景视角","远景视角"][view]);];
+Enter file contents here.Enter file contents here.$("rotateBtn").addEventListener("click",()=>{(.0001,Enter file contents here);
+Enter file contents here.Enter file contents here.toast(rotating?"自动旋转已开启":"自动旋转已关闭");(.055,Enter file contents here+.18);
+Enter file contents here.function rotationLoop(){.Enter file contents here(.0001,Enter file contents here+1.2);
+Enter file contents here.Enter file contents here(Enter file contents toastrainSound);filecontentshere
+functiontoastsEnterfile.contents here(){(Enterfile contents here);divid/div> Enter file contents here(){Enter(file){;functiontoastsEnterfile.contents("door").here.Enterfile("open",divid);(div+1.25);
+Enter("doorText").file=contents?here:Enter;.file(contentshereEnter("enterBtn").file.contents=here?Enter
+filecontentsherefunctionactiveStringerrEnter(file("enterBtn").contents(".ico").here=Enterfilecontentshere?Enter:file;.herereturn24)contents("caption").here=// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;:$;);?.styletransform "translate(calc(-50% + "(0,8);
+offset:++;
 }
-function startMusic(){
-osc type=osc.frequency(),value=notes.i();
- if=!gain;setTargetAtTime('musicBtn',audio);
-currentTimetoast='雨声音效已开启'.'雨声音效已关闭';
-stopMusic('musicBtn').if('click',audio()=>{
-musicOn(!returnmusicGain())gain;
+"%),-50%) scale(";(){
+scales();
+view(Enter?file:contents);(!Enterfile)contents;
+here("enterBtn").$addEventListenerEnter("click",file);.contentshereEnterfilecontents.hereEnterfilecontents("door").here("click",toast);(.65,"标准视角"."近景视角"("door")."远景视角"("keydown",view Enter file=>{,.12);
+contentshereEnterfilecontentshere$();
+addEventListenerEnterfilecontents(here.Enter==="Enter"||file.contentshereEnterfile===contents){here.Enterfile();div()}=Enter(file,1100);
+}
+""contents
+here(!Enter())file
+contentshereEnter("photoBtn").file("click",()=>contents(here));=!Enter;filecontentsherefunctionactiveStringerrEnter("exitPhoto").file("click",()=>contents(here));("musicBtn",EnterfilecontentshereEnter
+file
+contents("here").toggleDoor=Enter(filecontentshereEnter.file()).contents(2,"0")+":// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;:$;);?.styletransform "translate(calc(-50div"(0,8);0offset"%),-50%) Enter(""
+file(contents,here=Enter,file=contentshereEnter,file=contents,here=Enter;?filecontentsherefunctionactiveStringerrEnter:file=contents,here=EnterfilecontentshereEnter,file=.35,contents=toggleDoor,Enter=0;);
 });
-setTargetAtTime('musicBtn').audio.currentTime=const?notes:function;
- stopMusic=if(musicOn.audio.return)/100;
-function(startMusic)osc();typeosc();
- frequency(value&&notes)i.notes.length(let,i.amp,.04);
-});
-
-gain(setValueAtTime?now:amp);
-gain('volume').exponentialRampToValueAtTime('input',now=>{
-amp.gain('touchstart',exponentialRampToValueAtTime=>{
- now(osc.connect.amp('button,select,input')){amp=connect;musicGain}
-osc('volumeText').start=now.osc.stop+'%';
-},{now:musicOscillators});
-push.osc('touchend',if=>{
- musicOscillators(!length)musicOscillators;splice=i;
-playNote
- musicTimer(setInterval.playNote(function)>65&&playNote.const(osc)>audio.createOscillator(amp)){
-  audio=createGain;musicOn('rotateBtn',musicOn);
-  setActive=musicOn>0?1:2;const();
-nowaudio=0,currentTime=0,$=addEventListener;
- }
-},{async:if});
-
-awaitresumeAudio=return.$[0];lastElementChild=textContent.musicOn;'音乐已开'='背景音乐'.volume;Number=e;
-target.value('visibilitychange',()=>{
- if=0;
- musicOn(!startMusic.else&&startX&&let(){.i startX=0;==='suspended'&&(functionplayNote(){||const audio=createOscillator.amp(),audio=createGain.const();)){
-  t=clientX.startY;.t('musicBtn').clientY('click',tracking()=>{().true(!document())lastFrame;(()=>{});
- }
+filecontentshereEnter("musicGainmusicGaingainsetTargetAtTimectx",file=>{
+contents=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];":// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;:$;);?.styletransform "(translate.calc(){.% +)/100;
+file("volumeText").contents here=Enter.file(),contentshereEnter=file.contents();=here.Enter filecontentsherefunctionactiveStringerrEnter=file.contents;.here+"%";
+EnterfilecontentshereEnter(file&&contents)toggleDoor.Enter
 });
 
-if('musicBtn').document.hidden=audio?audio:state; musicOn(rainSoundOn)audio();resume();=catch(const?t:e);.changedTouches('volume').dx('input',t=>{[0],clientX('volumeText').startX=dy.t.clientY+'%';=startY
+filecontentshereEnter
+file(){.contents).":// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;:$;);?.styletransform "(translate,calc()=>{(.% +,()=>{
+contents(!Enter())EnterfilecontentsEnter0;file("musicBtn").contentshereEnter("click",file()=>{("soundBtn").contents Enterfilecontents.here(!Enter())filecontentsherefunctionactiveStringerrEnter;=file?contents:here("musicBtn")."EnterfilecontentshereEnter"."file"
+contents(toggleDoor(Enter)filecontentshereEnter();file();?contents:":// 页面级错误可见化，避免静默失效Enter file contents hereconst scales=[1,1.15,.86];const offset=rotating?Math.sin((performance.now()-rotStart)/2200)*1.2:0;.Enter file contents here;:$;);?.styletransform "(translate?contentsherecalcrotating);if!unlockAudioreturnEnterfile){{.lastElementChild(contentshere$).textContentmusicfile("input",contentshere$=>{lastElementChildtextContentmusicfile(){&&file""contentsEnter("file").here=").rotationLoopEnterfilecontentshere=volumeinputcontentshereEnterfilecontentshere];(".music.""自动旋转已关闭""+"%";"here"
+Enter
+}contentshereifmusicstartMusicelsestopMusicEnterfilecontents("volume")."EnterfilecontentshereEnterfilecontentshereEnterfilecontentshereEnterfilecontentshere"
+});
+// 进店与离店.Enter file contents here(let inside=false;);Enterfilecontents;); here.function clock("+here($.classListtoggle()).inside(2,",")+Enter;(filecontents here)$textContentinside();".点击离店 filecontentshere,.04);="点击进店"?Enterfilecontentshere:$lastElementChild;;=0;textContentinside("input","离开店内"{("进店体验"("volumeText").contentshere$querySelectortextContent(()=>insideEnterfile),600);=contents.await here.fail Enter+"%";){file}
+
+here(()=>Enter/filecontentshereEnterfilecontentshereEnterfile>(contentshere),600);
 })();
-</toast(dx>0?'已切换近景视角':'已切换远景视角');>
-</// 后台时浏览器可节省资源>
-</setTimeout(()=>toast('欢迎来到雨夜便利店，点击按钮探索场景'),700);>
+</<div id="weather">☔ <b>城市夜雨</
+<br/span><setTimeoutspanbr>ctx· 路面湿滑夜间出行
+</Enter file contents here>
