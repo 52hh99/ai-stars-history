@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>王者荣耀 · 李白发展史</title>
+<title>王者荣耀 · 涂山红红发展史</title>
 <style>
   :root {
-    --bg: #030a0e;
-    --text: #e0f7fa;
-    --muted: #8ab4b6;
-    --accent: #00ffcc;
-    --gold: #e2c070;
+    --bg: #0a0303;
+    --text: #f5e6e6;
+    --muted: #b08a8a;
+    --accent: #ff3333;
+    --gold: #d4af37;
   }
   * { box-sizing: border-box; }
   body {
@@ -18,123 +18,42 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     background: var(--bg); overflow-x: hidden;
   }
-  
-  /* 背景 Canvas */
-  #bgCanvas {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; display: block; pointer-events: none;
-  }
-
-  /* 背景氛围光（纯 CSS） */
-  .glow-a {
-    position: fixed; width: 80vw; height: 80vw; left: -30vw; top: -30vw;
-    background: radial-gradient(circle, rgba(0, 255, 204, 0.06) 0%, transparent 60%);
-    z-index: 0; pointer-events: none;
-  }
-  .glow-b {
-    position: fixed; width: 70vw; height: 70vw; right: -20vw; bottom: -20vw;
-    background: radial-gradient(circle, rgba(0, 180, 255, 0.05) 0%, transparent 60%);
-    z-index: 0; pointer-events: none;
-  }
-  /* 中心月轮 */
-  .moon {
-    position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 255, 204, 0.15) 0%, rgba(0, 255, 204, 0.03) 50%, transparent 70%);
-    z-index: 0; pointer-events: none;
-  }
-
-  /* 布局容器 */
-  .wrap {
-    position: relative; z-index: 1; width: 92%; max-width: 1120px;
-    margin: 0 auto; padding: 50px 0 80px;
-  }
-  
-  /* 头部 */
+  #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
+  .glow-a { position: fixed; width: 80vw; height: 80vw; left: -30vw; top: -30vw; background: radial-gradient(circle, rgba(255, 0, 0, 0.08) 0%, transparent 60%); z-index: 0; pointer-events: none; }
+  .glow-b { position: fixed; width: 70vw; height: 70vw; right: -20vw; bottom: -20vw; background: radial-gradient(circle, rgba(180, 0, 0, 0.06) 0%, transparent 60%); z-index: 0; pointer-events: none; }
+  .moon { position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 0, 0, 0.15) 0%, rgba(200, 0, 0, 0.05) 40%, transparent 70%); box-shadow: 0 0 80px rgba(255, 0, 0, 0.1); z-index: 0; pointer-events: none; }
+  .wrap { position: relative; z-index: 1; width: 92%; max-width: 1120px; margin: 0 auto; padding: 50px 0 80px; }
   header { text-align: center; margin-bottom: 34px; }
-  .eyebrow {
-    display: inline-block; padding: 7px 14px; border: 1px solid rgba(0, 255, 204, 0.3); 
-    border-radius: 20px; color: var(--accent); font-size: 13px; background: rgba(0, 255, 204, 0.08); margin-bottom: 16px;
-  }
-  h1 {
-    margin: 0 0 12px; font-size: 36px; letter-spacing: 1px; line-height: 1.2;
-    background: linear-gradient(90deg, #ffffff, #a4ffec, #00ffcc);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
+  .eyebrow { display: inline-block; padding: 7px 14px; border: 1px solid rgba(255, 51, 51, 0.3); border-radius: 20px; color: var(--accent); font-size: 13px; background: rgba(255, 51, 51, 0.08); margin-bottom: 16px; }
+  h1 { margin: 0 0 12px; font-size: 36px; letter-spacing: 1px; line-height: 1.2; background: linear-gradient(90deg, #ffffff, #ff9999, #ff0000); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 20px rgba(255, 0, 0, 0.2); }
   .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 14px; }
-
-  /* 筛选栏 */
   .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px 0 42px; }
-  .filter-btn {
-    border: 1px solid rgba(0, 255, 204, 0.2); background: rgba(4, 15, 20, 0.8);
-    color: var(--muted); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s;
-  }
-  .filter-btn.active {
-    color: #02120f; background: linear-gradient(135deg, #a4ffec, #00ffcc); border-color: transparent; font-weight: bold;
-  }
-
-  /* 时间线 */
+  .filter-btn { border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(20, 5, 5, 0.8); color: var(--muted); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; }
+  .filter-btn:hover { border-color: rgba(255, 51, 51, 0.5); color: #fff; }
+  .filter-btn.active { color: #fff; background: linear-gradient(135deg, #cc0000, #ff3333); border-color: transparent; font-weight: bold; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3); }
   .timeline { position: relative; padding: 10px 0; }
-  .timeline::before {
-    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%);
-    background: linear-gradient(to bottom, transparent, rgba(0, 255, 204, 0.4) 10%, rgba(0, 255, 204, 0.1) 90%, transparent);
-  }
-  
-  .item {
-    position: relative; width: 50%; padding: 0 40px 30px 0;
-  }
+  .timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(to bottom, transparent, rgba(255, 51, 51, 0.4) 10%, rgba(255, 51, 51, 0.1) 90%, transparent); }
+  .item { position: relative; width: 50%; padding: 0 40px 30px 0; }
   .item:nth-child(even) { margin-left: 50%; padding: 0 0 30px 40px; }
-  
-  /* 时间线节点 */
-  .item::before {
-    content: ""; position: absolute; top: 24px; right: -7px; width: 12px; height: 12px; border-radius: 50%;
-    background: #030a0e; border: 2px solid var(--accent); z-index: 2;
-  }
+  .item::before { content: ""; position: absolute; top: 24px; right: -7px; width: 12px; height: 12px; border-radius: 50%; background: #0a0303; border: 2px solid var(--accent); z-index: 2; box-shadow: 0 0 10px rgba(255, 51, 51, 0.6); }
   .item:nth-child(even)::before { right: auto; left: -7px; }
-
-  /* 卡片 */
-  .card {
-    cursor: pointer; border: 1px solid rgba(0, 255, 204, 0.15); border-radius: 12px;
-    background: #061218; padding: 20px; transition: 0.2s;
-  }
-  .card:hover { border-color: rgba(0, 255, 204, 0.5); }
-  
+  .card { cursor: pointer; border: 1px solid rgba(255, 51, 51, 0.15); border-radius: 12px; background: #140505; padding: 20px; transition: 0.2s; }
+  .card:hover { border-color: rgba(255, 51, 51, 0.5); background: #1a0808; }
   .year { display: inline-block; font-size: 13px; font-weight: bold; color: var(--gold); margin-bottom: 8px; }
   .card h2 { margin: 0 0 8px; font-size: 18px; line-height: 1.4; color: #fff; }
   .card p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
-  
   .tags { margin-top: 12px; }
-  .tag { 
-    display: inline-block; font-size: 12px; color: var(--accent); 
-    border: 1px solid rgba(0, 255, 204, 0.2); background: rgba(0, 255, 204, 0.05); 
-    padding: 2px 8px; border-radius: 10px; margin-right: 6px; margin-bottom: 6px;
-  }
-  .hint { display: block; margin-top: 12px; color: rgba(0, 255, 204, 0.5); font-size: 12px; }
-
-  /* 弹窗（防崩溃绝对定位版） */
-  .modal-backdrop { 
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-    z-index: 50; display: none; background: rgba(1, 5, 8, 0.9); 
-  }
+  .tag { display: inline-block; font-size: 12px; color: var(--accent); border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(255, 51, 51, 0.05); padding: 2px 8px; border-radius: 10px; margin-right: 6px; margin-bottom: 6px; }
+  .hint { display: block; margin-top: 12px; color: rgba(255, 51, 51, 0.5); font-size: 12px; }
+  .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 50; display: none; background: rgba(10, 2, 2, 0.9); }
   .modal-backdrop.show { display: block; }
-  
-  .modal { 
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; 
-    border: 1px solid rgba(0, 255, 204, 0.3); border-radius: 16px; 
-    background: #061218; padding: 24px; 
-  }
+  .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255, 51, 51, 0.3); border-radius: 16px; background: #140505; padding: 24px; box-shadow: 0 10px 40px rgba(255, 0, 0, 0.15); }
   .modal-top { margin-bottom: 14px; }
   .modal-year { color: var(--gold); font-weight: bold; font-size: 14px; }
-  .close-btn { 
-    float: right; border: 1px solid rgba(0, 255, 204, 0.2); background: rgba(0, 255, 204, 0.05); 
-    color: var(--accent); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; 
-  }
+  .close-btn { float: right; border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(255, 51, 51, 0.05); color: var(--accent); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+  .close-btn:hover { background: rgba(255, 51, 51, 0.15); }
   .modal h3 { margin: 0 0 14px; font-size: 22px; color: #fff; clear: both; }
-  .modal .detail { color: #b0d4d4; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
-
-  /* 手机端适配 */
+  .modal .detail { color: #d4c0c0; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
   @media (max-width: 760px) {
     h1 { font-size: 28px; }
     .timeline::before { left: 10px; }
@@ -144,24 +63,19 @@
 </style>
 </head>
 <body>
-  <!-- 背景元素 -->
   <div class="glow-a"></div>
   <div class="glow-b"></div>
   <div class="moon"></div>
   <canvas id="bgCanvas"></canvas>
-
   <main class="wrap">
     <header>
-      <div class="eyebrow">一篇诗，一斗酒，一曲长歌，一剑天涯</div>
-      <h1>王者荣耀 · 李白发展史</h1>
-      <p class="subtitle">青莲剑仙编年史 · 从初代吸血剑仙，到无相机制的技术型刺客。</p>
+      <div class="eyebrow">苦情树下，转世续缘</div>
+      <h1>王者荣耀 · 涂山红红发展史</h1>
+      <p class="subtitle">少司缘联动皮肤编年史 · 从惊艳亮相，到英雄定位的全面转变。</p>
     </header>
-
     <div class="toolbar" id="toolbar"></div>
     <section class="timeline" id="timeline"></section>
   </main>
-
-  <!-- 弹窗 -->
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
       <div class="modal-top">
@@ -173,56 +87,33 @@
       <div class="tags" id="modalTags"></div>
     </div>
   </div>
-
 <script>
-// 确保所有元素加载完毕后执行，防止报错
 window.onload = function() {
-  
-  // 1. 基础数据
   var events = [
-    { year: "2016", title: "初代剑仙上线：大招吸血 50%", category: "初代剑仙", summary: "2016年3月1日，李白正式登陆峡谷。初代大招“青莲剑歌”拥有高达50%的吸血比例。", detail: "李白上线即巅峰。被动普攻四下解锁大招，配合一技能位移，大招50%吸血让他残血进场、满血离场。", tags: ["2016.3.1", "青莲剑歌", "50%吸血"] },
-    { year: "2016", title: "首次削弱：吸血降至 35%", category: "机制演变", summary: "上线仅一个多月，大招CD增加，吸血比例从50%下调至35%。", detail: "4月12日调整，三技能CD延长，吸血比例降至35%。标志着“一招回满血”时代终结。", tags: ["2016.4.12", "削弱", "CD增加"] },
-    { year: "2016", title: "吸血机制移除：大招不再回血", category: "机制演变", summary: "2016年6月，李白大招的吸血能力被彻底移除。从此大招不再提供生命回复。", detail: "李白必须依靠装备维持续航，定位从“吸血战士”被迫转向“纯爆发刺客”。", tags: ["2016.6", "吸血移除"] },
-    { year: "2016", title: "首款史诗皮肤：千年之狐", category: "皮肤纪年", summary: "2016年5月1日，首款高级皮肤“千年之狐”上线，青丘狐灵主题成为一代经典。", detail: "李白的第一款史诗皮肤，独特的语音与特效，是许多国服李白的情怀之选。", tags: ["千年之狐", "史诗"] },
-    { year: "2017", title: "鸡年限定：凤求凰", category: "皮肤纪年", summary: "2017年1月27日，传说限定皮肤“凤求凰”上线。仙侠主题与李白的气质完美契合。", detail: "仙气飘飘的造型、清脆的打击音效，让它在多年后依然是李白人气的顶峰皮肤之一。", tags: ["凤求凰", "传说限定"] },
-    { year: "2017", title: "核心机制削弱：大招多目标伤害衰减", category: "机制演变", summary: "2017年3月，大招对2个目标造成85%伤害，3个及以上造成70%。", detail: "加入伤害衰减后，李白在人群中的AOE爆发被显著限制，必须更精准地选择切入角度。", tags: ["2017.3.30", "大招衰减"] },
-    { year: "2018", title: "全面加强：技能伤害结构调整", category: "机制演变", summary: "2018年9月，李白迎来大幅加强，技能伤害引入额外AD加成。", detail: "鼓励玩家通过装备堆叠攻击力，让李白在沉寂后重回打野梯队中上游。", tags: ["2018.9.4", "加强", "额外AD"] },
-    { year: "2021", title: "首款荣耀典藏：鸣剑·曳影", category: "皮肤纪年", summary: "2021年2月11日，首款荣耀典藏皮肤“鸣剑·曳影”上线。剑身随装备改变形态。", detail: "科技与古典剑侠融合。最独特设计是“剑随装变”，影子在原地舞剑，国服李白公认手感最佳。", tags: ["鸣剑·曳影", "荣耀典藏"] },
-    { year: "2022", title: "世冠传说：诗剑行", category: "皮肤纪年", summary: "2022年12月24日，世冠专属传说皮肤“诗剑行”上线。水墨山水与书法武侠。", detail: "水墨书法元素融入特效，诗句飘落搭配竹笛音效，整体气质清雅写意。", tags: ["诗剑行", "世冠", "水墨"] },
-    { year: "2024", title: "无双品质：碎月剑心", category: "皮肤纪年", summary: "2024年1月，无双品质皮肤“碎月剑心”上线。大招双形态、发尾金色流光。", detail: "特效层次和操作手感达到新高度，反手持剑动作让“剑仙”气质更凌厉。", tags: ["碎月剑心", "无双"] },
-    { year: "2024", title: "中秋限定：谪仙醉月", category: "皮肤纪年", summary: "2024年9月24日，中秋主题皮肤“谪仙醉月”上线。醉剑诗意，限时498点券。", detail: "醉意朦胧的视觉风格与“但愿长醉不复醒”的台词意境呼应，性价比高。", tags: ["谪仙醉月", "中秋"] },
-    { year: "2026", title: "机制重做：无相取代概率闪避", category: "机制演变", summary: "2026年，二技能迎来重做。概率闪避改为稳定触发的“无相”效果：必定格挡一次伤害。", detail: "老版二技能被戏称为“买彩票”。新版“无相”将不确定性移除，无论伤害高低，格挡后清空。改版后李白主动放弃率骤降，策划将李白拉回“技术型刺客”轨道。", tags: ["2026", "无相", "机制重做"] },
-    { year: "文化", title: "文化符号：十步杀一人", category: "文化符号", summary: "“十步杀一人，千里不留行”成为一代玩家的集体记忆。", detail: "王者荣耀的李白让传统诗词在峡谷中获得了新的生命力，那个“一篇诗，一斗酒”的青莲剑仙，始终是最具辨识度的文化形象。", tags: ["台词", "文化"] }
+    { year: "2024", title: "苦情巨树，花开峡谷：联动惊艳亮相", category: "联动上线", summary: "2024年8月，涂山红红作为少司缘的史诗限定联动皮肤正式登场，高度还原了狐妖之王的经典形象。", detail: "皮肤以涂山之主形象为蓝本，融入了苦情树花暗纹、涂山玉佩等标志性元素。技能特效巧妙结合了绝缘之爪与纯质阳炎，音效中隐藏的狐啼与铃铛声，让每一次技能释放都充满了原作的情怀。[reference:14]", tags: ["2024.8", "狐妖小红娘", "史诗限定"] },
+    { year: "2024", title: "获取方式与价格", category: "联动上线", summary: "通过“长情相思”活动获取，最低488点券，首周优惠710点券，之后恢复888点券直售。", detail: "活动期间（8月10日-8月25日）参与“长情相思”活动，即可最低以488点券的价格获取皮肤。8月26日起上架商城，首周优惠价710点券，9月2日后恢复888点券。同时，与东方月初皮肤的组合礼包价为1243点券。[reference:15][reference:16]", tags: ["488点券", "710点券", "888点券"] },
+    { year: "2025", title: "联动第二弹，限时返场", category: "返场记录", summary: "随着《狐妖小红娘》第二弹联动开启，涂山红红皮肤于2025年8月28日首次限时返场。", detail: "第二弹联动带来了干将莫邪、公孙离等新皮肤，同时也让第一弹的涂山红红与东方月初得以限时返场，满足了错过首次活动的玩家。[reference:17][reference:18]", tags: ["2025.8.28", "首次返场", "第二弹联动"] },
+    { year: "2026", title: "七夕祈愿返场", category: "返场记录", summary: "2026年七夕期间，涂山红红皮肤通过端外祈愿活动再次返场，获取成本预估约2000点券。", detail: "本次返场并非直售，而是通过祈愿抽奖的形式，成本相比首次上线时高出不少。尽管如此，作为高人气的联动皮肤，依然吸引了大量玩家。[reference:19][reference:20]", tags: ["2026七夕", "祈愿返场", "约2000点券"] },
+    { year: "2026", title: "英雄核心调整：定位转变", category: "英雄调整", summary: "2026年8月，体验服对少司缘进行核心调整，其定位从“偏刺客的开团辅助”转向“功能性保护辅助”。", detail: "改动主要包括：被动金币收益前期大幅降低，但二技能在击杀和助攻时都能100%取回金币，加速中后期经济。同时，技能伤害结构改变，回复能力显著加强，AP加成提升。这次调整旨在强化少司缘保护队友的能力，降低其进攻性。[reference:21]", tags: ["2026.8", "体验服", "定位转变"] },
+    { year: "文化", title: "文化符号：涂山，我罩的", category: "文化符号", summary: "“雁过拔毛，兽走留皮，涂山，我罩的，懂？”等经典台词，让涂山红红的形象超越了皮肤本身。", detail: "涂山红红皮肤拥有大量原作经典台词，如“狐妖之力，源于至情；情之所至，力之所生”，“我就是我，涂山红红！”，以及霸气的“涂山，我罩的，懂？”。这些台词配合皮肤，将涂山红红作为狐妖之王的霸气与深情，完整地呈现在了峡谷之中。[reference:22]", tags: ["台词", "文化符号", "涂山我罩的"] }
   ];
 
   var timelineEl = document.getElementById("timeline");
   var toolbarEl = document.getElementById("toolbar");
   var backdrop = document.getElementById("modalBackdrop");
   var closeBtn = document.getElementById("closeBtn");
-
   var activeCategory = "全部";
   var categories = ["全部"];
-
-  // 提取分类
   for (var i = 0; i < events.length; i++) {
-    var cat = events[i].category;
-    var exists = false;
-    for (var j = 0; j < categories.length; j++) {
-      if (categories[j] === cat) { exists = true; break; }
-    }
-    if (!exists) categories.push(cat);
+    if (categories.indexOf(events[i].category) === -1) categories.push(events[i].category);
   }
-
-  // 渲染筛选按钮
   function renderFilters() {
     var html = "";
     for (var i = 0; i < categories.length; i++) {
       var cat = categories[i];
-      var active = (cat === activeCategory) ? " active" : "";
-      html += '<button class="filter-btn' + active + '" data-cat="' + cat + '">' + cat + '</button>';
+      html += '<button class="filter-btn' + (cat === activeCategory ? ' active' : '') + '" data-cat="' + cat + '">' + cat + '</button>';
     }
     toolbarEl.innerHTML = html;
-    
     var btns = toolbarEl.getElementsByTagName("button");
     for (var k = 0; k < btns.length; k++) {
       btns[k].onclick = function() {
@@ -232,149 +123,18 @@ window.onload = function() {
       };
     }
   }
-
-  // 渲染时间线
   function renderTimeline() {
     var html = "";
     for (var i = 0; i < events.length; i++) {
       var e = events[i];
       if (activeCategory !== "全部" && e.category !== activeCategory) continue;
-
       var tagHtml = "";
-      for (var t = 0; t < e.tags.length; t++) {
-        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
-      }
-
-      html += '<article class="item">' +
-                '<div class="card" data-index="' + i + '">' +
-                  '<span class="year">' + e.year + '</span>' +
-                  '<h2>' + e.title + '</h2>' +
-                  '<p>' + e.summary + '</p>' +
-                  '<div class="tags">' + tagHtml + '</div>' +
-                  '<span class="hint">点击查看详情 →</span>' +
-                '</div>' +
-              '</article>';
+      for (var t = 0; t < e.tags.length; t++) tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+      html += '<article class="item"><div class="card" data-index="' + i + '"><span class="year">' + e.year + '</span><h2>' + e.title + '</h2><p>' + e.summary + '</p><div class="tags">' + tagHtml + '</div><span class="hint">点击查看详情 →</span></div></article>';
     }
     timelineEl.innerHTML = html;
-
-    // 绑定点击弹窗
     var cards = timelineEl.getElementsByClassName("card");
     for (var c = 0; c < cards.length; c++) {
       cards[c].onclick = function() {
         var idx = parseInt(this.getAttribute("data-index"), 10);
-        var e = events[idx];
         
-        document.getElementById("modalYear").innerText = e.year;
-        document.getElementById("modalTitle").innerText = e.title;
-        document.getElementById("modalDetail").innerText = e.detail;
-        
-        var modalTagHtml = "";
-        for (var t = 0; t < e.tags.length; t++) {
-          modalTagHtml += '<span class="tag">' + e.tags[t] + '</span>';
-        }
-        document.getElementById("modalTags").innerHTML = modalTagHtml;
-        
-        backdrop.className = "modal-backdrop show";
-      };
-    }
-  }
-
-  // 关闭弹窗事件
-  closeBtn.onclick = function() {
-    backdrop.className = "modal-backdrop";
-  };
-  backdrop.onclick = function(e) {
-    if (e.target === backdrop) backdrop.className = "modal-backdrop";
-  };
-
-  // 初始化页面
-  renderFilters();
-  renderTimeline();
-
-
-  /* ========== 青莲剑歌 Canvas 背景 ========== */
-  try {
-    var canvas = document.getElementById("bgCanvas");
-    if (canvas && canvas.getContext) {
-      var ctx = canvas.getContext("2d");
-      var W = window.innerWidth;
-      var H = window.innerHeight;
-      canvas.width = W;
-      canvas.height = H;
-      
-      var petals = [];
-      var auras = [];
-      
-      // 初始化花瓣
-      for (var i = 0; i < 40; i++) {
-        petals.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 2 + 1,
-          vy: Math.random() * 1.5 + 0.5,
-          alpha: Math.random() * 0.5 + 0.2
-        });
-      }
-      
-      // 初始化剑气
-      for (var i = 0; i < 10; i++) {
-        auras.push({
-          x: Math.random() * W - 200,
-          y: Math.random() * H - 200,
-          speed: Math.random() * 6 + 10,
-          length: Math.random() * 100 + 80,
-          alpha: Math.random() * 0.4 + 0.1
-        });
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        
-        // 画花瓣
-        for (var i = 0; i < petals.length; i++) {
-          var p = petals[i];
-          p.y += p.vy;
-          if (p.y > H) { p.y = -10; p.x = Math.random() * W; }
-          ctx.fillStyle = "rgba(0, 255, 204, " + p.alpha + ")";
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        
-        // 画剑气（45度右下）
-        for (var j = 0; j < auras.length; j++) {
-          var s = auras[j];
-          s.x += s.speed;
-          s.y += s.speed;
-          
-          if (s.x > W + 100 || s.y > H + 100) {
-            s.x = -200;
-            s.y = Math.random() * H - 200;
-          }
-          
-          var tx = s.x - s.length;
-          var ty = s.y - s.length;
-          
-          var grad = ctx.createLinearGradient(s.x, s.y, tx, ty);
-          grad.addColorStop(0, "rgba(164, 255, 236, " + s.alpha + ")");
-          grad.addColorStop(1, "rgba(0, 255, 204, 0)");
-          
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y);
-          ctx.lineTo(tx, ty);
-          ctx.stroke();
-        }
-        
-        requestAnimationFrame(draw);
-      }
-      draw();
-    }
-  } catch(e) {
-    // 静默失败，不影响页面内容
-  }
-};
-</script>
-</body>
-</html>
