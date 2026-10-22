@@ -6,12 +6,11 @@
 <title>王者荣耀 · 涂山红红发展史</title>
 <style>
   :root {
-    --bg-color: #050202;   /* 极暗底色 */
     --text: #fcf3f3;
-    --muted: #d1baba;      /* 柔和的辅助文字色 */
-    --accent: #ff4d4d;     /* 纯质阳炎 */
-    --gold: #f2c76e;       /* 苦情树金 */
-    --card-bg: rgba(18, 8, 8, 0.65); /* 配合毛玻璃的底色 */
+    --muted: #d1baba;      
+    --accent: #ff4d4d;     
+    --gold: #f2c76e;       
+    --card-bg: rgba(18, 8, 8, 0.7); 
   }
   
   * { box-sizing: border-box; }
@@ -19,89 +18,77 @@
   body {
     margin: 0; padding: 0; min-height: 100vh; color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background-color: var(--bg-color);
+    background-color: #050202; /* 最低底色 */
     overflow-x: hidden;
   }
 
-  /* === 背景图片与遮罩 (移动端兼容版) === */
+  /* === 修复：背景图片层 === */
   .bg-image-wrapper {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -2;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1; /* 正向层级，防止被 body 遮挡 */
     background-image: url('bg.jpg');
     background-size: cover;
-    background-position: center center;
+    background-position: center;
     background-repeat: no-repeat;
   }
   
-  /* 背景暗色滤镜层 */
+  /* === 修复：暗色遮罩层 === */
   .bg-mask {
     position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -1;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2; /* 盖在图片上面 */
     background: linear-gradient(180deg, rgba(5,2,2,0.6) 0%, rgba(5,2,2,0.85) 50%, rgba(5,2,2,0.95) 100%);
-    backdrop-filter: blur(3px); /* 让猫咪背景微微模糊，突出前景 */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
-  /* 自定义滚动条 */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255, 77, 77, 0.3); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-
-  /* 背景 Canvas (狐火特效层) */
+  /* === 修复：特效和内容层 === */
   #bgCanvas {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 0; display: block; pointer-events: none;
-    opacity: 0.6; /* 降低透明度，防止干扰阅读 */
+    z-index: 3; 
+    display: block; pointer-events: none;
+    opacity: 0.7;
   }
 
-  /* 顶部血月氛围光 */
   .moon {
     position: fixed; top: 0; left: 50%; transform: translateX(-50%);
     width: 400px; height: 400px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 77, 77, 0.12) 0%, transparent 70%);
-    z-index: 0; pointer-events: none;
+    background: radial-gradient(circle, rgba(255, 77, 77, 0.15) 0%, transparent 70%);
+    z-index: 3; pointer-events: none;
   }
 
-  /* 布局容器 */
   .wrap {
-    position: relative; z-index: 1; width: 92%; max-width: 1000px;
+    position: relative; 
+    z-index: 4; /* 最高层，确保文字不被挡 */
+    width: 92%; max-width: 1000px;
     margin: 0 auto; padding: 60px 0 100px;
   }
   
-  /* 头部 */
+  /* 头部与标题 */
   header { text-align: center; margin-bottom: 50px; }
   .eyebrow {
     display: inline-block; padding: 8px 20px; border: 1px solid rgba(242, 199, 110, 0.4); 
-    border-radius: 30px; color: var(--gold); font-size: 13px; background: rgba(10, 4, 4, 0.5); 
+    border-radius: 30px; color: var(--gold); font-size: 13px; background: rgba(10, 4, 4, 0.6); 
     margin-bottom: 20px; letter-spacing: 2px; backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(242, 199, 110, 0.1);
   }
   h1 {
     margin: 0 0 16px; font-size: 40px; letter-spacing: 3px; line-height: 1.2;
-    /* 动态流光渐变文字 */
     background: linear-gradient(90deg, #ffffff, #ffb3b3, #ff4d4d, #f2c76e, #ffb3b3, #ffffff);
     background-size: 200% auto;
     -webkit-background-clip: text; background-clip: text; color: transparent;
     animation: textFlow 6s linear infinite;
-    text-shadow: 0 4px 20px rgba(255, 77, 77, 0.3);
   }
   @keyframes textFlow { to { background-position: 200% center; } }
-  
-  .subtitle { 
-    max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; 
-    font-size: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
-  }
+  .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 15px; }
 
   /* 筛选栏 */
   .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px 0 56px; }
   .filter-btn {
-    border: 1px solid rgba(255, 77, 77, 0.3); background: rgba(15, 5, 5, 0.6);
+    border: 1px solid rgba(255, 77, 77, 0.3); background: rgba(15, 5, 5, 0.7);
     color: var(--muted); padding: 10px 20px; border-radius: 30px; cursor: pointer; 
     font-size: 14px; transition: all 0.3s ease; backdrop-filter: blur(10px);
   }
-  .filter-btn:hover { border-color: var(--accent); color: #fff; transform: translateY(-2px); }
   .filter-btn.active {
     color: #fff; background: linear-gradient(135deg, #cc0000, #ff4d4d); border-color: transparent; 
     font-weight: bold; box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4); transform: scale(1.05);
@@ -120,43 +107,33 @@
     opacity: 0; transform: translateY(30px); animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   }
   .item:nth-child(even) { margin-left: 50%; padding: 0 0 45px 45px; }
-  
   @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
   
-  /* 时间线节点 */
   .item::before {
     content: ""; position: absolute; top: 24px; right: -8px; width: 16px; height: 16px; border-radius: 50%;
     background: #1a0808; border: 3px solid var(--accent); z-index: 2;
-    box-shadow: 0 0 15px rgba(255, 77, 77, 0.8), inset 0 0 8px rgba(255,255,255,0.5);
-    transition: all 0.4s ease;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
   }
   .item:nth-child(even)::before { right: auto; left: -8px; }
-  .item:hover::before { background: var(--accent); box-shadow: 0 0 30px rgba(255, 77, 77, 1); transform: scale(1.2); }
 
-  /* 卡片 (毛玻璃质感) */
+  /* 卡片 */
   .card {
     cursor: pointer; border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 18px;
     background: var(--card-bg); padding: 26px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   }
-  .card::after {
-    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(255, 77, 77, 0.8), transparent);
-    opacity: 0; transition: opacity 0.4s;
-  }
   .card:hover { 
     border-color: rgba(255, 77, 77, 0.5); background: rgba(26, 10, 10, 0.85); 
-    transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 77, 77, 0.15); 
+    transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); 
   }
-  .card:hover::after { opacity: 1; }
   
   .year { 
     display: inline-block; font-size: 14px; font-weight: bold; color: var(--gold); 
     margin-bottom: 12px; letter-spacing: 1px; background: rgba(242, 199, 110, 0.1);
     padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(242, 199, 110, 0.3);
   }
-  .card h2 { margin: 0 0 14px; font-size: 21px; line-height: 1.4; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+  .card h2 { margin: 0 0 14px; font-size: 21px; line-height: 1.4; color: #fff; }
   .card p { margin: 0; color: var(--muted); line-height: 1.75; font-size: 14px; }
   
   .tags { margin-top: 18px; }
@@ -164,64 +141,46 @@
     display: inline-block; font-size: 12px; color: var(--accent); 
     border: 1px solid rgba(255, 77, 77, 0.35); background: rgba(255, 77, 77, 0.1); 
     padding: 5px 12px; border-radius: 14px; margin-right: 8px; margin-bottom: 8px;
-    transition: all 0.3s;
   }
-  .card:hover .tag { background: rgba(255, 77, 77, 0.2); border-color: rgba(255, 77, 77, 0.6); }
-  
-  .hint { 
-    display: block; margin-top: 18px; color: rgba(255, 77, 77, 0.6); font-size: 13px; 
-    text-align: right; transition: all 0.3s; font-weight: 500;
-  }
-  .card:hover .hint { color: var(--accent); transform: translateX(5px); }
+  .hint { display: block; margin-top: 18px; color: rgba(255, 77, 77, 0.7); font-size: 13px; text-align: right; }
 
   /* 弹窗 */
   .modal-backdrop { 
     position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
     z-index: 100; display: flex; align-items: center; justify-content: center;
     background: rgba(5, 1, 1, 0.9); opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    backdrop-filter: blur(5px);
   }
   .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-  
   .modal { 
     width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; 
     border: 1px solid rgba(255, 77, 77, 0.4); border-radius: 24px; 
     background: rgba(20, 8, 8, 0.95); padding: 35px; 
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 50px rgba(255, 77, 77, 0.2);
     transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     backdrop-filter: blur(15px);
   }
   .modal-backdrop.show .modal { transform: scale(1) translateY(0); }
-  
   .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 77, 0.2); padding-bottom: 18px; }
-  .modal-year { color: var(--gold); font-weight: bold; font-size: 18px; letter-spacing: 1px; }
+  .modal-year { color: var(--gold); font-weight: bold; font-size: 18px; }
   .close-btn { 
     border: 1px solid rgba(255, 77, 77, 0.4); background: rgba(255, 77, 77, 0.1); 
     color: var(--accent); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 22px; 
-    display: flex; align-items: center; justify-content: center; transition: all 0.3s;
   }
-  .close-btn:hover { background: var(--accent); color: #fff; transform: rotate(90deg) scale(1.1); box-shadow: 0 0 15px var(--accent); }
-  .modal h3 { margin: 0 0 18px; font-size: 26px; color: #fff; line-height: 1.4; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .modal h3 { margin: 0 0 18px; font-size: 26px; color: #fff; }
   .modal .detail { color: #d4c0c0; line-height: 2; font-size: 15.5px; white-space: pre-wrap; text-align: justify; }
-  .modal .tags { margin-top: 26px; border-top: 1px solid rgba(255, 77, 77, 0.2); padding-top: 20px; }
 
-  /* 手机端适配 */
   @media (max-width: 760px) {
     h1 { font-size: 30px; }
     .timeline::before { left: 14px; }
     .item, .item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 30px 40px; }
     .item::before, .item:nth-child(even)::before { left: 6px; right: auto; top: 24px; width: 14px; height: 14px; }
-    .card { padding: 22px; }
-    .card h2 { font-size: 19px; }
     .modal { padding: 28px; }
   }
 </style>
 </head>
 <body>
-  <!-- 背景图与滤镜层 -->
+  <!-- 背景图、遮罩、特效、内容 层级分明，互不干扰 -->
   <div class="bg-image-wrapper"></div>
   <div class="bg-mask"></div>
-  
   <div class="moon"></div>
   <canvas id="bgCanvas"></canvas>
 
@@ -250,7 +209,6 @@
 
 <script>
 window.onload = function() {
-  // 1. 基础数据
   var events = [
     { year: "2024", title: "苦情巨树，花开峡谷：联动惊艳亮相", category: "联动上线", summary: "2024年8月，涂山红红作为少司缘的史诗限定联动皮肤正式登场，高度还原了狐妖之王的经典形象。", detail: "皮肤以涂山之主形象为蓝本，融入了苦情树花暗纹、涂山玉佩等标志性元素。技能特效巧妙结合了绝缘之爪与纯质阳炎，音效中隐藏的狐啼与铃铛声，让每一次技能释放都充满了原作的情怀。", tags: ["2024.8", "狐妖小红娘", "史诗限定"] },
     { year: "2024", title: "获取方式与价格", category: "联动上线", summary: "通过“长情相思”活动获取，最低488点券，首周优惠710点券，之后恢复888点券直售。", detail: "活动期间（8月10日-8月25日）参与“长情相思”活动，即可最低以488点券的价格获取皮肤。8月26日起上架商城，首周优惠价710点券，9月2日后恢复888点券。同时，与东方月初皮肤的组合礼包价为1243点券。", tags: ["488点券", "710点券", "888点券"] },
@@ -342,8 +300,6 @@ window.onload = function() {
   renderFilters();
   renderTimeline();
 
-
-  /* ========== 高级 Canvas 粒子特效（苦情花瓣 + 纯质阳炎狐火） ========== */
   try {
     var canvas = document.getElementById("bgCanvas");
     if (canvas && canvas.getContext) {
@@ -351,31 +307,14 @@ window.onload = function() {
       var W = window.innerWidth, H = window.innerHeight;
       canvas.width = W; canvas.height = H;
       
-      var petals = []; 
-      var fires = [];  
+      var petals = [], fires = [];
       
       for (var i = 0; i < 20; i++) {
-        petals.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 2.5 + 1,
-          vy: Math.random() * 0.6 + 0.3,
-          vx: (Math.random() - 0.5) * 0.4,
-          angle: Math.random() * Math.PI * 2,
-          spin: (Math.random() - 0.5) * 0.04,
-          alpha: Math.random() * 0.4 + 0.1
-        });
+        petals.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.5 + 1, vy: Math.random() * 0.6 + 0.3, vx: (Math.random() - 0.5) * 0.4, angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.04, alpha: Math.random() * 0.4 + 0.1 });
       }
       
       for (var i = 0; i < 15; i++) {
-        fires.push({
-          x: Math.random() * W,
-          y: Math.random() * H,
-          r: Math.random() * 1.2 + 0.5,
-          vy: -(Math.random() * 1.2 + 0.4),
-          vx: (Math.random() - 0.5) * 0.2,
-          alpha: Math.random() * 0.6 + 0.1
-        });
+        fires.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + 0.5, vy: -(Math.random() * 1.2 + 0.4), vx: (Math.random() - 0.5) * 0.2, alpha: Math.random() * 0.6 + 0.1 });
       }
 
       function draw() {
@@ -413,7 +352,6 @@ window.onload = function() {
           ctx.arc(f.x, f.y, f.r * 5, 0, Math.PI * 2);
           ctx.fill();
         }
-        
         requestAnimationFrame(draw);
       }
       draw();
@@ -423,9 +361,7 @@ window.onload = function() {
         canvas.width = W; canvas.height = H;
       };
     }
-  } catch(e) {
-    console.log("特效加载失败，不影响主体功能");
-  }
+  } catch(e) {}
 };
 </script>
 </body>
