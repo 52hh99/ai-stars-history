@@ -6,11 +6,12 @@
 <title>王者荣耀 · 涂山红红发展史</title>
 <style>
   :root {
-    --bg: #0a0303;
-    --text: #f5e6e6;
-    --muted: #b08a8a;
-    --accent: #ff3333;
-    --gold: #d4af37;
+    --bg: #0a0404;         /* 极暗的深红黑底色 */
+    --text: #f5e6e6;       /* 暖白文字 */
+    --muted: #a88a8a;      /* 灰红辅助文字 */
+    --accent: #ff4d4d;     /* 纯质阳炎（亮橘红） */
+    --gold: #e6b85c;       /* 苦情树金 */
+    --card-bg: rgba(20, 8, 8, 0.85);
   }
   * { box-sizing: border-box; }
   body {
@@ -18,84 +19,211 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     background: var(--bg); overflow-x: hidden;
   }
-  #bgCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
-  .glow-a { position: fixed; width: 80vw; height: 80vw; left: -30vw; top: -30vw; background: radial-gradient(circle, rgba(255, 0, 0, 0.08) 0%, transparent 60%); z-index: 0; pointer-events: none; }
-  .glow-b { position: fixed; width: 70vw; height: 70vw; right: -20vw; bottom: -20vw; background: radial-gradient(circle, rgba(180, 0, 0, 0.06) 0%, transparent 60%); z-index: 0; pointer-events: none; }
-  .moon { position: fixed; top: 10%; left: 50%; transform: translateX(-50%); width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 0, 0, 0.15) 0%, rgba(200, 0, 0, 0.05) 40%, transparent 70%); box-shadow: 0 0 80px rgba(255, 0, 0, 0.1); z-index: 0; pointer-events: none; }
-  .wrap { position: relative; z-index: 1; width: 92%; max-width: 1120px; margin: 0 auto; padding: 50px 0 80px; }
-  header { text-align: center; margin-bottom: 34px; }
-  .eyebrow { display: inline-block; padding: 7px 14px; border: 1px solid rgba(255, 51, 51, 0.3); border-radius: 20px; color: var(--accent); font-size: 13px; background: rgba(255, 51, 51, 0.08); margin-bottom: 16px; }
-  h1 { margin: 0 0 12px; font-size: 36px; letter-spacing: 1px; line-height: 1.2; background: linear-gradient(90deg, #ffffff, #ff9999, #ff0000); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 20px rgba(255, 0, 0, 0.2); }
-  .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 14px; }
-  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px 0 42px; }
-  .filter-btn { border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(20, 5, 5, 0.8); color: var(--muted); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: 0.2s; }
-  .filter-btn:hover { border-color: rgba(255, 51, 51, 0.5); color: #fff; }
-  .filter-btn.active { color: #fff; background: linear-gradient(135deg, #cc0000, #ff3333); border-color: transparent; font-weight: bold; box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3); }
+  
+  /* 自定义滚动条 */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #4a1515; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* 背景 Canvas */
+  #bgCanvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; display: block; pointer-events: none;
+  }
+
+  /* 背景氛围光 */
+  .glow-a {
+    position: fixed; width: 90vw; height: 90vw; left: -30vw; top: -30vw;
+    background: radial-gradient(circle, rgba(255, 77, 77, 0.08) 0%, transparent 60%);
+    z-index: 0; pointer-events: none;
+  }
+  .glow-b {
+    position: fixed; width: 70vw; height: 70vw; right: -20vw; bottom: -20vw;
+    background: radial-gradient(circle, rgba(230, 184, 92, 0.05) 0%, transparent 60%);
+    z-index: 0; pointer-events: none;
+  }
+  
+  /* 中心血月 */
+  .moon {
+    position: fixed; top: 8%; left: 50%; transform: translateX(-50%);
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 77, 77, 0.15) 0%, rgba(200, 0, 0, 0.05) 40%, transparent 70%);
+    box-shadow: 0 0 100px rgba(255, 77, 77, 0.15);
+    z-index: 0; pointer-events: none;
+  }
+
+  /* 布局容器 */
+  .wrap {
+    position: relative; z-index: 1; width: 92%; max-width: 1100px;
+    margin: 0 auto; padding: 60px 0 80px;
+  }
+  
+  /* 头部 */
+  header { text-align: center; margin-bottom: 40px; }
+  .eyebrow {
+    display: inline-block; padding: 8px 16px; border: 1px solid rgba(230, 184, 92, 0.3); 
+    border-radius: 20px; color: var(--gold); font-size: 13px; background: rgba(230, 184, 92, 0.08); 
+    margin-bottom: 18px; letter-spacing: 1px;
+  }
+  h1 {
+    margin: 0 0 16px; font-size: 38px; letter-spacing: 2px; line-height: 1.2;
+    background: linear-gradient(90deg, #ffffff, #ffb3b3, #ff4d4d, #e6b85c);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+  }
+  .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 15px; }
+
+  /* 筛选栏 */
+  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 32px 0 48px; }
+  .filter-btn {
+    border: 1px solid rgba(255, 77, 77, 0.2); background: rgba(20, 5, 5, 0.8);
+    color: var(--muted); padding: 9px 18px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s ease;
+  }
+  .filter-btn:hover { border-color: rgba(255, 77, 77, 0.6); color: #fff; transform: translateY(-2px); }
+  .filter-btn.active {
+    color: #fff; background: linear-gradient(135deg, #cc0000, #ff4d4d); border-color: transparent; font-weight: bold;
+    box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
+  }
+
+  /* 时间线 */
   .timeline { position: relative; padding: 10px 0; }
-  .timeline::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%); background: linear-gradient(to bottom, transparent, rgba(255, 51, 51, 0.4) 10%, rgba(255, 51, 51, 0.1) 90%, transparent); }
-  .item { position: relative; width: 50%; padding: 0 40px 30px 0; }
-  .item:nth-child(even) { margin-left: 50%; padding: 0 0 30px 40px; }
-  .item::before { content: ""; position: absolute; top: 24px; right: -7px; width: 12px; height: 12px; border-radius: 50%; background: #0a0303; border: 2px solid var(--accent); z-index: 2; box-shadow: 0 0 10px rgba(255, 51, 51, 0.6); }
-  .item:nth-child(even)::before { right: auto; left: -7px; }
-  .card { cursor: pointer; border: 1px solid rgba(255, 51, 51, 0.15); border-radius: 12px; background: #140505; padding: 20px; transition: 0.2s; }
-  .card:hover { border-color: rgba(255, 51, 51, 0.5); background: #1a0808; }
-  .year { display: inline-block; font-size: 13px; font-weight: bold; color: var(--gold); margin-bottom: 8px; }
-  .card h2 { margin: 0 0 8px; font-size: 18px; line-height: 1.4; color: #fff; }
-  .card p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
-  .tags { margin-top: 12px; }
-  .tag { display: inline-block; font-size: 12px; color: var(--accent); border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(255, 51, 51, 0.05); padding: 2px 8px; border-radius: 10px; margin-right: 6px; margin-bottom: 6px; }
-  .hint { display: block; margin-top: 12px; color: rgba(255, 51, 51, 0.5); font-size: 12px; }
-  .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 50; display: none; background: rgba(10, 2, 2, 0.9); }
-  .modal-backdrop.show { display: block; }
-  .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; border: 1px solid rgba(255, 51, 51, 0.3); border-radius: 16px; background: #140505; padding: 24px; box-shadow: 0 10px 40px rgba(255, 0, 0, 0.15); }
-  .modal-top { margin-bottom: 14px; }
-  .modal-year { color: var(--gold); font-weight: bold; font-size: 14px; }
-  .close-btn { float: right; border: 1px solid rgba(255, 51, 51, 0.2); background: rgba(255, 51, 51, 0.05); color: var(--accent); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 18px; }
-  .close-btn:hover { background: rgba(255, 51, 51, 0.15); }
-  .modal h3 { margin: 0 0 14px; font-size: 22px; color: #fff; clear: both; }
-  .modal .detail { color: #d4c0c0; line-height: 1.8; font-size: 15px; white-space: pre-wrap; }
+  .timeline::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, rgba(255, 77, 77, 0.4) 10%, rgba(230, 184, 92, 0.2) 90%, transparent);
+  }
+  
+  .item {
+    position: relative; width: 50%; padding: 0 40px 40px 0;
+    opacity: 0; transform: translateY(30px); animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .item:nth-child(even) { margin-left: 50%; padding: 0 0 40px 40px; }
+  
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+  
+  /* 时间线节点 */
+  .item::before {
+    content: ""; position: absolute; top: 24px; right: -8px; width: 14px; height: 14px; border-radius: 50%;
+    background: #1a0808; border: 2px solid var(--accent); z-index: 2;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.8), inset 0 0 5px rgba(255,255,255,0.5);
+    transition: all 0.3s;
+  }
+  .item:nth-child(even)::before { right: auto; left: -8px; }
+  .item:hover::before { background: var(--accent); box-shadow: 0 0 25px rgba(255, 77, 77, 1); }
+
+  /* 卡片 */
+  .card {
+    cursor: pointer; border: 1px solid rgba(255, 77, 77, 0.15); border-radius: 16px;
+    background: var(--card-bg); padding: 24px; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 77, 77, 0.5), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card:hover { 
+    border-color: rgba(255, 77, 77, 0.4); background: rgba(30, 10, 10, 0.95); 
+    transform: translateY(-6px) scale(1.01); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 77, 77, 0.1); 
+  }
+  .card:hover::before { opacity: 1; }
+  
+  .year { display: inline-block; font-size: 14px; font-weight: bold; color: var(--gold); margin-bottom: 10px; letter-spacing: 1px; }
+  .card h2 { margin: 0 0 12px; font-size: 20px; line-height: 1.4; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .card p { margin: 0; color: var(--muted); line-height: 1.7; font-size: 14px; }
+  
+  .tags { margin-top: 16px; }
+  .tag { 
+    display: inline-block; font-size: 12px; color: var(--accent); 
+    border: 1px solid rgba(255, 77, 77, 0.25); background: rgba(255, 77, 77, 0.05); 
+    padding: 4px 10px; border-radius: 12px; margin-right: 8px; margin-bottom: 8px;
+    transition: all 0.2s;
+  }
+  .card:hover .tag { background: rgba(255, 77, 77, 0.1); }
+  .hint { display: block; margin-top: 16px; color: rgba(255, 77, 77, 0.6); font-size: 13px; text-align: right; transition: color 0.3s; }
+  .card:hover .hint { color: var(--accent); }
+
+  /* 弹窗 */
+  .modal-backdrop { 
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+    z-index: 100; display: flex; align-items: center; justify-content: center;
+    background: rgba(5, 1, 1, 0.85); opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+  
+  .modal { 
+    width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; 
+    border: 1px solid rgba(255, 77, 77, 0.3); border-radius: 20px; 
+    background: #140808; padding: 30px; 
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 77, 77, 0.1);
+    transform: scale(0.9) translateY(20px); transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .modal-backdrop.show .modal { transform: scale(1) translateY(0); }
+  
+  .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 77, 0.15); padding-bottom: 15px; }
+  .modal-year { color: var(--gold); font-weight: bold; font-size: 16px; letter-spacing: 1px; }
+  .close-btn { 
+    border: 1px solid rgba(255, 77, 77, 0.3); background: rgba(255, 77, 77, 0.1); 
+    color: var(--accent); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 20px; 
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .close-btn:hover { background: var(--accent); color: #fff; transform: rotate(90deg); }
+  .modal h3 { margin: 0 0 16px; font-size: 24px; color: #fff; line-height: 1.4; }
+  .modal .detail { color: #d4c0c0; line-height: 2; font-size: 15px; white-space: pre-wrap; text-align: justify; }
+  .modal .tags { margin-top: 24px; border-top: 1px solid rgba(255, 77, 77, 0.15); padding-top: 16px; }
+
+  /* 手机端适配 */
   @media (max-width: 760px) {
     h1 { font-size: 28px; }
-    .timeline::before { left: 10px; }
-    .item, .item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 24px 30px; }
-    .item::before, .item:nth-child(even)::before { left: 3px; right: auto; top: 20px; }
+    .timeline::before { left: 12px; }
+    .item, .item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 30px 36px; }
+    .item::before, .item:nth-child(even)::before { left: 4px; right: auto; top: 22px; width: 12px; height: 12px; }
+    .card { padding: 20px; }
+    .modal { padding: 24px; }
   }
 </style>
 </head>
 <body>
+  <!-- 背景元素 -->
   <div class="glow-a"></div>
   <div class="glow-b"></div>
   <div class="moon"></div>
   <canvas id="bgCanvas"></canvas>
+
   <main class="wrap">
     <header>
-      <div class="eyebrow">苦情树下，转世续缘</div>
+      <div class="eyebrow">苦情树下 · 转世续缘</div>
       <h1>王者荣耀 · 涂山红红发展史</h1>
       <p class="subtitle">少司缘联动皮肤编年史 · 从惊艳亮相，到英雄定位的全面转变。</p>
     </header>
+
     <div class="toolbar" id="toolbar"></div>
     <section class="timeline" id="timeline"></section>
   </main>
+
+  <!-- 弹窗 -->
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
       <div class="modal-top">
-        <button class="close-btn" id="closeBtn">×</button>
         <div class="modal-year" id="modalYear"></div>
+        <button class="close-btn" id="closeBtn">×</button>
       </div>
       <h3 id="modalTitle"></h3>
       <div class="detail" id="modalDetail"></div>
       <div class="tags" id="modalTags"></div>
     </div>
   </div>
+
 <script>
 window.onload = function() {
+  // 1. 基础数据
   var events = [
-    { year: "2024", title: "苦情巨树，花开峡谷：联动惊艳亮相", category: "联动上线", summary: "2024年8月，涂山红红作为少司缘的史诗限定联动皮肤正式登场，高度还原了狐妖之王的经典形象。", detail: "皮肤以涂山之主形象为蓝本，融入了苦情树花暗纹、涂山玉佩等标志性元素。技能特效巧妙结合了绝缘之爪与纯质阳炎，音效中隐藏的狐啼与铃铛声，让每一次技能释放都充满了原作的情怀。[reference:14]", tags: ["2024.8", "狐妖小红娘", "史诗限定"] },
-    { year: "2024", title: "获取方式与价格", category: "联动上线", summary: "通过“长情相思”活动获取，最低488点券，首周优惠710点券，之后恢复888点券直售。", detail: "活动期间（8月10日-8月25日）参与“长情相思”活动，即可最低以488点券的价格获取皮肤。8月26日起上架商城，首周优惠价710点券，9月2日后恢复888点券。同时，与东方月初皮肤的组合礼包价为1243点券。[reference:15][reference:16]", tags: ["488点券", "710点券", "888点券"] },
-    { year: "2025", title: "联动第二弹，限时返场", category: "返场记录", summary: "随着《狐妖小红娘》第二弹联动开启，涂山红红皮肤于2025年8月28日首次限时返场。", detail: "第二弹联动带来了干将莫邪、公孙离等新皮肤，同时也让第一弹的涂山红红与东方月初得以限时返场，满足了错过首次活动的玩家。[reference:17][reference:18]", tags: ["2025.8.28", "首次返场", "第二弹联动"] },
-    { year: "2026", title: "七夕祈愿返场", category: "返场记录", summary: "2026年七夕期间，涂山红红皮肤通过端外祈愿活动再次返场，获取成本预估约2000点券。", detail: "本次返场并非直售，而是通过祈愿抽奖的形式，成本相比首次上线时高出不少。尽管如此，作为高人气的联动皮肤，依然吸引了大量玩家。[reference:19][reference:20]", tags: ["2026七夕", "祈愿返场", "约2000点券"] },
-    { year: "2026", title: "英雄核心调整：定位转变", category: "英雄调整", summary: "2026年8月，体验服对少司缘进行核心调整，其定位从“偏刺客的开团辅助”转向“功能性保护辅助”。", detail: "改动主要包括：被动金币收益前期大幅降低，但二技能在击杀和助攻时都能100%取回金币，加速中后期经济。同时，技能伤害结构改变，回复能力显著加强，AP加成提升。这次调整旨在强化少司缘保护队友的能力，降低其进攻性。[reference:21]", tags: ["2026.8", "体验服", "定位转变"] },
-    { year: "文化", title: "文化符号：涂山，我罩的", category: "文化符号", summary: "“雁过拔毛，兽走留皮，涂山，我罩的，懂？”等经典台词，让涂山红红的形象超越了皮肤本身。", detail: "涂山红红皮肤拥有大量原作经典台词，如“狐妖之力，源于至情；情之所至，力之所生”，“我就是我，涂山红红！”，以及霸气的“涂山，我罩的，懂？”。这些台词配合皮肤，将涂山红红作为狐妖之王的霸气与深情，完整地呈现在了峡谷之中。[reference:22]", tags: ["台词", "文化符号", "涂山我罩的"] }
+    { year: "2024", title: "苦情巨树，花开峡谷：联动惊艳亮相", category: "联动上线", summary: "2024年8月，涂山红红作为少司缘的史诗限定联动皮肤正式登场，高度还原了狐妖之王的经典形象。", detail: "皮肤以涂山之主形象为蓝本，融入了苦情树花暗纹、涂山玉佩等标志性元素。技能特效巧妙结合了绝缘之爪与纯质阳炎，音效中隐藏的狐啼与铃铛声，让每一次技能释放都充满了原作的情怀。", tags: ["2024.8", "狐妖小红娘", "史诗限定"] },
+    { year: "2024", title: "获取方式与价格", category: "联动上线", summary: "通过“长情相思”活动获取，最低488点券，首周优惠710点券，之后恢复888点券直售。", detail: "活动期间（8月10日-8月25日）参与“长情相思”活动，即可最低以488点券的价格获取皮肤。8月26日起上架商城，首周优惠价710点券，9月2日后恢复888点券。同时，与东方月初皮肤的组合礼包价为1243点券。", tags: ["488点券", "710点券", "888点券"] },
+    { year: "2025", title: "联动第二弹，限时返场", category: "返场记录", summary: "随着《狐妖小红娘》第二弹联动开启，涂山红红皮肤于2025年8月28日首次限时返场。", detail: "第二弹联动带来了干将莫邪、公孙离等新皮肤，同时也让第一弹的涂山红红与东方月初得以限时返场，满足了错过首次活动的玩家。", tags: ["2025.8.28", "首次返场", "第二弹联动"] },
+    { year: "2026", title: "七夕祈愿返场", category: "返场记录", summary: "2026年七夕期间，涂山红红皮肤通过端外祈愿活动再次返场，获取成本预估约2000点券。", detail: "本次返场并非直售，而是通过祈愿抽奖的形式，成本相比首次上线时高出不少。尽管如此，作为高人气的联动皮肤，依然吸引了大量玩家。", tags: ["2026七夕", "祈愿返场", "约2000点券"] },
+    { year: "2026", title: "英雄核心调整：定位转变", category: "英雄调整", summary: "2026年8月，体验服对少司缘进行核心调整，其定位从“偏刺客的开团辅助”转向“功能性保护辅助”。", detail: "改动主要包括：被动金币收益前期大幅降低，但二技能在击杀和助攻时都能100%取回金币，加速中后期经济。同时，技能伤害结构改变，回复能力显著加强，AP加成提升。这次调整旨在强化少司缘保护队友的能力，降低其进攻性。", tags: ["2026.8", "体验服", "定位转变"] },
+    { year: "文化", title: "文化符号：涂山，我罩的", category: "文化符号", summary: "“雁过拔毛，兽走留皮，涂山，我罩的，懂？”等经典台词，让涂山红红的形象超越了皮肤本身。", detail: "涂山红红皮肤拥有大量原作经典台词，如“狐妖之力，源于至情；情之所至，力之所生”，“我就是我，涂山红红！”，以及霸气的“涂山，我罩的，懂？”。这些台词配合皮肤，将涂山红红作为狐妖之王的霸气与深情，完整地呈现在了峡谷之中。", tags: ["台词", "文化符号", "涂山我罩的"] }
   ];
 
   var timelineEl = document.getElementById("timeline");
@@ -104,9 +232,11 @@ window.onload = function() {
   var closeBtn = document.getElementById("closeBtn");
   var activeCategory = "全部";
   var categories = ["全部"];
+
   for (var i = 0; i < events.length; i++) {
     if (categories.indexOf(events[i].category) === -1) categories.push(events[i].category);
   }
+
   function renderFilters() {
     var html = "";
     for (var i = 0; i < categories.length; i++) {
@@ -123,18 +253,161 @@ window.onload = function() {
       };
     }
   }
+
   function renderTimeline() {
     var html = "";
+    var count = 0;
     for (var i = 0; i < events.length; i++) {
       var e = events[i];
       if (activeCategory !== "全部" && e.category !== activeCategory) continue;
+      
       var tagHtml = "";
-      for (var t = 0; t < e.tags.length; t++) tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
-      html += '<article class="item"><div class="card" data-index="' + i + '"><span class="year">' + e.year + '</span><h2>' + e.title + '</h2><p>' + e.summary + '</p><div class="tags">' + tagHtml + '</div><span class="hint">点击查看详情 →</span></div></article>';
+      for (var t = 0; t < e.tags.length; t++) {
+        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+      }
+      
+      var delay = Math.min(count * 100, 800); // 错峰入场动画
+      
+      html += '<article class="item" style="animation-delay: ' + delay + 'ms;">' +
+                '<div class="card" data-index="' + i + '">' +
+                  '<span class="year">' + e.year + '</span>' +
+                  '<h2>' + e.title + '</h2>' +
+                  '<p>' + e.summary + '</p>' +
+                  '<div class="tags">' + tagHtml + '</div>' +
+                  '<span class="hint">点击阅读详情 →</span>' +
+                '</div>' +
+              '</article>';
+      count++;
     }
     timelineEl.innerHTML = html;
+
     var cards = timelineEl.getElementsByClassName("card");
     for (var c = 0; c < cards.length; c++) {
       cards[c].onclick = function() {
         var idx = parseInt(this.getAttribute("data-index"), 10);
+        var e = events[idx];
         
+        document.getElementById("modalYear").innerText = e.year;
+        document.getElementById("modalTitle").innerText = e.title;
+        document.getElementById("modalDetail").innerText = e.detail;
+        
+        var modalTagHtml = "";
+        for (var t = 0; t < e.tags.length; t++) {
+          modalTagHtml += '<span class="tag">' + e.tags[t] + '</span>';
+        }
+        document.getElementById("modalTags").innerHTML = modalTagHtml;
+        
+        backdrop.className = "modal-backdrop show";
+      };
+    }
+  }
+
+  closeBtn.onclick = function() { backdrop.className = "modal-backdrop"; };
+  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.className = "modal-backdrop"; };
+
+  renderFilters();
+  renderTimeline();
+
+
+  /* ========== 高级 Canvas 粒子特效（苦情花瓣 + 纯质阳炎狐火） ========== */
+  try {
+    var canvas = document.getElementById("bgCanvas");
+    if (canvas && canvas.getContext) {
+      var ctx = canvas.getContext("2d");
+      var W = window.innerWidth, H = window.innerHeight;
+      canvas.width = W; canvas.height = H;
+      
+      var petals = []; // 花瓣
+      var fires = [];  // 狐火
+      
+      // 初始化花瓣（缓缓飘落）
+      for (var i = 0; i < 30; i++) {
+        petals.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 3 + 1.5,
+          vy: Math.random() * 0.8 + 0.4,
+          vx: (Math.random() - 0.5) * 0.5,
+          angle: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.05,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+      
+      // 初始化狐火（向上飘散）
+      for (var i = 0; i < 25; i++) {
+        fires.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          vy: -(Math.random() * 1.5 + 0.5), // 负值向上
+          vx: (Math.random() - 0.5) * 0.3,
+          alpha: Math.random() * 0.8 + 0.2
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        
+        // 1. 画花瓣（暗金色）
+        for (var i = 0; i < petals.length; i++) {
+          var p = petals[i];
+          p.y += p.vy; 
+          p.x += p.vx;
+          p.angle += p.spin;
+          
+          if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+          if (p.x < -20) p.x = W + 20;
+          if (p.x > W + 20) p.x = -20;
+          
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = "rgba(230, 184, 92, " + (p.alpha * 0.6) + ")"; // 苦情树金
+          ctx.beginPath();
+          // 用椭圆模拟花瓣
+          ctx.ellipse(0, 0, p.r * 1.5, p.r, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+        
+        // 2. 画狐火（亮橘红/纯质阳炎）
+        for (var j = 0; j < fires.length; j++) {
+          var f = fires[j];
+          f.y += f.vy;
+          f.x += f.vx;
+          
+          if (f.y < -20) { 
+            f.y = H + 20; 
+            f.x = Math.random() * W; 
+          }
+          
+          // 狐火发光效果
+          var grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 4);
+          grad.addColorStop(0, "rgba(255, 77, 77, " + f.alpha + ")");
+          grad.addColorStop(0.5, "rgba(255, 150, 50, " + (f.alpha * 0.5) + ")");
+          grad.addColorStop(1, "rgba(255, 77, 77, 0)");
+          
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r * 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        requestAnimationFrame(draw);
+      }
+      draw();
+      
+      // 窗口尺寸改变时重设
+      window.onresize = function() {
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = W; canvas.height = H;
+      };
+    }
+  } catch(e) {
+    console.log("特效加载失败，不影响主体功能");
+  }
+};
+</script>
+</body>
+</html>
