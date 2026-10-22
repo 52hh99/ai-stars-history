@@ -1,30 +1,148 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#080e20"><title>轨道引力实验室</title><style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080e20;color:#eaf3ff;font-family:system-ui,sans-serif}#space{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}.top{position:fixed;z-index:2;top:12px;left:14px;pointer-events:none;text-shadow:0 2px 14px #000}h1{font-size:clamp(18px,4vw,25px);margin:0;font-weight:800}.sub{font-size:12px;color:#b2c7e9;margin-top:4px}.hud{position:fixed;z-index:2;left:12px;top:76px;display:flex;gap:7px;flex-wrap:wrap;pointer-events:none}.pill{background:#101b31d9;border:1px solid #334866;border-radius:999px;padding:6px 10px;font-size:11px}.panel{position:fixed;z-index:3;left:10px;right:10px;bottom:10px;max-height:47vh;overflow:auto;border:1px solid #304362;border-radius:18px;background:#0b1326f2;padding:12px;backdrop-filter:blur(14px)}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row+.row{margin-top:10px}button,select{font:inherit;color:#eaf3ff;background:#1a2945;border:1px solid #3b5274;border-radius:11px;padding:9px 11px;min-height:38px}button:active{transform:scale(.98)}button.primary{background:#1e526c;border-color:#55c6e8}button.danger{background:#482b3a;border-color:#78445c}label{font-size:12px;color:#b4c9e9;display:flex;align-items:center;gap:8px;flex:1;min-width:135px}.control{flex:1;min-width:130px}.head{display:flex;justify-content:space-between;font-size:12px;color:#b4c9e9;margin-bottom:4px}input[type=range]{width:100%;accent-color:#72e3ff}.help{font-size:11px;color:#a6bad9;line-height:1.5;margin-top:9px}#toast{position:fixed;z-index:4;left:50%;top:45%;transform:translate(-50%,-50%);padding:10px 14px;border-radius:12px;background:#0c1b2be8;border:1px solid #4d7b9c;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%;text-align:center}@media(min-width:760px){.panel{left:14px;right:auto;bottom:14px;width:370px;max-height:calc(100vh - 135px)}}
-</style></head><body><canvas id="space"></canvas><header class="top"><h1>轨道引力实验室</h1><div class="sub">拖动发射天体 · 观察引力弹射、轨道与碰撞</div></header><div class="hud"><span class="pill" id="count">天体：0</span><span class="pill" id="energy">G = 1.0</span></div><div id="toast"></div><section class="panel"><div class="row"><button id="pause" class="primary">暂停</button><button id="clear" class="danger">清除全部</button><button id="seed">生成轨道示例</button></div><div class="row"><div class="control"><div class="head"><span>时间尺度</span><b id="timeVal">1.0×</b></div><input id="timeScale" type="range" min=".1" max="3" step=".1" value="1"></div><div class="control"><div class="head"><span>引力强度</span><b id="gravVal">1.0</b></div><input id="gravity" type="range" min=".2" max="2" step=".1" value="1"></div></div><div class="row"><label>质量预设<select id="mass"><option value=".7">小行星 · 轻</option><option value="1.5" selected>行星 · 中</option><option value="3.2">超级行星 · 重</option><option value="6">巨型天体 · 极重</option></select></label><label>轨迹长度<select id="trail"><option value="100">短</option><option value="260" selected>中</option><option value="520">长</option></select></label></div><div class="row"><button id="trails" class="primary">轨迹：开</button><button id="helpBtn">操作说明</button></div><div class="help">在空白处按住并拖动：松开时发射行星。拖动方向与抛出速度相反（像拉弓）；拖得越长，初速度越大。靠近天体会被引力弯曲，接触时合并碰撞。建议先点“生成轨道示例”。</div></section>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#050914">
+<title>蓝色星球 · 3D 地球仪</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050914;color:#edf7ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#globe{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 35%,#03061066 75%,#02040bd9 130%);z-index:1}
+.top{position:fixed;z-index:3;left:18px;top:18px;pointer-events:none;text-shadow:0 2px 18px #000}
+.kicker{font-size:10px;letter-spacing:.24em;color:#8be9ff;font-weight:700}.title{font-size:clamp(22px,4vw,34px);font-weight:750;letter-spacing:.02em;margin-top:4px}.desc{font-size:12px;color:#9fb7d2;margin-top:5px}
+.status{position:fixed;z-index:3;left:18px;top:105px;display:flex;gap:8px;align-items:center;font-size:11px;color:#a9c6df}.dot{width:6px;height:6px;border-radius:50%;background:#69e7ff;box-shadow:0 0 12px #69e7ff}
+.panel{position:fixed;z-index:4;right:16px;top:16px;bottom:16px;width:min(300px,calc(100vw - 32px));border:1px solid #8dcff52b;border-radius:22px;background:linear-gradient(150deg,#0b1935d9,#071021df);box-shadow:0 18px 60px #0008;backdrop-filter:blur(18px);padding:16px;display:flex;flex-direction:column;overflow:hidden}
+.panelHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.panelTitle{font-size:14px;font-weight:700;letter-spacing:.04em}.eyebrow{font-size:10px;color:#7f9cb9;letter-spacing:.14em;margin-top:4px}
+.iconBtn,button{color:#e7f7ff;background:#112746;border:1px solid #3b6787;border-radius:12px;padding:9px 11px;font:inherit;cursor:pointer}.iconBtn{padding:6px 10px}.iconBtn:active,button:active{transform:scale(.98)}
+.places{overflow:auto;margin:15px -5px 12px;padding:0 5px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
+.place{display:flex;align-items:center;gap:11px;text-align:left;width:100%;background:#0d1b30a8;border:1px solid #26435c;border-radius:14px;padding:10px;transition:background .2s,border-color .2s}
+.place.active{background:#173c55cc;border-color:#63dfff;box-shadow:inset 0 0 20px #2bb8e51a}
+.place .pin{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--c);box-shadow:0 0 13px var(--c)}
+.place .name{font-size:12px;font-weight:650}.place .region{font-size:10px;color:#8fa9c5;margin-top:3px}
+.footer{margin-top:auto;border-top:1px solid #25415a;padding-top:12px}.selected{font-size:12px;font-weight:700}.coords{font-size:10px;color:#8fa9c5;margin-top:4px}
+.controls{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.controls button{font-size:11px;flex:1}.controls button.active{background:#164c66;border-color:#6ce8ff}
+.tip{position:fixed;z-index:3;bottom:20px;left:18px;font-size:11px;color:#b0c5da;text-shadow:0 2px 8px #000;pointer-events:none}
+#toast{position:fixed;z-index:9;left:50%;top:50%;transform:translate(-50%,-50%);background:#071629eF;border:1px solid #4a8eb0;border-radius:12px;padding:10px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}
+#loading{position:fixed;z-index:8;inset:0;display:grid;place-items:center;background:#050914;color:#bdeeff;font-size:13px;letter-spacing:.06em;transition:opacity .4s}
+.spinner{width:25px;height:25px;border:2px solid #254b63;border-top-color:#70e9ff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:620px){.top{top:14px;left:14px}.status{top:91px;left:14px}.panel{top:auto;left:10px;right:10px;bottom:10px;width:auto;height:220px;padding:12px;border-radius:18px}.panelHead{flex-shrink:0}.places{flex-direction:row;overflow-x:auto;overflow-y:hidden;margin:10px -3px;padding:0 3px;gap:8px}.place{min-width:145px;width:145px;align-items:flex-start;padding:9px}.place .region{white-space:normal}.footer{display:flex;align-items:center;gap:10px;padding-top:9px;flex-wrap:wrap}.selected{font-size:11px}.coords{margin:0}.controls{margin:0 0 0 auto;flex-wrap:nowrap}.controls button{padding:7px 9px;white-space:nowrap}.tip{bottom:244px;left:14px;font-size:10px}}
+</style>
+</head>
+<body>
+<canvas id="globe"></canvas><div class="vignette"></div>
+<header class="top"><div class="kicker">PLANET EARTH / 01</div><div class="title">蓝色星球</div><div class="desc">在星海中，寻找属于你的坐标。</div></header>
+<div class="status"><span class="dot"></span><span id="liveStatus">地球正在缓慢自转</span></div>
+<aside class="panel">
+ <div class="panelHead"><div><div class="panelTitle">精选坐标</div><div class="eyebrow">SELECTED DESTINATIONS</div></div><button class="iconBtn" id="hidePanel" aria-label="收起地点列表">−</button></div>
+ <div class="places" id="places"></div>
+ <div class="footer"><div><div class="selected" id="selectedName">太平洋 · 初始视角</div><div class="coords" id="selectedCoords">拖动地球，探索世界</div></div>
+ <div class="controls"><button id="auto" class="active">自动旋转：开</button><button id="home">重置视角</button></div></div>
+</aside>
+<div class="tip">拖动旋转 · 点击发光标记聚焦 · 滚轮或双指缩放</div><div id="toast"></div>
+<div id="loading"><div style="text-align:center"><div class="spinner"></div>正在点亮地球…</div></div>
 <script>
 (()=>{'use strict';
-const canvas=document.getElementById('space'),ctx=canvas.getContext('2d');const $=id=>document.getElementById(id);
-let W=0,H=0,DPR=1,bodies=[],paused=false,showTrails=true,drag=null,last=0,timeScale=1,G=1,trailMax=260,massPreset=1.5;
-const colors=['#6ee7ff','#ffbd70','#c49bff','#ff718f','#82f6bd','#f6ed8b','#8daeff'];
-function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*DPR;canvas.height=H*DPR;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0)}addEventListener('resize',resize);
-function center(){return{x:W*.5,y:H*.43}}function make(x,y,vx,vy,m,color){return{x,y,vx,vy,m,r:3.5+Math.sqrt(m)*3.2,color:color||colors[Math.floor(Math.random()*colors.length)],trail:[]}}
-function updateHud(){$('count').textContent='天体：'+bodies.length;$('energy').textContent='G = '+G.toFixed(1)}
-function toast(s){let e=$('toast');e.textContent=s;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1700)}
-function add(b){if(bodies.length>=36){toast('最多同时模拟 36 个天体');return}bodies.push(b);updateHud()}
-function pos(e){let r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
-canvas.addEventListener('pointerdown',e=>{drag={start:pos(e),now:pos(e)};canvas.setPointerCapture(e.pointerId)});
-canvas.addEventListener('pointermove',e=>{if(drag)drag.now=pos(e)});
-canvas.addEventListener('pointerup',e=>{if(!drag)return;let d=drag;drag=null;let p=pos(e),dx=d.start.x-p.x,dy=d.start.y-p.y,len=Math.hypot(dx,dy);if(len<8){toast('按住并拖动，再松开发射');return}let speed=Math.min(len,210)*.026;add(make(d.start.x,d.start.y,dx/len*speed,dy/len*speed,massPreset))});
+const canvas=document.getElementById('globe'),ctx=canvas.getContext('2d');const $=id=>document.getElementById(id);
+const places=[
+{name:'台北',region:'台湾 · 东亚',lat:25.033,lon:121.5654,color:'#79eaff'},
+{name:'东京',region:'日本 · 东亚',lat:35.6762,lon:139.6503,color:'#ffbd88'},
+{name:'巴黎',region:'法国 · 欧洲',lat:48.8566,lon:2.3522,color:'#c4a0ff'},
+{name:'纽约',region:'美国 · 北美洲',lat:40.7128,lon:-74.006,color:'#ff83a6'},
+{name:'开普敦',region:'南非 · 非洲',lat:-33.9249,lon:18.4241,color:'#8df5c6'},
+{name:'里约热内卢',region:'巴西 · 南美洲',lat:-22.9068,lon:-43.1729,color:'#ffe78c'},
+{name:'悉尼',region:'澳大利亚 · 大洋洲',lat:-33.8688,lon:151.2093,color:'#89aaff'},
+{name:'冰岛',region:'北大西洋',lat:64.1466,lon:-21.9426,color:'#75f1ef'}
+];
+let W=0,H=0,D=1,rotY=-.4,rotX=.15,targetY=rotY,targetX=rotX,zoom=1,targetZoom=1,auto=true,drag=null,last=0,interactingUntil=0,selected=-1,hidden=false;
+let stars=[],clouds=[],landPolys=[],earthCanvas=null,earthCtx=null,earthTextureReady=false;
+function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);draw()}
+function toast(s){let e=$('toast');e.textContent=s;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1600)}
+function list(){const el=$('places');places.forEach((p,i)=>{let b=document.createElement('button');b.className='place';b.style.setProperty('--c',p.color);b.innerHTML='<span class="pin"></span><span><div class="name">'+p.name+'</div><div class="region">'+p.region+'</div></span>';b.onclick=()=>focusPlace(i);el.appendChild(b)})}
+function updateList(){[...$('places').children].forEach((e,i)=>e.classList.toggle('active',i===selected))}
+function vec(lat,lon){let a=lat*Math.PI/180,b=lon*Math.PI/180;return{x:Math.cos(a)*Math.sin(b),y:Math.sin(a),z:Math.cos(a)*Math.cos(b)}}
+function rotate(v){let cy=Math.cos(rotY),sy=Math.sin(rotY),cx=Math.cos(rotX),sx=Math.sin(rotX);let x=v.x*cy+v.z*sy,z=-v.x*sy+v.z*cy,y=v.y;return{x,y:y*cx-z*sx,z:y*sx+z*cx}}
+function project(v,cx,cy,r){let q=rotate(v);return{x:cx+q.x*r,y:cy-q.y*r,z:q.z,visible:q.z>-.06}}
+function focusPlace(i){selected=i;let p=places[i],v=vec(p.lat,p.lon);targetY=-Math.atan2(v.x,v.z);targetX=Math.atan2(v.y,Math.sqrt(v.x*v.x+v.z*v.z));targetX=Math.max(-1.25,Math.min(1.25,targetX));auto=false;interactingUntil=performance.now()+5000;$('auto').textContent='自动旋转：关';$('auto').classList.remove('active');$('liveStatus').textContent='镜头正在聚焦：'+p.name;$('selectedName').textContent=p.name+' · '+p.region;$('selectedCoords').textContent=p.lat.toFixed(4)+'°, '+p.lon.toFixed(4)+'°';updateList()}
+function buildTexture(){
+ earthCanvas=document.createElement('canvas');earthCanvas.width=1024;earthCanvas.height=512;earthCtx=earthCanvas.getContext('2d');
+ let g=earthCtx.createLinearGradient(0,0,0,512);g.addColorStop(0,'#0d3452');g.addColorStop(.5,'#0c5278');g.addColorStop(1,'#092943');earthCtx.fillStyle=g;earthCtx.fillRect(0,0,1024,512);
+ // procedural stylized continents using polygons in equirectangular coordinates (longitude maps x, latitude maps y)
+ const polys=[
+ [[70,90],[115,70],[155,90],[175,130],[155,160],[140,205],[115,220],[95,180],[80,145]],
+ [[150,230],[190,240],[210,285],[195,350],[175,390],[155,340],[145,285]],
+ [[260,80],[310,65],[360,90],[390,120],[370,150],[340,145],[320,175],[285,160],[260,125]],
+ [[320,185],[355,195],[370,240],[355,295],[330,350],[310,315],[300,265]],
+ [[420,100],[470,70],[530,75],[565,105],[600,95],[635,125],[620,155],[585,160],[570,190],[530,175],[500,205],[470,180],[445,145]],
+ [[485,205],[520,220],[535,270],[515,330],[490,370],[465,310],[470,255]],
+ [[620,85],[690,70],[755,90],[800,125],[780,160],[740,170],[715,145],[680,155],[650,125]],
+ [[700,200],[750,205],[775,245],[755,280],[730,270],[710,240]],
+ [[820,290],[870,275],[905,300],[890,325],[850,330]],
+ [[910,125],[930,110],[945,130],[935,155]]
+ ];
+ earthCtx.fillStyle='#347b78';earthCtx.strokeStyle='#69b5a5';earthCtx.lineWidth=2;
+ polys.forEach((poly,k)=>{earthCtx.beginPath();poly.forEach((p,i)=>i?earthCtx.lineTo(p[0]/1024*1024,p[1]/512*512):earthCtx.moveTo(p[0],p[1]));earthCtx.closePath();earthCtx.fill();earthCtx.stroke()});
+ // soft latitude/longitude grid
+ earthCtx.strokeStyle='rgba(132,220,255,.13)';earthCtx.lineWidth=1;for(let x=0;x<=1024;x+=64){earthCtx.beginPath();earthCtx.moveTo(x,0);earthCtx.lineTo(x,512);earthCtx.stroke()}for(let y=0;y<=512;y+=32){earthCtx.beginPath();earthCtx.moveTo(0,y);earthCtx.lineTo(1024,y);earthCtx.stroke()}
+ // polar ice
+ earthCtx.fillStyle='#bce8ed';earthCtx.fillRect(0,0,1024,18);earthCtx.fillRect(0,494,1024,18);
+ // random ocean speckles
+ for(let i=0;i<1800;i++){let x=Math.random()*1024,y=Math.random()*512;earthCtx.fillStyle=Math.random()>.5?'rgba(99,192,211,.10)':'rgba(1,20,45,.12)';earthCtx.fillRect(x,y,Math.random()*3+1,Math.random()*2+1)}
+ earthTextureReady=true;
+}
+function starfield(){stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.25,a:Math.random()*.6+.15,phase:Math.random()*6.28})}
+function draw(){
+ if(!W||!H)return;
+ ctx.clearRect(0,0,W,H);ctx.fillStyle='#050914';ctx.fillRect(0,0,W,H);
+ const now=performance.now()/1000;
+ for(const s of stars){ctx.globalAlpha=s.a*(.75+.25*Math.sin(now*1.1+s.phase));ctx.fillStyle='#b9e8ff';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+ // subtle nebula glow
+ let neb=ctx.createRadialGradient(W*.45,H*.44,2,W*.45,H*.44,Math.max(W,H)*.65);neb.addColorStop(0,'rgba(23,81,125,.2)');neb.addColorStop(1,'rgba(4,9,22,0)');ctx.fillStyle=neb;ctx.fillRect(0,0,W,H);
+ let panelOn=innerWidth<=620&&!hidden;let cx= W*.5,cy=H*.49,r=Math.min(W*.34,H*.37)*zoom;
+ if(innerWidth>620){cx=W*.43;r=Math.min(W*.32,H*.40)*zoom}else{cy=H*.39;r=Math.min(W*.42,H*.29)*zoom}
+ // atmospheric halo
+ let halo=ctx.createRadialGradient(cx,cy,r*.72,cx,cy,r*1.45);halo.addColorStop(0,'rgba(53,187,255,0)');halo.addColorStop(.7,'rgba(53,187,255,.13)');halo.addColorStop(1,'rgba(53,187,255,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(cx,cy,r*1.45,0,Math.PI*2);ctx.fill();
+ // sphere shading and ocean
+ let sphere=ctx.createRadialGradient(cx-r*.35,cy-r*.38,r*.05,cx,cy,r*1.08);sphere.addColorStop(0,'#2b9ec5');sphere.addColorStop(.42,'#11638d');sphere.addColorStop(.78,'#0b3458');sphere.addColorStop(1,'#020b1c');ctx.fillStyle=sphere;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
+ ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();
+ // latitude-longitude lines projected on sphere
+ ctx.strokeStyle='rgba(123,213,244,.16)';ctx.lineWidth=.7;
+ for(let lat=-60;lat<=60;lat+=30){ctx.beginPath();for(let lon=-180;lon<=180;lon+=3){let p=project(vec(lat,lon),cx,cy,r);if(p.z>0){if(lon===-180)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)}}ctx.stroke()}
+ for(let lon=-150;lon<=180;lon+=30){ctx.beginPath();let first=true;for(let lat=-90;lat<=90;lat+=2){let p=project(vec(lat,lon),cx,cy,r);if(p.z>0){if(first){ctx.moveTo(p.x,p.y);first=false}else ctx.lineTo(p.x,p.y)}}ctx.stroke()}
+ // stylized continents as many projected dots, forming land masses
+ for(let lat=-65;lat<=75;lat+=2.5)for(let lon=-180;lon<180;lon+=3){
+   const n=Math.sin((lon+lat*1.7)*.075)+Math.cos((lon-lat*1.2)*.11)+Math.sin(lon*.17+lat*.08);
+   const land=(lat>5&&lat<72&&lon>-165&&lon<-30&&n>.2)||(lat>-55&&lat<12&&lon>-82&&lon<-32&&n>-.3)||(lat>-35&&lat<70&&lon>-18&&lon<55&&n>-.15)||(lat>5&&lat<78&&lon>45&&lon<160&&n>-.15)||(lat>-45&&lat<0&&lon>112&&lon<155&&n>.0);
+   if(!land)continue;let p=project(vec(lat,lon),cx,cy,r);if(p.z<0)continue;
+   ctx.globalAlpha=.32+Math.max(0,p.z)*.38;ctx.fillStyle=(lat>58||lat<-48)?'#b8e1d9':'#55b49d';ctx.beginPath();ctx.arc(p.x,p.y,Math.max(.65,r/230),0,Math.PI*2);ctx.fill();
+ }
+ ctx.globalAlpha=1;
+ // directional lighting
+ let shade=ctx.createLinearGradient(cx-r,cy-r*.1,cx+r,cy+r*.15);shade.addColorStop(0,'rgba(0,4,20,.65)');shade.addColorStop(.38,'rgba(0,10,30,.03)');shade.addColorStop(1,'rgba(0,2,16,.66)');ctx.fillStyle=shade;ctx.fillRect(cx-r,cy-r,r*2,r*2);
+ ctx.restore();
+ // rim highlight
+ ctx.beginPath();ctx.arc(cx,cy,r-.5,0,Math.PI*2);ctx.strokeStyle='rgba(117,224,255,.6)';ctx.lineWidth=1.2;ctx.stroke();
+ // location markers
+ for(let i=0;i<places.length;i++){let p=places[i],v=rotate(vec(p.lat,p.lon));if(v.z<-.02)continue;let x=cx+v.x*r,y=cy-v.y*r,scale=.7+.3*Math.max(0,v.z),rr=(i===selected?5:3.2)*scale;
+   ctx.globalAlpha=.18;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(x,y,rr*4.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.8;ctx.strokeStyle=p.color;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,rr*2.1+Math.sin(now*2+i)*1.1,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,rr,0,Math.PI*2);ctx.fill();ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(x,y,rr*.62,0,Math.PI*2);ctx.fill();
+   if(i===selected){ctx.font='12px system-ui';ctx.fillStyle='#effaff';ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.fillText(p.name,x+10,y-10);ctx.shadowBlur=0}
+ }
+ // pointer drag indicator
+ if(drag){ctx.strokeStyle='rgba(150,235,255,.7)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(drag.x,drag.y);ctx.lineTo(drag.x+drag.dx,drag.y+drag.dy);ctx.stroke()}
+}
+function tick(now){let dt=Math.min(.04,(now-last)/1000||0);last=now;if(auto&&!drag&&now>interactingUntil){targetY-=dt*.12;$('liveStatus').textContent='地球正在缓慢自转'}rotY+=(targetY-rotY)*Math.min(1,dt*4);rotX+=(targetX-rotX)*Math.min(1,dt*4);zoom+=(targetZoom-zoom)*Math.min(1,dt*4);draw();requestAnimationFrame(tick)}
+function nearest(x,y){let cx=innerWidth>620?W*.43:W*.5,cy=innerWidth>620?H*.49:H*.39,r=Math.min(innerWidth>620?Math.min(W*.32,H*.40):Math.min(W*.42,H*.29),Math.min(W*.34,H*.37))*zoom;let best=-1,bd=Infinity;places.forEach((p,i)=>{let v=rotate(vec(p.lat,p.lon));if(v.z<-.02)return;let dx=cx+v.x*r-x,dy=cy-v.y*r-y,d=Math.hypot(dx,dy);if(d<Math.max(18,r*.075)&&d<bd){best=i;bd=d}});return best}
+canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,dx:0,dy:0,moved:false,ry:rotY,rx:rotX};interactingUntil=performance.now()+5000});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;let dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.dx=dx;drag.dy=dy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;targetY=drag.ry+dx*.008;targetX=Math.max(-1.3,Math.min(1.3,drag.rx+dy*.008));rotY=targetY;rotX=targetX;auto=false;$('auto').textContent='自动旋转：关';$('auto').classList.remove('active');$('liveStatus').textContent='手动探索中'});
+canvas.addEventListener('pointerup',e=>{if(!drag)return;let d=drag;drag=null;interactingUntil=performance.now()+5000;if(!d.moved){let i=nearest(e.clientX,e.clientY);if(i>=0)focusPlace(i)}});
 canvas.addEventListener('pointercancel',()=>drag=null);
-function accel(xs,ys,ox,oy,n){ox.fill(0);oy.fill(0);for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){let a=bodies[i],b=bodies[j],dx=xs[j]-xs[i],dy=ys[j]-ys[i],r2=dx*dx+dy*dy+100,inv=1/(r2*Math.sqrt(r2)),f=G*42*inv;ox[i]+=f*b.m*dx;oy[i]+=f*b.m*dy;ox[j]-=f*a.m*dx;oy[j]-=f*a.m*dy}}
-function collisions(){for(let i=0;i<bodies.length;i++){for(let j=i+1;j<bodies.length;j++){let a=bodies[i],b=bodies[j];if(Math.hypot(a.x-b.x,a.y-b.y)<a.r+b.r){let m=a.m+b.m,c=a.m>=b.m?a:b,merged=make((a.x*a.m+b.x*b.m)/m,(a.y*a.m+b.y*b.m)/m,(a.vx*a.m+b.vx*b.m)/m,(a.vy*a.m+b.vy*b.m)/m,m,c.color);merged.r=Math.min(28,Math.sqrt(a.r*a.r+b.r*b.r));merged.trail=a.trail.concat(b.trail).slice(-trailMax);bodies.splice(j,1);bodies.splice(i,1,merged);i=-1;break}}}}
-function step(dt){let n=bodies.length;if(!n)return;let xs=bodies.map(b=>b.x),ys=bodies.map(b=>b.y),ax=new Float64Array(n),ay=new Float64Array(n);accel(xs,ys,ax,ay,n);let nx=[],ny=[],bx=new Float64Array(n),by=new Float64Array(n);for(let i=0;i<n;i++){let b=bodies[i];b.x+=b.vx*dt+.5*ax[i]*dt*dt;b.y+=b.vy*dt+.5*ay[i]*dt*dt;nx[i]=b.x;ny[i]=b.y}accel(nx,ny,bx,by,n);for(let i=0;i<n;i++){bodies[i].vx+=.5*(ax[i]+bx[i])*dt;bodies[i].vy+=.5*(ay[i]+by[i])*dt}collisions();for(let b of bodies){if(b.x<-W*.8)b.x=W*1.8;if(b.x>W*1.8)b.x=-W*.8;if(b.y<-H*.8)b.y=H*1.8;if(b.y>H*1.8)b.y=-H*.8}}
-function background(){ctx.fillStyle='#080e20';ctx.fillRect(0,0,W,H);let c=center(),g=ctx.createRadialGradient(c.x,c.y,5,c.x,c.y,Math.max(W,H)*.72);g.addColorStop(0,'#142b48');g.addColorStop(.5,'#0c1931');g.addColorStop(1,'#080e20');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);for(let i=0;i<90;i++){ctx.fillStyle=`rgba(173,213,255,${.12+(i%5)*.055})`;ctx.fillRect(i*173.31%W,i*97.73%H,1.2,1.2)}ctx.strokeStyle='rgba(105,157,210,.055)';ctx.beginPath();for(let x=W/2%48;x<W;x+=48){ctx.moveTo(x,0);ctx.lineTo(x,H)}for(let y=H/2%48;y<H;y+=48){ctx.moveTo(0,y);ctx.lineTo(W,y)}ctx.stroke()}
-function draw(){background();if(showTrails)for(let b of bodies){if(b.trail.length>1){ctx.beginPath();ctx.moveTo(b.trail[0].x,b.trail[0].y);for(let p of b.trail)ctx.lineTo(p.x,p.y);ctx.strokeStyle=b.color+'99';ctx.lineWidth=1.5;ctx.stroke()}}for(let b of bodies){let g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r*3);g.addColorStop(0,b.color+'66');g.addColorStop(1,b.color+'00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(b.x,b.y,b.r*3,0,Math.PI*2);ctx.fill();let grad=ctx.createRadialGradient(b.x-b.r*.35,b.y-b.r*.4,1,b.x,b.y,b.r*1.2);grad.addColorStop(0,'#fff');grad.addColorStop(.2,b.color);grad.addColorStop(1,'#17243d');ctx.fillStyle=grad;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.strokeStyle=b.color+'aa';ctx.stroke()}if(drag){let dx=drag.start.x-drag.now.x,dy=drag.start.y-drag.now.y;ctx.setLineDash([5,5]);ctx.strokeStyle='#b8f2ff';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(drag.start.x,drag.start.y);ctx.lineTo(drag.start.x+dx,drag.start.y+dy);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#6ee7ffaa';ctx.beginPath();ctx.arc(drag.start.x,drag.start.y,3.5+Math.sqrt(massPreset)*3.2,0,Math.PI*2);ctx.fill()}}
-function frame(now){let real=Math.min(.04,(now-last)/1000||0);last=now;if(!paused){let simdt=real*timeScale,sub=Math.max(1,Math.ceil(simdt/.006)),dt=simdt/sub;for(let i=0;i<sub;i++)step(dt);if(showTrails)for(let b of bodies){b.trail.push({x:b.x,y:b.y});if(b.trail.length>trailMax)b.trail.shift()}}draw();requestAnimationFrame(frame)}
-$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'继续':'暂停';toast(paused?'模拟已暂停':'模拟继续运行')};$('clear').onclick=()=>{bodies=[];drag=null;updateHud();toast('已清除全部天体')};
-$('timeScale').oninput=e=>{timeScale=+e.target.value;$('timeVal').textContent=timeScale.toFixed(1)+'×'};$('gravity').oninput=e=>{G=+e.target.value;$('gravVal').textContent=G.toFixed(1);updateHud()};$('mass').onchange=e=>{massPreset=+e.target.value;toast('已选择质量 '+massPreset)};$('trail').onchange=e=>{trailMax=+e.target.value;for(let b of bodies)b.trail=b.trail.slice(-trailMax)};
-$('trails').onclick=()=>{showTrails=!showTrails;$('trails').textContent='轨迹：'+(showTrails?'开':'关')};$('seed').onclick=()=>{bodies=[];let c=center();add(make(c.x,c.y,0,0,6,'#ffe2a0'));[{r:90,m:1.5},{r:145,m:.7},{r:205,m:2.4},{r:260,m:1}].forEach((s,i)=>{let a=i*1.62+.4,x=c.x+Math.cos(a)*s.r,y=c.y+Math.sin(a)*s.r*.62,v=Math.sqrt(G*42*6/Math.max(s.r,30))*.74;add(make(x,y,-Math.sin(a)*v,Math.cos(a)*v*.62,s.m,colors[i+1]))});toast('已生成轨道示例，可继续发射天体')};$('helpBtn').onclick=()=>toast('按住空白处向后拖，松开发射；拖得越远速度越快。碰撞时天体合并。');
-resize();updateHud();requestAnimationFrame(frame);
+canvas.addEventListener('wheel',e=>{e.preventDefault();targetZoom=Math.max(.72,Math.min(1.55,targetZoom*(e.deltaY>0?.92:1.08)));interactingUntil=performance.now()+5000},{passive:false});
+let pinchDist=0;
+canvas.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)},{passive:true});
+canvas.addEventListener('touchmove',e=>{if(e.touches.length===2){let d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(pinchDist){targetZoom=Math.max(.72,Math.min(1.55,targetZoom*d/pinchDist))}pinchDist=d;interactingUntil=performance.now()+5000}},{passive:true});
+$('auto').onclick=()=>{auto=!auto;$('auto').textContent='自动旋转：'+(auto?'开':'关');$('auto').classList.toggle('active',auto);if(auto){interactingUntil=performance.now()+500;$('liveStatus').textContent='自动旋转即将恢复'}else $('liveStatus').textContent='自动旋转已关闭'};
+$('home').onclick=()=>{selected=-1;targetY=-.4;targetX=.15;targetZoom=1;$('selectedName').textContent='太平洋 · 初始视角';$('selectedCoords').textContent='拖动地球，探索世界';updateList();interactingUntil=performance.now()+5000;toast('已回到初始视角')};
+$('hidePanel').onclick=()=>{hidden=!hidden;document.querySelector('.panel').style.display=hidden?'none':'flex';toast(hidden?'地点列表已收起':'地点列表已展开')};
+list();starfield();resize();buildTexture();$('loading').style.opacity='0';setTimeout(()=>$('loading').remove(),450);requestAnimationFrame(tick);
 })();
 </script></body></html>
