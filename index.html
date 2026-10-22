@@ -1,368 +1,271 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>王者荣耀 · 涂山红红发展史</title>
+<meta charset="utf-8">
+<title>雨夜便利店 · Three.js</title>
 <style>
-  :root {
-    --text: #fcf3f3;
-    --muted: #d1baba;      
-    --accent: #ff4d4d;     
-    --gold: #f2c76e;       
-    --card-bg: rgba(18, 8, 8, 0.7); 
-  }
-  
-  * { box-sizing: border-box; }
-  
-  body {
-    margin: 0; padding: 0; min-height: 100vh; color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    background-color: #050202; /* 最低底色 */
-    overflow-x: hidden;
-  }
-
-  /* === 修复：背景图片层 === */
-  .bg-image-wrapper {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 1; /* 正向层级，防止被 body 遮挡 */
-    background-image: url('bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  
-  /* === 修复：暗色遮罩层 === */
-  .bg-mask {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 2; /* 盖在图片上面 */
-    background: linear-gradient(180deg, rgba(5,2,2,0.6) 0%, rgba(5,2,2,0.85) 50%, rgba(5,2,2,0.95) 100%);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-
-  /* === 修复：特效和内容层 === */
-  #bgCanvas {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 3; 
-    display: block; pointer-events: none;
-    opacity: 0.7;
-  }
-
-  .moon {
-    position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-    width: 400px; height: 400px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 77, 77, 0.15) 0%, transparent 70%);
-    z-index: 3; pointer-events: none;
-  }
-
-  .wrap {
-    position: relative; 
-    z-index: 4; /* 最高层，确保文字不被挡 */
-    width: 92%; max-width: 1000px;
-    margin: 0 auto; padding: 60px 0 100px;
-  }
-  
-  /* 头部与标题 */
-  header { text-align: center; margin-bottom: 50px; }
-  .eyebrow {
-    display: inline-block; padding: 8px 20px; border: 1px solid rgba(242, 199, 110, 0.4); 
-    border-radius: 30px; color: var(--gold); font-size: 13px; background: rgba(10, 4, 4, 0.6); 
-    margin-bottom: 20px; letter-spacing: 2px; backdrop-filter: blur(10px);
-  }
-  h1 {
-    margin: 0 0 16px; font-size: 40px; letter-spacing: 3px; line-height: 1.2;
-    background: linear-gradient(90deg, #ffffff, #ffb3b3, #ff4d4d, #f2c76e, #ffb3b3, #ffffff);
-    background-size: 200% auto;
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    animation: textFlow 6s linear infinite;
-  }
-  @keyframes textFlow { to { background-position: 200% center; } }
-  .subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.8; font-size: 15px; }
-
-  /* 筛选栏 */
-  .toolbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px 0 56px; }
-  .filter-btn {
-    border: 1px solid rgba(255, 77, 77, 0.3); background: rgba(15, 5, 5, 0.7);
-    color: var(--muted); padding: 10px 20px; border-radius: 30px; cursor: pointer; 
-    font-size: 14px; transition: all 0.3s ease; backdrop-filter: blur(10px);
-  }
-  .filter-btn.active {
-    color: #fff; background: linear-gradient(135deg, #cc0000, #ff4d4d); border-color: transparent; 
-    font-weight: bold; box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4); transform: scale(1.05);
-  }
-
-  /* 时间线 */
-  .timeline { position: relative; padding: 10px 0; }
-  .timeline::before {
-    content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; transform: translateX(-50%);
-    background: linear-gradient(to bottom, transparent, rgba(255, 77, 77, 0.6) 15%, rgba(242, 199, 110, 0.4) 85%, transparent);
-    box-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
-  }
-  
-  .item {
-    position: relative; width: 50%; padding: 0 45px 45px 0;
-    opacity: 0; transform: translateY(30px); animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  }
-  .item:nth-child(even) { margin-left: 50%; padding: 0 0 45px 45px; }
-  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-  
-  .item::before {
-    content: ""; position: absolute; top: 24px; right: -8px; width: 16px; height: 16px; border-radius: 50%;
-    background: #1a0808; border: 3px solid var(--accent); z-index: 2;
-    box-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
-  }
-  .item:nth-child(even)::before { right: auto; left: -8px; }
-
-  /* 卡片 */
-  .card {
-    cursor: pointer; border: 1px solid rgba(255, 77, 77, 0.2); border-radius: 18px;
-    background: var(--card-bg); padding: 26px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden;
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  }
-  .card:hover { 
-    border-color: rgba(255, 77, 77, 0.5); background: rgba(26, 10, 10, 0.85); 
-    transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); 
-  }
-  
-  .year { 
-    display: inline-block; font-size: 14px; font-weight: bold; color: var(--gold); 
-    margin-bottom: 12px; letter-spacing: 1px; background: rgba(242, 199, 110, 0.1);
-    padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(242, 199, 110, 0.3);
-  }
-  .card h2 { margin: 0 0 14px; font-size: 21px; line-height: 1.4; color: #fff; }
-  .card p { margin: 0; color: var(--muted); line-height: 1.75; font-size: 14px; }
-  
-  .tags { margin-top: 18px; }
-  .tag { 
-    display: inline-block; font-size: 12px; color: var(--accent); 
-    border: 1px solid rgba(255, 77, 77, 0.35); background: rgba(255, 77, 77, 0.1); 
-    padding: 5px 12px; border-radius: 14px; margin-right: 8px; margin-bottom: 8px;
-  }
-  .hint { display: block; margin-top: 18px; color: rgba(255, 77, 77, 0.7); font-size: 13px; text-align: right; }
-
-  /* 弹窗 */
-  .modal-backdrop { 
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
-    z-index: 100; display: flex; align-items: center; justify-content: center;
-    background: rgba(5, 1, 1, 0.9); opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-  }
-  .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-  .modal { 
-    width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; 
-    border: 1px solid rgba(255, 77, 77, 0.4); border-radius: 24px; 
-    background: rgba(20, 8, 8, 0.95); padding: 35px; 
-    transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    backdrop-filter: blur(15px);
-  }
-  .modal-backdrop.show .modal { transform: scale(1) translateY(0); }
-  .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 77, 0.2); padding-bottom: 18px; }
-  .modal-year { color: var(--gold); font-weight: bold; font-size: 18px; }
-  .close-btn { 
-    border: 1px solid rgba(255, 77, 77, 0.4); background: rgba(255, 77, 77, 0.1); 
-    color: var(--accent); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 22px; 
-  }
-  .modal h3 { margin: 0 0 18px; font-size: 26px; color: #fff; }
-  .modal .detail { color: #d4c0c0; line-height: 2; font-size: 15.5px; white-space: pre-wrap; text-align: justify; }
-
-  @media (max-width: 760px) {
-    h1 { font-size: 30px; }
-    .timeline::before { left: 14px; }
-    .item, .item:nth-child(even) { width: 100%; margin-left: 0; padding: 0 0 30px 40px; }
-    .item::before, .item:nth-child(even)::before { left: 6px; right: auto; top: 24px; width: 14px; height: 14px; }
-    .modal { padding: 28px; }
-  }
+  html,body{margin:0;height:100%;overflow:hidden;background:#05070d}
+  canvas{display:block}
+  #hint{position:fixed;left:16px;bottom:14px;color:#6f86a8;font:12px/1.6 system-ui;pointer-events:none}
 </style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body>
-  <!-- 背景图、遮罩、特效、内容 层级分明，互不干扰 -->
-  <div class="bg-image-wrapper"></div>
-  <div class="bg-mask"></div>
-  <div class="moon"></div>
-  <canvas id="bgCanvas"></canvas>
+<div id="hint">雨夜便利店 · Three.js 程序化场景</div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
-  <main class="wrap">
-    <header>
-      <div class="eyebrow">苦情树下 · 转世续缘</div>
-      <h1>王者荣耀 · 涂山红红发展史</h1>
-      <p class="subtitle">少司缘联动皮肤编年史 · 从惊艳亮相，到英雄定位的全面转变。</p>
-    </header>
+/* ---------- 基础 ---------- */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x060a12);
+scene.fog = new THREE.FogExp2(0x060a12, 0.02);
 
-    <div class="toolbar" id="toolbar"></div>
-    <section class="timeline" id="timeline"></section>
-  </main>
+const camera = new THREE.PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 500);
+camera.position.set(7.5, 3.6, 10.5);
+camera.lookAt(0, 2.0, 0);
 
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal">
-      <div class="modal-top">
-        <div class="modal-year" id="modalYear"></div>
-        <button class="close-btn" id="closeBtn">×</button>
-      </div>
-      <h3 id="modalTitle"></h3>
-      <div class="detail" id="modalDetail"></div>
-      <div class="tags" id="modalTags"></div>
-    </div>
-  </div>
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+document.body.appendChild(renderer.domElement);
 
-<script>
-window.onload = function() {
-  var events = [
-    { year: "2024", title: "苦情巨树，花开峡谷：联动惊艳亮相", category: "联动上线", summary: "2024年8月，涂山红红作为少司缘的史诗限定联动皮肤正式登场，高度还原了狐妖之王的经典形象。", detail: "皮肤以涂山之主形象为蓝本，融入了苦情树花暗纹、涂山玉佩等标志性元素。技能特效巧妙结合了绝缘之爪与纯质阳炎，音效中隐藏的狐啼与铃铛声，让每一次技能释放都充满了原作的情怀。", tags: ["2024.8", "狐妖小红娘", "史诗限定"] },
-    { year: "2024", title: "获取方式与价格", category: "联动上线", summary: "通过“长情相思”活动获取，最低488点券，首周优惠710点券，之后恢复888点券直售。", detail: "活动期间（8月10日-8月25日）参与“长情相思”活动，即可最低以488点券的价格获取皮肤。8月26日起上架商城，首周优惠价710点券，9月2日后恢复888点券。同时，与东方月初皮肤的组合礼包价为1243点券。", tags: ["488点券", "710点券", "888点券"] },
-    { year: "2025", title: "联动第二弹，限时返场", category: "返场记录", summary: "随着《狐妖小红娘》第二弹联动开启，涂山红红皮肤于2025年8月28日首次限时返场。", detail: "第二弹联动带来了干将莫邪、公孙离等新皮肤，同时也让第一弹的涂山红红与东方月初得以限时返场，满足了错过首次活动的玩家。", tags: ["2025.8.28", "首次返场", "第二弹联动"] },
-    { year: "2026", title: "七夕祈愿返场", category: "返场记录", summary: "2026年七夕期间，涂山红红皮肤通过端外祈愿活动再次返场，获取成本预估约2000点券。", detail: "本次返场并非直售，而是通过祈愿抽奖的形式，成本相比首次上线时高出不少。尽管如此，作为高人气的联动皮肤，依然吸引了大量玩家。", tags: ["2026七夕", "祈愿返场", "约2000点券"] },
-    { year: "2026", title: "英雄核心调整：定位转变", category: "英雄调整", summary: "2026年8月，体验服对少司缘进行核心调整，其定位从“偏刺客的开团辅助”转向“功能性保护辅助”。", detail: "改动主要包括：被动金币收益前期大幅降低，但二技能在击杀和助攻时都能100%取回金币，加速中后期经济。同时，技能伤害结构改变，回复能力显著加强，AP加成提升。这次调整旨在强化少司缘保护队友的能力，降低其进攻性。", tags: ["2026.8", "体验服", "定位转变"] },
-    { year: "文化", title: "文化符号：涂山，我罩的", category: "文化符号", summary: "“雁过拔毛，兽走留皮，涂山，我罩的，懂？”等经典台词，让涂山红红的形象超越了皮肤本身。", detail: "涂山红红皮肤拥有大量原作经典台词，如“狐妖之力，源于至情；情之所至，力之所生”，“我就是我，涂山红红！”，以及霸气的“涂山，我罩的，懂？”。这些台词配合皮肤，将涂山红红作为狐妖之王的霸气与深情，完整地呈现在了峡谷之中。", tags: ["台词", "文化符号", "涂山我罩的"] }
-  ];
+/* ---------- 环境贴图（给湿地面反射用） ---------- */
+function makeEnvTexture() {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, 256);
+  g.addColorStop(0.0, '#0a1224');
+  g.addColorStop(0.55, '#141c2e');
+  g.addColorStop(1.0, '#04060a');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 256);
+  // 暖色光斑：模拟便利店灯光在环境中的贡献
+  const rg = ctx.createRadialGradient(300, 175, 8, 300, 175, 130);
+  rg.addColorStop(0, 'rgba(255,200,120,0.85)');
+  rg.addColorStop(1, 'rgba(255,200,120,0)');
+  ctx.fillStyle = rg; ctx.fillRect(0, 0, 512, 256);
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromEquirectangular(makeEnvTexture()).texture;
 
-  var timelineEl = document.getElementById("timeline");
-  var toolbarEl = document.getElementById("toolbar");
-  var backdrop = document.getElementById("modalBackdrop");
-  var closeBtn = document.getElementById("closeBtn");
-  var activeCategory = "全部";
-  var categories = ["全部"];
-
-  for (var i = 0; i < events.length; i++) {
-    if (categories.indexOf(events[i].category) === -1) categories.push(events[i].category);
+/* ---------- 程序化噪声贴图 ---------- */
+function noiseTexture(size, base, variance, repeat) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  const img = ctx.createImageData(size, size);
+  for (let i = 0; i < size * size; i++) {
+    const v = Math.max(0, Math.min(255, base + (Math.random() - 0.5) * variance));
+    img.data[i * 4] = img.data[i * 4 + 1] = img.data[i * 4 + 2] = v;
+    img.data[i * 4 + 3] = 255;
   }
+  ctx.putImageData(img, 0, 0);
+  const tex = new THREE.CanvasTexture(c);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(repeat, repeat);
+  return tex;
+}
+const roughMap = noiseTexture(256, 55, 130, 10); // 越暗越光滑 → 水洼
+const colorMap = noiseTexture(256, 28, 18, 10);
 
-  function renderFilters() {
-    var html = "";
-    for (var i = 0; i < categories.length; i++) {
-      var cat = categories[i];
-      html += '<button class="filter-btn' + (cat === activeCategory ? ' active' : '') + '" data-cat="' + cat + '">' + cat + '</button>';
+/* ---------- 灯光 ---------- */
+scene.add(new THREE.AmbientLight(0x223355, 0.55));
+const moon = new THREE.DirectionalLight(0x4466aa, 0.6);
+moon.position.set(-12, 16, -8);
+scene.add(moon);
+
+/* ---------- 地面（湿沥青） ---------- */
+const groundMat = new THREE.MeshStandardMaterial({
+  color: 0x1b202b,
+  map: colorMap,
+  roughnessMap: roughMap,
+  roughness: 0.35,
+  metalness: 0.9,
+  envMapIntensity: 1.0,
+});
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), groundMat);
+ground.rotation.x = -Math.PI / 2;
+scene.add(ground);
+
+/* ---------- 便利店 ---------- */
+const store = new THREE.Group();
+scene.add(store);
+
+const wallMat = new THREE.MeshStandardMaterial({ color: 0x2b303b, roughness: 0.75, metalness: 0.05 });
+const floorMat = new THREE.MeshStandardMaterial({ color: 0x9aa0a8, roughness: 0.5, metalness: 0.1 });
+const shelfMat = new THREE.MeshStandardMaterial({ color: 0x4b515d, roughness: 0.6, metalness: 0.1 });
+
+// 后墙 / 侧墙 / 顶 / 地板
+const backWall = new THREE.Mesh(new THREE.BoxGeometry(8, 4, 0.25), wallMat);
+backWall.position.set(0, 2, -3.1);
+store.add(backWall);
+
+for (const sx of [-1, 1]) {
+  const side = new THREE.Mesh(new THREE.BoxGeometry(0.25, 4, 6.4), wallMat);
+  side.position.set(sx * 4.0, 2, 0);
+  store.add(side);
+}
+const roof = new THREE.Mesh(new THREE.BoxGeometry(8.3, 0.25, 6.4), wallMat);
+roof.position.set(0, 4.05, 0);
+store.add(roof);
+const floor = new THREE.Mesh(new THREE.BoxGeometry(7.8, 0.12, 6.2), floorMat);
+floor.position.set(0, 0.06, 0);
+store.add(floor);
+
+// 室内灯管（发光的细长条）
+const tubeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xfff4da).multiplyScalar(1.8) });
+for (const z of [-1.8, -0.2, 1.4]) {
+  const tube = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.1, 0.12), tubeMat);
+  tube.position.set(0, 3.7, z);
+  store.add(tube);
+}
+
+// 室内暖光
+const storeLight = new THREE.PointLight(0xffd9a3, 90, 22, 2);
+storeLight.position.set(0, 3.1, 0);
+store.add(storeLight);
+const storeLight2 = new THREE.PointLight(0xffe4b8, 45, 16, 2);
+storeLight2.position.set(0, 2.2, 2.0);
+store.add(storeLight2);
+
+// 货架（透过玻璃看到的轮廓）
+for (let i = -1; i <= 1; i++) {
+  const shelf = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.0, 0.5), shelfMat);
+  shelf.position.set(i * 2.1, 1.05, -2.4);
+  store.add(shelf);
+}
+// 收银台
+const counter = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.0, 0.7), shelfMat);
+counter.position.set(2.3, 0.55, 1.0);
+store.add(counter);
+
+// 玻璃门面
+const glassMat = new THREE.MeshPhysicalMaterial({
+  color: 0x9fc0dd,
+  transparent: true,
+  opacity: 0.16,
+  roughness: 0.06,
+  metalness: 0.0,
+  envMapIntensity: 1.6,
+  side: THREE.DoubleSide,
+  depthWrite: false,
+});
+const glass = new THREE.Mesh(new THREE.PlaneGeometry(7.9, 3.9), glassMat);
+glass.position.set(0, 2.0, 3.18);
+store.add(glass);
+
+// 招牌
+const signMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0xffcf6e).multiplyScalar(2.2) });
+const sign = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.85, 0.18), signMat);
+sign.position.set(0, 4.62, 3.15);
+store.add(sign);
+
+// 招牌补光
+const signLight = new THREE.PointLight(0xffc86a, 35, 10, 2);
+signLight.position.set(0, 4.4, 3.9);
+store.add(signLight);
+
+// 雨棚
+const awning = new THREE.Mesh(
+  new THREE.BoxGeometry(8.6, 0.1, 1.7),
+  new THREE.MeshStandardMaterial({ color: 0x3a4050, roughness: 0.45, metalness: 0.4 })
+);
+awning.position.set(0, 4.12, 3.95);
+awning.rotation.x = -0.14;
+store.add(awning);
+
+/* ---------- 雨 ---------- */
+const RAIN_COUNT = 2600;
+const rainGeo = new THREE.BoxGeometry(0.014, 0.55, 0.014);
+const rainMat = new THREE.MeshBasicMaterial({
+  color: 0xaaccff,
+  transparent: true,
+  opacity: 0.38,
+  depthWrite: false,
+});
+const rain = new THREE.InstancedMesh(rainGeo, rainMat, RAIN_COUNT);
+rain.frustumCulled = false;
+scene.add(rain);
+
+const dummy = new THREE.Object3D();
+const drops = [];
+for (let i = 0; i < RAIN_COUNT; i++) {
+  const d = {
+    x: (Math.random() - 0.5) * 60,
+    y: Math.random() * 22,
+    z: (Math.random() - 0.5) * 60,
+    v: 14 + Math.random() * 10,
+  };
+  drops.push(d);
+  dummy.position.set(d.x, d.y, d.z);
+  dummy.rotation.set(0, 0, 0.08);
+  dummy.updateMatrix();
+  rain.setMatrixAt(i, dummy.matrix);
+}
+rain.instanceMatrix.needsUpdate = true;
+
+function updateRain(dt) {
+  for (let i = 0; i < RAIN_COUNT; i++) {
+    const d = drops[i];
+    d.y -= d.v * dt;
+    if (d.y < 0) {
+      d.y = 22;
+      d.x = (Math.random() - 0.5) * 60;
+      d.z = (Math.random() - 0.5) * 60;
+      d.v = 14 + Math.random() * 10;
     }
-    toolbarEl.innerHTML = html;
-    var btns = toolbarEl.getElementsByTagName("button");
-    for (var k = 0; k < btns.length; k++) {
-      btns[k].onclick = function() {
-        activeCategory = this.getAttribute("data-cat");
-        renderFilters();
-        renderTimeline();
-      };
-    }
+    dummy.position.set(d.x, d.y, d.z);
+    dummy.rotation.set(0, 0, 0.08);
+    dummy.updateMatrix();
+    rain.setMatrixAt(i, dummy.matrix);
   }
+  rain.instanceMatrix.needsUpdate = true;
+}
 
-  function renderTimeline() {
-    var html = "";
-    var count = 0;
-    for (var i = 0; i < events.length; i++) {
-      var e = events[i];
-      if (activeCategory !== "全部" && e.category !== activeCategory) continue;
-      
-      var tagHtml = "";
-      for (var t = 0; t < e.tags.length; t++) {
-        tagHtml += '<span class="tag">' + e.tags[t] + '</span>';
-      }
-      
-      var delay = Math.min(count * 120, 800); 
-      
-      html += '<article class="item" style="animation-delay: ' + delay + 'ms;">' +
-                '<div class="card" data-index="' + i + '">' +
-                  '<span class="year">' + e.year + '</span>' +
-                  '<h2>' + e.title + '</h2>' +
-                  '<p>' + e.summary + '</p>' +
-                  '<div class="tags">' + tagHtml + '</div>' +
-                  '<span class="hint">点击阅读详情 →</span>' +
-                '</div>' +
-              '</article>';
-      count++;
-    }
-    timelineEl.innerHTML = html;
+/* ---------- 后期：辉光 ---------- */
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(
+  new THREE.Vector2(innerWidth, innerHeight),
+  0.85,  // strength 辉光强度
+  0.5,   // radius   扩散半径
+  0.75   // threshold 触发阈值
+);
+composer.addPass(bloom);
 
-    var cards = timelineEl.getElementsByClassName("card");
-    for (var c = 0; c < cards.length; c++) {
-      cards[c].onclick = function() {
-        var idx = parseInt(this.getAttribute("data-index"), 10);
-        var e = events[idx];
-        
-        document.getElementById("modalYear").innerText = e.year;
-        document.getElementById("modalTitle").innerText = e.title;
-        document.getElementById("modalDetail").innerText = e.detail;
-        
-        var modalTagHtml = "";
-        for (var t = 0; t < e.tags.length; t++) {
-          modalTagHtml += '<span class="tag">' + e.tags[t] + '</span>';
-        }
-        document.getElementById("modalTags").innerHTML = modalTagHtml;
-        
-        backdrop.className = "modal-backdrop show";
-      };
-    }
-  }
+/* ---------- 循环 ---------- */
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  updateRain(dt);
+  composer.render();
+}
+animate();
 
-  closeBtn.onclick = function() { backdrop.className = "modal-backdrop"; };
-  backdrop.onclick = function(e) { if (e.target === backdrop) backdrop.className = "modal-backdrop"; };
-
-  renderFilters();
-  renderTimeline();
-
-  try {
-    var canvas = document.getElementById("bgCanvas");
-    if (canvas && canvas.getContext) {
-      var ctx = canvas.getContext("2d");
-      var W = window.innerWidth, H = window.innerHeight;
-      canvas.width = W; canvas.height = H;
-      
-      var petals = [], fires = [];
-      
-      for (var i = 0; i < 20; i++) {
-        petals.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2.5 + 1, vy: Math.random() * 0.6 + 0.3, vx: (Math.random() - 0.5) * 0.4, angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.04, alpha: Math.random() * 0.4 + 0.1 });
-      }
-      
-      for (var i = 0; i < 15; i++) {
-        fires.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + 0.5, vy: -(Math.random() * 1.2 + 0.4), vx: (Math.random() - 0.5) * 0.2, alpha: Math.random() * 0.6 + 0.1 });
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        
-        for (var i = 0; i < petals.length; i++) {
-          var p = petals[i];
-          p.y += p.vy; p.x += p.vx; p.angle += p.spin;
-          if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
-          if (p.x < -20) p.x = W + 20;
-          if (p.x > W + 20) p.x = -20;
-          
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.angle);
-          ctx.fillStyle = "rgba(242, 199, 110, " + (p.alpha * 0.5) + ")"; 
-          ctx.beginPath();
-          ctx.ellipse(0, 0, p.r * 1.5, p.r, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-        }
-        
-        for (var j = 0; j < fires.length; j++) {
-          var f = fires[j];
-          f.y += f.vy; f.x += f.vx;
-          if (f.y < -20) { f.y = H + 20; f.x = Math.random() * W; }
-          
-          var grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 5);
-          grad.addColorStop(0, "rgba(255, 77, 77, " + f.alpha + ")");
-          grad.addColorStop(0.5, "rgba(255, 120, 50, " + (f.alpha * 0.4) + ")");
-          grad.addColorStop(1, "rgba(255, 77, 77, 0)");
-          
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.arc(f.x, f.y, f.r * 5, 0, Math.PI * 2);
-          ctx.fill();
-        }
-        requestAnimationFrame(draw);
-      }
-      draw();
-      
-      window.onresize = function() {
-        W = window.innerWidth; H = window.innerHeight;
-        canvas.width = W; canvas.height = H;
-      };
-    }
-  } catch(e) {}
-};
+/* ---------- 自适应 ---------- */
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+});
 </script>
 </body>
 </html>
