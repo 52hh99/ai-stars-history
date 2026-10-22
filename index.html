@@ -4,138 +4,432 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071321">
-<title>雨夜便利店 · 沉浸式互动</title>
+<meta name="theme-color" content="#08131c">
+<meta name="description" content="雨夜便利店：沉浸式电影风雨夜互动场景">
+<title>雨夜便利店 | MIDNIGHT STORE</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--cyan:#67eaff;--pink:#ff69bd}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071321;color:#eefaff;font-family:system-ui,"Microsoft YaHei",sans-serif}
-button,select,input{font:inherit}
-button{cursor:pointer;color:inherit}
-#scene{position:fixed;inset:0;overflow:hidden;background:linear-gradient(#07111f 0%,#183348 57%,#101c29 100%);isolation:isolate}
-#sky{position:absolute;inset:0 0 30%;background:radial-gradient(ellipse at 50% 70%,#47768b55,transparent 65%),linear-gradient(#07111f,#20384a)}
-#city{position:absolute;bottom:28%;left:-5%;right:-5%;height:38%;display:flex;align-items:flex-end;gap:4px}
-.building{flex:1;position:relative;background:linear-gradient(90deg,#091522,#172d40,#0a1521);border-top:1px solid #436176}
-.building:after{content:"";position:absolute;inset:8px 4px;background:repeating-linear-gradient(0deg,transparent 0 14px,#f6c96a22 15px 18px),repeating-linear-gradient(90deg,transparent 0 13px,#65d9ff22 14px 17px)}
-#road{position:absolute;bottom:0;left:0;right:0;height:36%;background:linear-gradient(#182531,#080e17);clip-path:polygon(27% 0,73% 0,100% 100%,0 100%)}
-#road:after{content:"";position:absolute;left:49.5%;top:10%;width:1%;height:90%;background:repeating-linear-gradient(#d7f3ff77 0 15px,transparent 15px 36px)}
-.reflection{position:absolute;bottom:0;height:26%;width:7%;filter:blur(10px);opacity:.25;background:linear-gradient(var(--c),transparent)}
-.puddle{position:absolute;border-radius:50%;height:3%;background:linear-gradient(90deg,#43b8d733,#b6f1ff25,#43b8d722);border:1px solid #a1eaff22}
-#store{position:absolute;left:50%;top:44%;width:min(78vw,600px);height:min(42vh,350px);min-height:230px;transform:translate(-50%,-50%);transition:width .35s,filter .3s}
-#roof{position:absolute;top:12%;left:-3%;right:-3%;height:10%;background:linear-gradient(#67859a,#182e40);border:1px solid #91c7dc}
-#sign{position:absolute;z-index:2;top:0;left:0;right:0;height:19%;display:flex;justify-content:center;align-items:center;gap:9px;background:#0b1829;border:2px solid var(--cyan);box-shadow:0 0 18px #42dfff77;color:#b7f8ff;font-weight:900;font-size:clamp(15px,3vw,25px);letter-spacing:3px;text-shadow:0 0 12px #51eaff}
-#sign small{font-size:9px;color:#ff8bd2;letter-spacing:1px}
-#front{position:absolute;top:20%;bottom:0;left:0;right:0;padding:6px;background:linear-gradient(#1a3345,#101b27);border:2px solid #486a80;box-shadow:inset 0 0 35px #5be5ff15,0 0 30px #42cfff20}
-#inside{height:100%;display:grid;grid-template-columns:1fr 1fr .62fr;gap:5px;background:#0a1825}
-.window{position:relative;overflow:hidden;border:2px solid #67899a;background:linear-gradient(130deg,#22485b,#0c2638 65%,#34515d)}
-.window:before{content:"";position:absolute;left:0;right:0;top:0;height:7%;background:#ffe7ad;box-shadow:0 0 18px #ffdd8b}
-.shelves{position:absolute;top:15%;left:5%;right:5%;height:58%;display:flex;flex-direction:column;justify-content:space-between}
-.shelf{height:29%;display:flex;align-items:flex-end;gap:2px;border-bottom:3px solid #a9b7b9;background:#162a36aa}
-.item{flex:1;height:var(--h);background:var(--c);border-radius:2px 2px 0 0;position:relative;min-width:2px}
-.item:after{content:"";position:absolute;top:23%;left:10%;right:10%;height:17%;background:#ffffffa0}
-.counter{position:absolute;bottom:9%;left:7%;right:7%;height:22%;background:linear-gradient(#8b7966,#332c2a);border-top:4px solid #c0aa8c}
-.counter:before{content:"";position:absolute;top:-37%;left:25%;width:37%;height:34%;background:#12202b;border:2px solid #86a8b6;box-shadow:inset 0 0 9px #6affd3}
-#fridge{position:absolute;inset:13% 5% 8%;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:4px;border:2px solid #a1e7f7;background:#153448}
-.fridge-door{position:relative;border:1px solid #7dd7ed88;background:#8de8ff12}
-.bottle{position:absolute;bottom:8%;width:25%;height:65%;border-radius:3px;background:linear-gradient(#b7f7db 0 10%,#25b58a 11% 75%,#08745c 76%);box-shadow:0 0 4px #80ffd655}
-#door{position:absolute;inset:0;background:linear-gradient(90deg,#6edfff12,#ffffff03);border:1px solid #b0eaff88;cursor:pointer}
-#door.open{background:#6af7df40}
-#handle{position:absolute;right:14%;top:42%;width:3px;height:25%;background:#e5fbff;box-shadow:0 0 5px #5ceaff}
-#doorText{position:absolute;bottom:10%;width:100%;text-align:center;font-size:9px}
-#step{position:absolute;bottom:-3%;right:0;width:32%;height:6%;background:#8ca2b0;border-top:2px solid #d7f3ff}
-#rain{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-#people,#cars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.person{position:absolute;left:-10%;bottom:20%;width:17px;height:58px;animation:walk var(--speed) linear var(--delay) infinite}
-.umbrella{position:absolute;left:-30%;top:0;width:160%;height:25%;border-radius:100% 100% 10% 10%;background:var(--hat)}
-.body{position:absolute;top:25%;left:20%;width:60%;height:53%;background:var(--coat);border-radius:35% 35% 10% 10%}
-.head{position:absolute;top:17%;left:32%;width:36%;height:13%;background:#c8a58f;border-radius:50%}
-.legs{position:absolute;bottom:0;left:25%;height:25%;width:18%;background:#101722;box-shadow:8px 0 #101722}
-@keyframes walk{from{left:-10%}to{left:110%}}
-.car{position:absolute;left:-25%;bottom:var(--bottom);width:105px;height:34px;animation:drive var(--speed) linear var(--delay) infinite}
-.carbody{position:absolute;bottom:15%;left:3%;right:3%;height:56%;border-radius:7px 12px 3px 3px;background:var(--color);border-top:2px solid #fff7}
-.cartop{position:absolute;bottom:62%;left:25%;width:48%;height:30%;background:#9ddcf777;clip-path:polygon(15% 0,80% 0,100% 100%,0 100%)}
-.wheel{position:absolute;bottom:0;width:18%;height:30%;background:#060b10;border:2px solid #84949e;border-radius:50%}
-.wheel.a{left:16%}.wheel.b{right:14%}
-.lamp{position:absolute;right:0;top:38%;height:20%;width:9%;background:#fff4bd;box-shadow:0 0 10px 4px #ffe8a577}
-@keyframes drive{from{left:-25%}to{left:120%}}
-#mist{position:absolute;inset:30% 0 0;pointer-events:none;background:linear-gradient(transparent,#a8dfff09);animation:fog 8s ease-in-out infinite alternate}
-@keyframes fog{to{opacity:.35;transform:translateX(2%)}}
-#header{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;padding:13px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
-#header>*{pointer-events:auto}
-h1{margin:0;font-size:clamp(18px,4vw,26px);letter-spacing:2px;text-shadow:0 0 12px #51eaff88}
-.sub{font-size:9px;color:#9eb9cc;letter-spacing:1px;margin-top:4px}
-#status{border:1px solid #72dfff44;border-radius:20px;padding:7px 10px;background:#071522bb;font-size:11px;align-self:flex-start;white-space:nowrap}
-#weather{position:absolute;top:88px;left:13px;background:#071522b8;border-left:2px solid var(--cyan);padding:8px 10px;font-size:10px;line-height:1.8;color:#c2d8e5}
-#weather strong{color:white}
-#caption{position:absolute;bottom:calc(150px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);width:max-content;max-width:92%;padding:8px 13px;background:#06111dcc;border:1px solid #79dcff30;border-radius:20px;text-align:center;font-size:11px;color:#e0f3ff}
-#panel{position:absolute;bottom:0;left:0;right:0;padding:12px 8px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,#06101ef2 25%)}
-#buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:680px;margin:auto}
-.ctrl{min-width:61px;padding:8px 7px;border:1px solid #70dfff38;border-radius:10px;background:#102437ed;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;touch-action:manipulation}
-.ctrl .ico{font-size:18px}
-.ctrl.active{border-color:#6aeaff;background:#164056;box-shadow:0 0 12px #45dfff24}
-.ctrl:active{transform:scale(.96)}
-#settings{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:10px auto 0;font-size:10px;color:#c3d6e1}
-.setting{display:flex;align-items:center;gap:5px}
-select{max-width:85px;background:#122739;color:#e4f8ff;border:1px solid #67d9f655;border-radius:6px;padding:5px;font-size:10px}
-input[type=range]{width:70px;accent-color:#66eaff}
-#toast{position:absolute;z-index:5;left:50%;top:47%;transform:translate(-50%,-50%);max-width:85%;padding:13px 18px;border:1px solid #69eaff88;border-radius:12px;background:#081827f5;color:#e5faff;font-size:13px;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}
-#toast.show{opacity:1}
-#exitPhoto{display:none;position:absolute;z-index:10;right:12px;top:65px;padding:10px 14px;background:#102739;border:1px solid var(--cyan);border-radius:10px}
-body.photo #exitPhoto{display:block}
-body.photo #header,body.photo #weather,body.photo #caption,body.photo #panel{display:none}
-body.photo #photoFrame{display:block}
-#photoFrame{display:none;position:absolute;inset:12px;border:1px solid #e5faff99;pointer-events:none}
-body.low .person,body.low .car{opacity:.65}
-body.low #mist{display:none}
-body.low .reflection{filter:blur(4px)}
-body.inside #store{filter:brightness(1.2);width:min(88vw,680px)}
-@media(max-width:420px){
- #store{width:94vw;height:34vh;min-height:220px;top:43%}
- #header{padding:10px}
- #weather{top:78px;left:9px}
- .ctrl{min-width:55px;padding:7px 5px}
- .ctrl .ico{font-size:16px}
- #buttons{gap:5px}
- #settings{gap:7px;margin-top:8px}
- #caption{bottom:calc(145px + env(safe-area-inset-bottom,0px))}
+:root{
+  --cyan:#91eaff;
+  --gold:#ffdf9b;
+  --glass:#9bdfff;
+  --panel:rgba(7,16,25,.91);
 }
-@media(max-height:550px){
- #store{height:52vh;min-height:180px;top:42%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:#08131c;color:#eef5fa;
+  font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;
+}
+button,select,input{font:inherit}
+button{color:inherit;touch-action:manipulation}
+#app{position:fixed;inset:0;overflow:hidden;background:#0b1923;isolation:isolate}
+#sky{
+ position:absolute;inset:0 0 25%;
+ background:
+ radial-gradient(ellipse at 50% 55%,#526d7b3a,transparent 48%),
+ linear-gradient(180deg,#07101b 0%,#142431 55%,#334653 100%);
+}
+#sky:after{
+ content:"";position:absolute;inset:0;opacity:.22;
+ background:repeating-linear-gradient(0deg,transparent 0 3px,#9bb5c008 4px 5px);
+}
+#haze{
+ position:absolute;inset:20% -10% 10%;
+ background:radial-gradient(ellipse,#a3d9f012,transparent 70%);
+ animation:haze 12s ease-in-out infinite alternate;
+ pointer-events:none;
+}
+@keyframes haze{to{transform:translateX(3%) scale(1.05);opacity:.5}}
+#city{position:absolute;inset:0 0 26%;overflow:hidden}
+.tower{
+ position:absolute;bottom:0;
+ background:linear-gradient(90deg,#101b25,#20313c 55%,#111c26);
+ border-top:1px solid #718b9a25;
+}
+.tower:before{
+ content:"";position:absolute;inset:8px 5px;
+ background:repeating-linear-gradient(0deg,transparent 0 13px,#ffd58b22 14px 17px);
+}
+.tower:after{
+ content:"";position:absolute;inset:8px 5px;
+ background:repeating-linear-gradient(90deg,transparent 0 11px,#a6ddf018 12px 15px);
+}
+#road{
+ position:absolute;bottom:0;left:0;right:0;height:35%;
+ background:
+ linear-gradient(180deg,#26313a 0%,#101820 55%,#090f15 100%);
+ clip-path:polygon(27% 0,73% 0,100% 100%,0 100%);
+ overflow:hidden;
+}
+#road:before{
+ content:"";position:absolute;inset:0;
+ background:repeating-linear-gradient(0deg,transparent 0 32px,#c4e4f009 33px 35px);
+}
+#roadLines{
+ position:absolute;top:8%;bottom:0;left:49.5%;width:1%;
+ background:repeating-linear-gradient(180deg,#e3edf1 0 10px,transparent 10px 27px);
+ opacity:.65;
+}
+.puddle{
+ position:absolute;border-radius:50%;
+ background:linear-gradient(100deg,#b6e9ff10,#7ec9e72a,#d9efff0b);
+ border:1px solid #b5e8ff25;
+ box-shadow:inset 0 0 12px #80d9ff0b;
+}
+#reflections{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.reflection{
+ position:absolute;bottom:0;height:27%;
+ width:7%;opacity:.22;filter:blur(10px);
+ background:linear-gradient(180deg,var(--color),transparent);
+ transform:perspective(100px) rotateX(-8deg);
+}
+#store{
+ position:absolute;left:50%;top:43%;
+ width:min(82vw,680px);height:min(45vh,390px);min-height:245px;
+ transform:translate(-50%,-50%);
+ transform-origin:center;
+ transition:width .35s,filter .35s;
+ filter:drop-shadow(0 16px 25px #0008);
+}
+#roof{
+ position:absolute;top:10%;left:-3%;right:-3%;height:12%;
+ background:linear-gradient(#607785,#253844 65%,#14222c);
+ border:1px solid #849aa5;
+ box-shadow:0 6px 12px #0005;
+ transform:perspective(500px) rotateX(-4deg);
+}
+#sign{
+ position:absolute;z-index:3;top:0;left:0;right:0;height:20%;
+ display:flex;justify-content:center;align-items:center;gap:9px;
+ background:linear-gradient(180deg,#101d2b,#091521);
+ border:2px solid #8eeaff;
+ box-shadow:0 0 12px #65dfff8a,inset 0 0 16px #3bcfff18;
+ color:#c5f6ff;font-weight:900;
+ font-size:clamp(14px,2.7vw,24px);letter-spacing:3px;
+ text-shadow:0 0 9px #65e8ff;
+}
+#sign small{font-size:9px;color:#ff9bd5;letter-spacing:1px}
+#awning{
+ position:absolute;top:19%;left:-2%;right:-2%;height:8%;
+ background:repeating-linear-gradient(90deg,#e3e0d6 0 9%,#a5484d 9% 18%);
+ border-bottom:3px solid #594047;
+ box-shadow:0 5px 9px #0005;
+}
+#front{
+ position:absolute;top:25%;left:0;right:0;bottom:0;
+ padding:6px;background:linear-gradient(135deg,#344b59,#172632);
+ border:2px solid #78909c;
+ box-shadow:inset 0 0 22px #80dfff12;
+}
+#interior{
+ position:relative;width:100%;height:100%;
+ display:grid;grid-template-columns:1fr 1fr .62fr;gap:5px;
+ padding:4px;background:#172733;
+}
+.window{
+ position:relative;overflow:hidden;
+ border:2px solid #7e9ba8;
+ background:
+ linear-gradient(110deg,#c5eaff08,transparent 32%,#d1f2ff09 58%,transparent),
+ linear-gradient(180deg,#172f3d,#0e1c28);
+}
+.window:before{
+ content:"";position:absolute;z-index:2;top:0;left:0;right:0;height:7%;
+ background:linear-gradient(#fff1c5,#ffdc92);
+ box-shadow:0 0 14px #ffda8d;
+}
+.window:after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(112deg,#fff2,transparent 24%,transparent 74%,#c7f0ff09);
+}
+#shelves{
+ position:absolute;top:13%;left:5%;right:5%;height:64%;
+ display:flex;flex-direction:column;justify-content:space-between;
+}
+.shelf{
+ position:relative;height:28%;display:flex;align-items:flex-end;
+ gap:2px;border-bottom:5px solid #8b999c;
+ background:linear-gradient(#172a35,#263641);
+ box-shadow:0 4px 5px #0004;
+}
+.product{
+ position:relative;flex:1;min-width:2px;height:var(--height);
+ border-radius:3px 3px 1px 1px;background:var(--product);
+ box-shadow:inset -3px 0 2px #0005;
+}
+.product:before{
+ content:"";position:absolute;top:-8%;left:18%;width:64%;height:10%;
+ background:inherit;border-radius:3px 3px 0 0;
+}
+.product:after{
+ content:"";position:absolute;top:27%;left:9%;right:9%;height:18%;
+ background:#fff9;
+}
+#counter{
+ position:absolute;left:7%;right:7%;bottom:8%;height:22%;
+ background:linear-gradient(#9b8976,#57483e 18%,#332a27);
+ border-top:4px solid #c5b39d;
+ box-shadow:0 4px 10px #0007;
+}
+#register{
+ position:absolute;left:30%;top:-33%;width:32%;height:31%;
+ background:#17232b;border:2px solid #8ca4ae;
+ box-shadow:inset 0 0 9px #8ce8ff28;
+}
+#register:after{
+ content:"";position:absolute;inset:28% 15%;
+ background:#70dbb0;box-shadow:0 0 7px #70dbb0;
+}
+#fridge{
+ position:absolute;inset:13% 5% 7%;
+ display:grid;grid-template-columns:repeat(3,1fr);gap:3px;
+ padding:4px;border:2px solid #9cc6d2;
+ background:linear-gradient(90deg,#0d2634,#1d4050,#0c2432);
+ box-shadow:0 0 10px #77e7ff20;
+}
+.fridge-door{
+ position:relative;border:1px solid #b2e9f05c;
+ background:linear-gradient(90deg,#ffffff05,#7ddcff16,#ffffff05);
+}
+.bottle{
+ position:absolute;bottom:8%;width:23%;height:var(--bh);
+ border-radius:3px 3px 5px 5px;
+ background:var(--bottle);
+ box-shadow:inset -2px 0 2px #0004,0 0 3px #9eefff30;
+}
+.bottle:before{
+ content:"";position:absolute;top:-9%;left:28%;width:44%;height:12%;
+ background:#b5e7eb;border-radius:2px 2px 0 0;
+}
+#door{
+ position:relative;width:100%;height:100%;overflow:hidden;
+ background:linear-gradient(90deg,#b2e9ff08,#fff1,#b2e9ff06);
+ border:1px solid #b0e3ef88;
+ cursor:pointer;
+}
+#door.open{background:#c0f8ff35}
+#door:after{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(115deg,transparent 30%,#fff2 45%,transparent 55%);
+ pointer-events:none;
+}
+#handle{
+ position:absolute;right:14%;top:42%;height:25%;width:3px;
+ background:#e6f9ff;box-shadow:0 0 6px #9beaff;
+}
+#doorLabel{
+ position:absolute;bottom:8%;width:100%;
+ text-align:center;font-size:8px;color:#e0edf2;
+}
+#step{
+ position:absolute;bottom:-3%;right:0;width:32%;height:6%;
+ background:linear-gradient(#b9cbd1,#718895);
+ border-top:2px solid #dcecf1;
+}
+#rain,#glassRain{
+ position:absolute;inset:0;width:100%;height:100%;
+ pointer-events:none;
+}
+#glassRain{opacity:.45}
+#people,#cars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.person{
+ position:absolute;left:-12%;bottom:19%;
+ width:clamp(13px,2vw,21px);height:clamp(42px,7vw,68px);
+ animation:walk var(--speed) linear var(--delay) infinite;
+ filter:drop-shadow(0 0 4px #0008);
+}
+.umbrella{
+ position:absolute;left:-30%;top:0;width:160%;height:25%;
+ border-radius:90% 90% 8% 8%;background:var(--umbrella);
+ border-bottom:2px solid #c4e9f0;
+}
+.head{
+ position:absolute;top:19%;left:33%;width:34%;height:12%;
+ border-radius:50%;background:#b59a87;
+}
+.coat{
+ position:absolute;top:28%;left:18%;width:64%;height:48%;
+ background:var(--coat);border-radius:35% 35% 8% 8%;
+}
+.legs{
+ position:absolute;bottom:0;left:27%;width:17%;height:25%;
+ background:#111820;box-shadow:7px 0 #111820;
+}
+@keyframes walk{from{left:-12%}to{left:112%}}
+.car{
+ position:absolute;left:-28%;bottom:var(--bottom);
+ width:clamp(75px,13vw,135px);height:clamp(25px,4vw,40px);
+ animation:drive var(--speed) linear var(--delay) infinite;
+ filter:drop-shadow(0 4px 4px #0008);
+}
+.carBody{
+ position:absolute;left:2%;right:2%;bottom:12%;height:53%;
+ background:var(--car);border-radius:8px 12px 3px 3px;
+ border-top:2px solid #ffffff70;
+}
+.carRoof{
+ position:absolute;left:24%;bottom:57%;width:50%;height:32%;
+ background:linear-gradient(100deg,#badce8a0,#2c4859);
+ clip-path:polygon(18% 0,77% 0,100% 100%,0 100%);
+}
+.wheel{
+ position:absolute;bottom:0;width:17%;height:30%;
+ border-radius:50%;background:#080c10;border:2px solid #8696a0;
+}
+.wheel.left{left:17%}.wheel.right{right:15%}
+.headlamp{
+ position:absolute;right:0;top:37%;height:20%;width:9%;
+ background:#fff4c4;box-shadow:0 0 10px 5px #fff0a455;
+}
+.tailLamp{
+ position:absolute;left:0;top:37%;height:20%;width:7%;
+ background:#ff4054;box-shadow:0 0 9px #ff4054;
+}
+@keyframes drive{from{left:-28%}to{left:120%}}
+#header{
+ position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;
+ padding:13px 14px;display:flex;justify-content:space-between;
+ align-items:flex-start;gap:8px;pointer-events:none;
+}
+#header>*{pointer-events:auto}
+h1{margin:0;font-size:clamp(18px,4vw,26px);letter-spacing:2px;text-shadow:0 0 12px #6adfff55}
+.subtitle{margin-top:4px;font-size:9px;letter-spacing:1px;color:#9bb1bf}
+#status{
+ padding:7px 10px;border:1px solid #85dfff3b;border-radius:20px;
+ background:#06111bbd;font-size:10px;white-space:nowrap;
+}
+#weather{
+ position:absolute;top:85px;left:13px;padding:8px 10px;
+ border-left:2px solid var(--cyan);background:#07131dc2;
+ font-size:10px;line-height:1.8;color:#c1d3df;
+}
+#weather strong{color:#fff}
+#caption{
+ position:absolute;left:50%;bottom:calc(153px + env(safe-area-inset-bottom,0px));
+ transform:translateX(-50%);width:max-content;max-width:92%;
+ padding:8px 13px;border:1px solid #b5e7ff27;
+ border-radius:24px;background:#07121bcc;
+ color:#e5f2f8;font-size:11px;text-align:center;
+}
+#panel{
+ position:absolute;bottom:0;left:0;right:0;
+ padding:12px 8px calc(12px + env(safe-area-inset-bottom,0px));
+ background:linear-gradient(transparent,#07111de8 23%,#07111df8);
+}
+#buttons{
+ display:flex;flex-wrap:wrap;justify-content:center;gap:6px;
+ max-width:720px;margin:auto;
+}
+.ctrl{
+ min-width:57px;padding:8px 6px;border:1px solid #81dfff3d;
+ border-radius:10px;background:linear-gradient(#172c3be8,#0b1926f5);
+ display:flex;flex-direction:column;align-items:center;gap:4px;
+ font-size:10px;transition:background .15s,border-color .15s;
+}
+.ctrl .ico{font-size:18px;line-height:1.1}
+.ctrl.active{border-color:#91edff;background:#164052;box-shadow:0 0 10px #49dfff20}
+.ctrl:active{transform:scale(.96)}
+#settings{
+ display:flex;justify-content:center;align-items:center;
+ flex-wrap:wrap;gap:11px;margin:10px auto 0;
+ font-size:10px;color:#c7d8e2;
+}
+.setting{display:flex;align-items:center;gap:5px}
+select{
+ max-width:85px;background:#122738;color:#e6f6ff;
+ border:1px solid #78dfff4c;border-radius:6px;padding:5px;font-size:10px;
+}
+input[type=range]{width:70px;accent-color:#83eaff}
+#toast{
+ position:absolute;z-index:15;top:47%;left:50%;
+ transform:translate(-50%,-50%);max-width:86%;
+ padding:13px 18px;background:#081925f5;
+ border:1px solid #8deaff88;border-radius:12px;
+ color:#e8faff;text-align:center;font-size:13px;
+ opacity:0;pointer-events:none;transition:opacity .2s;
+}
+#toast.show{opacity:1}
+#photoFrame{
+ display:none;position:absolute;inset:12px;
+ border:1px solid #f0faff9c;pointer-events:none;
+}
+#exitPhoto{
+ display:none;position:absolute;z-index:20;right:12px;top:65px;
+ padding:10px 14px;border:1px solid #8ceaff;
+ border-radius:10px;background:#0b1c29ed;
+}
+body.photo #photoFrame,body.photo #exitPhoto{display:block}
+body.photo #header,body.photo #weather,body.photo #caption,body.photo #panel{display:none}
+body.low #haze{display:none}
+body.low .person,body.low .car{animation-duration:calc(var(--speed,20s) * 1.2)}
+@media(max-width:430px){
+ #store{width:94vw;height:35vh;min-height:220px;top:43%}
+ #header{padding:10px}
+ #weather{top:77px;left:9px;padding:7px 8px;font-size:9px}
+ #buttons{gap:5px}
+ .ctrl{min-width:52px;padding:7px 4px;font-size:9px}
+ .ctrl .ico{font-size:16px}
+ #settings{gap:7px;margin-top:8px}
+ input[type=range]{width:60px}
+ #caption{bottom:calc(150px + env(safe-area-inset-bottom,0px));font-size:10px}
+}
+@media(max-height:560px){
+ #store{height:52vh;min-height:185px;top:42%}
  #weather{top:65px}
  #panel{padding-top:5px}
- .ctrl{padding:4px 7px}
- #settings{margin-top:4px}
- #caption{bottom:110px}
+ .ctrl{padding:5px}
+ #settings{margin-top:5px}
+ #caption{bottom:112px}
+}
+@media(prefers-reduced-motion:reduce){
+ #haze{animation:none}
 }
 </style>
 </head>
 <body>
-<div id="scene">
- <div id="sky"></div><div id="city"></div><div id="road"></div>
- <div class="puddle" style="width:27%;left:8%;bottom:7%"></div>
- <div class="puddle" style="width:23%;right:8%;bottom:15%"></div>
- <div class="puddle" style="width:32%;left:36%;bottom:3%"></div>
- <div class="reflection" style="--c:#5ceaff;left:32%"></div>
- <div class="reflection" style="--c:#ff69bd;left:49%;width:5%"></div>
- <div class="reflection" style="--c:#ffd58b;left:61%;width:10%"></div>
+<div id="app">
+ <div id="sky"></div>
+ <div id="city"></div>
+ <div id="haze"></div>
+ <div id="road"><div id="roadLines"></div></div>
+
+ <div id="reflections">
+  <div class="reflection" style="--color:#43d9ed;left:31%"></div>
+  <div class="reflection" style="--color:#f65eaf;left:47%;width:6%"></div>
+  <div class="reflection" style="--color:#ffdc91;left:60%;width:10%"></div>
+ </div>
+ <div class="puddle" style="width:27%;height:3%;left:8%;bottom:7%"></div>
+ <div class="puddle" style="width:22%;height:2.5%;right:8%;bottom:15%"></div>
+ <div class="puddle" style="width:29%;height:2%;left:38%;bottom:3%"></div>
 
  <div id="store">
   <div id="roof"></div>
   <div id="sign">雨夜便利店 <small>OPEN 24H</small></div>
+  <div id="awning"></div>
   <div id="front">
-   <div id="inside">
-    <div class="window"><div class="shelves" id="shelves"></div><div class="counter"></div></div>
+   <div id="interior">
+    <div class="window">
+     <div id="shelves"></div>
+     <div id="counter"><div id="register"></div></div>
+    </div>
     <div class="window"><div id="fridge"></div></div>
-    <div class="window"><div id="door"><div id="handle"></div><div id="doorText">点击进店</div></div></div>
+    <div class="window">
+     <div id="door" role="button" tabindex="0" aria-label="进入或离开便利店">
+      <div id="handle"></div><div id="doorLabel">点击进店</div>
+     </div>
+    </div>
    </div>
   </div>
   <div id="step"></div>
  </div>
- <div id="cars"></div><div id="people"></div>
- <canvas id="rain"></canvas><div id="mist"></div>
+
+ <div id="cars"></div>
+ <div id="people"></div>
+ <canvas id="rain"></canvas>
+ <canvas id="glassRain"></canvas>
 
  <div id="header">
-  <div><h1>雨夜便利店</h1><div class="sub">MIDNIGHT CONVENIENCE STORE</div></div>
+  <div><h1>雨夜便利店</h1><div class="subtitle">MIDNIGHT CONVENIENCE STORE</div></div>
   <div id="status">● <span id="clock">23:48</span> · 营业中</div>
  </div>
  <div id="weather"><strong>☔ 城市夜雨</strong><br><span id="rainText">中雨 · 18°C</span><br>路面湿滑 · 夜间出行</div>
@@ -151,19 +445,24 @@ body.inside #store{filter:brightness(1.2);width:min(88vw,680px)}
    <button class="ctrl" id="enterBtn"><span class="ico">🚪</span><span>进店体验</span></button>
    <button class="ctrl active" id="rainBtn"><span class="ico">🌧</span><span>雨幕开关</span></button>
    <button class="ctrl" id="musicBtn"><span class="ico">♫</span><span>背景音乐</span></button>
-   <button class="ctrl" id="soundBtn"><span class="ico">🔊</span><span>雨声音效</span></button>
+   <button class="ctrl" id="soundBtn"><span class="ico">🌧</span><span>雨声音效</span></button>
    <button class="ctrl" id="photoBtn"><span class="ico">▣</span><span>拍照模式</span></button>
   </div>
   <div id="settings">
    <label class="setting">雨量
-    <select id="rainLevel"><option value="1">细雨</option><option value="2" selected>中雨</option><option value="3">大雨</option><option value="4">暴雨</option></select>
+    <select id="rainLevel">
+     <option value="1">细雨</option><option value="2" selected>中雨</option>
+     <option value="3">大雨</option><option value="4">暴雨</option>
+    </select>
    </label>
    <label class="setting">音量
     <input id="volume" type="range" min="0" max="100" value="35">
-    <span id="volText">35%</span>
+    <span id="volumeText">35%</span>
    </label>
    <label class="setting">画质
-    <select id="quality"><option value="high">精细</option><option value="medium" selected>均衡</option><option value="low">省电</option></select>
+    <select id="quality">
+     <option value="high">精细</option><option value="medium" selected>均衡</option><option value="low">省电</option>
+    </select>
    </label>
   </div>
  </div>
@@ -173,279 +472,347 @@ body.inside #store{filter:brightness(1.2);width:min(88vw,680px)}
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const scene=$('scene');
-let toastTimer;
-function toast(s){
- const el=$('toast');el.textContent=s;el.classList.add('show');
+const app=$('app');
+let toastTimer=0;
+function toast(message){
+ const el=$('toast');el.textContent=message;el.classList.add('show');
  clearTimeout(toastTimer);
- toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
+ toastTimer=setTimeout(()=>el.classList.remove('show'),1900);
 }
-function active(id,v){$(id).classList.toggle('active',v)}
-function label(id,s){$(id).lastElementChild.textContent=s}
+function setActive(id,value){$(id).classList.toggle('active',value)}
+function setLabel(id,value){$(id).lastElementChild.textContent=value}
 
-// 楼房
-for(let i=0;i<24;i++){
- const b=document.createElement('div');b.className='building';
- b.style.height=(28+Math.random()*70)+'%';$('city').appendChild(b);
+// 城市楼宇
+for(let i=0;i<25;i++){
+ const el=document.createElement('div');el.className='tower';
+ el.style.left=(i*4.2)+'%';
+ el.style.width=(3+Math.random()*3)+'%';
+ el.style.height=(18+Math.random()*65)+'%';
+ $('city').appendChild(el);
 }
+
 // 商品货架
-const colors=['#e65059','#eeb748','#4bbde1','#66c78a','#df79bc','#ef8552','#e4d26c'];
+const productColors=['#d44749','#e4ae48','#359bbd','#5b9c73','#c56b98','#d87543','#e4d6a2','#e9eceb'];
 for(let r=0;r<3;r++){
- const row=document.createElement('div');row.className='shelf';
- for(let i=0;i<12;i++){
-  const p=document.createElement('div');p.className='item';
-  p.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);
-  p.style.setProperty('--h',(45+Math.random()*50)+'%');row.appendChild(p);
+ const shelf=document.createElement('div');shelf.className='shelf';
+ for(let i=0;i<13;i++){
+  const item=document.createElement('div');item.className='product';
+  item.style.setProperty('--product',productColors[Math.floor(Math.random()*productColors.length)]);
+  item.style.setProperty('--height',(48+Math.random()*49)+'%');
+  shelf.appendChild(item);
  }
- $('shelves').appendChild(row);
+ $('shelves').appendChild(shelf);
 }
-// 冰柜
+
+// 饮料冰柜
+const bottleColors=[
+ 'linear-gradient(#d9f7dd 0 10%,#36ad75 11% 72%,#176b4c 73%)',
+ 'linear-gradient(#d5f1ff 0 10%,#268fc3 11% 72%,#17517e 73%)',
+ 'linear-gradient(#ffe6ad 0 10%,#dc8739 11% 72%,#984c2c 73%)',
+ 'linear-gradient(#f4d8e9 0 10%,#c55c91 11% 72%,#7e355c 73%)'
+];
 for(let i=0;i<3;i++){
- const d=document.createElement('div');d.className='fridge-door';
- for(let j=0;j<3;j++){
+ const door=document.createElement('div');door.className='fridge-door';
+ for(let j=0;j<4;j++){
   const b=document.createElement('div');b.className='bottle';
-  b.style.left=(10+j*30)+'%';
-  b.style.background=['linear-gradient(#a8f7d0 0 10%,#26ad7e 11% 70%,#08715a 71%)','linear-gradient(#a9eaff 0 10%,#278ed3 11% 70%,#174e87 71%)','linear-gradient(#ffe8a6 0 10%,#e58a36 11% 70%,#a64d28 71%)'][(i+j)%3];
-  d.appendChild(b);
+  b.style.left=(4+j*24)+'%';
+  b.style.setProperty('--bh',(55+Math.random()*25)+'%');
+  b.style.setProperty('--bottle',bottleColors[(i+j)%bottleColors.length]);
+  door.appendChild(b);
  }
- $('fridge').appendChild(d);
+ $('fridge').appendChild(door);
 }
+
 // 行人
 for(let i=0;i<5;i++){
  const p=document.createElement('div');p.className='person';
- p.style.setProperty('--speed',(20+Math.random()*18)+'s');
+ const speed=(20+Math.random()*16)+'s';
+ p.style.setProperty('--speed',speed);
  p.style.setProperty('--delay',(-Math.random()*30)+'s');
- p.style.setProperty('--coat',['#182d45','#483746','#253e3b','#303b58'][i%4]);
- p.style.setProperty('--hat',['#36bad5','#d94e72','#d2a54a','#8975d6','#a5cbd9'][i]);
- p.innerHTML='<div class="umbrella"></div><div class="head"></div><div class="body"></div><div class="legs"></div>';
+ p.style.setProperty('--coat',['#192a3b','#44343b','#263a36','#313c51','#39352e'][i]);
+ p.style.setProperty('--umbrella',['#4e9da8','#a84d60','#b8a06a','#7774a8','#9aadb4'][i]);
+ p.innerHTML='<div class="umbrella"></div><div class="head"></div><div class="coat"></div><div class="legs"></div>';
  $('people').appendChild(p);
 }
-// 车辆
+
+// 汽车
 for(let i=0;i<3;i++){
- const c=document.createElement('div');c.className='car';
- c.style.setProperty('--speed',(19+i*7)+'s');
- c.style.setProperty('--delay',(-i*8-2)+'s');
- c.style.setProperty('--bottom',(8+i*7)+'%');
- c.style.setProperty('--color',['#254461','#70394b','#677984'][i]);
- c.innerHTML='<div class="cartop"></div><div class="carbody"></div><div class="wheel a"></div><div class="wheel b"></div><div class="lamp"></div>';
- $('cars').appendChild(c);
+ const car=document.createElement('div');car.className='car';
+ car.style.setProperty('--speed',(20+i*7)+'s');
+ car.style.setProperty('--delay',(-i*8-2)+'s');
+ car.style.setProperty('--bottom',(8+i*7)+'%');
+ car.style.setProperty('--car',['#263b4b','#5c333d','#66757e'][i]);
+ car.innerHTML='<div class="carRoof"></div><div class="carBody"></div><div class="wheel left"></div><div class="wheel right"></div><div class="headlamp"></div><div class="tailLamp"></div>';
+ $('cars').appendChild(car);
 }
 
-// Canvas 雨幕
-const canvas=$('rain'),ctx=canvas.getContext('2d');
-let W=0,H=0,dpr=1,drops=[];
-let intensity=2,quality='medium',rainOn=true;
-let running=true,last=0,raf=0;
+// Canvas 雨幕，限制设备像素比与帧率
+const rainCanvas=$('rain'),rainCtx=rainCanvas.getContext('2d');
+const glassCanvas=$('glassRain'),glassCtx=glassCanvas.getContext('2d');
+let W=0,H=0,dpr=1;
+let rainDrops=[],glassDrops=[];
+let rainLevel=2,quality='medium',rainEnabled=true;
+let lastFrame=0,frameId=0,frameNo=0;
 function resize(){
  W=innerWidth;H=innerHeight;
  dpr=Math.min(devicePixelRatio||1,quality==='high'?1.5:1);
- canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
- canvas.style.width=W+'px';canvas.style.height=H+'px';
- ctx.setTransform(dpr,0,0,dpr,0,0);
- initDrops();
+ for(const c of [rainCanvas,glassCanvas]){
+  c.width=Math.round(W*dpr);c.height=Math.round(H*dpr);
+  c.style.width=W+'px';c.style.height=H+'px';
+ }
+ rainCtx.setTransform(dpr,0,0,dpr,0,0);
+ glassCtx.setTransform(dpr,0,0,dpr,0,0);
+ makeRain();makeGlass();
 }
-function initDrops(){
- const n=(quality==='low'?90:quality==='medium'?210:380)*intensity/2;
- drops=Array.from({length:Math.round(n)},()=>({
+function makeRain(){
+ const base=quality==='low'?85:quality==='medium'?200:380;
+ rainDrops=Array.from({length:Math.round(base*rainLevel/2)},()=>({
   x:Math.random()*W,y:Math.random()*H,
-  len:8+Math.random()*18,v:400+Math.random()*650,
-  drift:-35-Math.random()*45,a:.12+Math.random()*.3
+  length:8+Math.random()*19,
+  speed:420+Math.random()*680,
+  drift:-35-Math.random()*55,
+  alpha:.13+Math.random()*.3
  }));
 }
-function frame(t){
- raf=requestAnimationFrame(frame);
- if(!running||document.hidden)return;
- const interval=quality==='low'?50:quality==='medium'?30:17;
- if(t-last<interval)return;
- const dt=Math.min((t-last)/1000,.05);last=t;
- ctx.clearRect(0,0,W,H);
- if(!rainOn)return;
- ctx.lineWidth=quality==='low'?.7:1;
- for(const d of drops){
-  ctx.strokeStyle='rgba(164,219,248,'+(d.a*intensity/2)+')';
-  ctx.beginPath();ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.drift*.025,d.y+d.len);ctx.stroke();
-  d.x+=d.drift*dt;d.y+=d.v*dt;
-  if(d.y>H+25||d.x<-30){d.y=-d.len;d.x=Math.random()*(W+30)}
+function makeGlass(){
+ const n=quality==='low'?10:quality==='medium'?22:38;
+ glassDrops=Array.from({length:n},()=>({
+  x:Math.random()*W,y:Math.random()*H,
+  r:1+Math.random()*3,
+  speed:8+Math.random()*24,
+  wobble:Math.random()*6
+ }));
+}
+function drawRain(dt){
+ rainCtx.clearRect(0,0,W,H);
+ if(!rainEnabled)return;
+ rainCtx.lineWidth=quality==='low'?.65:.9;
+ rainCtx.lineCap='round';
+ for(const d of rainDrops){
+  rainCtx.strokeStyle='rgba(190,222,239,'+(d.alpha*rainLevel/2)+')';
+  rainCtx.beginPath();rainCtx.moveTo(d.x,d.y);
+  rainCtx.lineTo(d.x+d.drift*.025,d.y+d.length);rainCtx.stroke();
+  d.x+=d.drift*dt;d.y+=d.speed*dt;
+  if(d.y>H+25||d.x<-30){d.y=-d.length;d.x=Math.random()*(W+30)}
  }
 }
+function drawGlass(dt){
+ glassCtx.clearRect(0,0,W,H);
+ if(!rainEnabled||quality==='low')return;
+ for(const d of glassDrops){
+  d.y+=d.speed*dt;
+  if(d.y>H+10){d.y=-10;d.x=Math.random()*W}
+  glassCtx.beginPath();
+  glassCtx.ellipse(d.x,d.y,d.r*.65,d.r*1.5,0,0,Math.PI*2);
+  glassCtx.fillStyle='rgba(195,232,248,.12)';
+  glassCtx.fill();
+  glassCtx.strokeStyle='rgba(213,242,255,.3)';
+  glassCtx.lineWidth=.7;glassCtx.stroke();
+  glassCtx.beginPath();
+  glassCtx.arc(d.x-d.r*.2,d.y-d.r*.4,Math.max(.4,d.r*.2),0,Math.PI*2);
+  glassCtx.fillStyle='rgba(255,255,255,.55)';glassCtx.fill();
+ }
+}
+function animate(time){
+ frameId=requestAnimationFrame(animate);
+ if(document.hidden)return;
+ const interval=quality==='low'?50:quality==='medium'?30:17;
+ if(time-lastFrame<interval)return;
+ const dt=Math.min((time-lastFrame)/1000,.05);lastFrame=time;
+ drawRain(dt);
+ if(++frameNo%2===0)drawGlass(dt*2);
+}
 addEventListener('resize',resize,{passive:true});
-resize();raf=requestAnimationFrame(frame);
+resize();frameId=requestAnimationFrame(animate);
 
-// 页面隐藏时停止无意义绘制，恢复时重新开始
-document.addEventListener('visibilitychange',()=>{
- if(!document.hidden){last=0}
-});
-
-// 雨量
+// 雨量、画质
 $('rainLevel').addEventListener('change',e=>{
- intensity=Number(e.target.value);initDrops();
- $('rainText').textContent=['','细雨 · 18°C','中雨 · 18°C','大雨 · 17°C','暴雨 · 16°C'][intensity];
+ rainLevel=Number(e.target.value);makeRain();
+ $('weather').querySelector('#rainText').textContent=
+ ['','细雨 · 18°C','中雨 · 18°C','大雨 · 17°C','暴雨 · 16°C'][rainLevel];
  toast('雨量已调整：'+e.target.options[e.target.selectedIndex].text);
 });
-// 画质
 $('quality').addEventListener('change',e=>{
  quality=e.target.value;
  document.body.classList.toggle('low',quality==='low');
- resize();toast('画质已切换');
+ resize();toast('画质已切换：'+e.target.options[e.target.selectedIndex].text);
 });
-// 雨幕
 $('rainBtn').addEventListener('click',()=>{
- rainOn=!rainOn;active('rainBtn',rainOn);
- toast(rainOn?'雨幕已开启':'雨幕已关闭');
+ rainEnabled=!rainEnabled;setActive('rainBtn',rainEnabled);
+ toast(rainEnabled?'动态雨幕已开启':'动态雨幕已关闭');
 });
 
-// 视角与自动旋转统一管理
+// 视角控制：近景、标准、远景与自动旋转共用状态
 let view=0,rotating=false,rotationStart=0;
 function applyView(){
- const offset=rotating?Math.sin((performance.now()-rotationStart)/2600)*1.1:0;
- const scale=[1,1.16,.9][view];
- $('store').style.transform=`translate(calc(-50% + ${offset}%),-50%) scale(${scale})`;
+ const scale=[1,1.16,.87][view];
+ const offset=rotating?Math.sin((performance.now()-rotationStart)/2600)*1.2:0;
+ $('store').style.transform=
+ `translate(calc(-50% + ${offset}%),-50%) scale(${scale})`;
 }
 $('viewBtn').addEventListener('click',()=>{
- rotating=false;active('rotateBtn',false);
+ rotating=false;setActive('rotateBtn',false);
  view=(view+1)%3;applyView();
- toast(['已切换标准视角','已切换近景视角','已切换远景视角'][view]);
+ toast(['标准视角','近景视角','远景视角'][view]);
 });
 $('rotateBtn').addEventListener('click',()=>{
  rotating=!rotating;rotationStart=performance.now();
- active('rotateBtn',rotating);
+ setActive('rotateBtn',rotating);
  if(!rotating)applyView();
  toast(rotating?'自动镜头已开启':'自动镜头已关闭');
 });
-function rotateFrame(){
+function rotateLoop(){
  if(rotating)applyView();
- requestAnimationFrame(rotateFrame);
+ requestAnimationFrame(rotateLoop);
 }
-requestAnimationFrame(rotateFrame);
+requestAnimationFrame(rotateLoop);
 
-// 进店和离店
+// 进店互动，按钮和门共用同一函数
 let inside=false;
 function toggleInside(){
  inside=!inside;
  document.body.classList.toggle('inside',inside);
  $('door').classList.toggle('open',inside);
- $('doorText').textContent=inside?'点击离店':'点击进店';
- label('enterBtn',inside?'离开店内':'进店体验');
+ $('doorLabel').textContent=inside?'点击离店':'点击进店';
+ $('enterBtn').querySelector('.ico').textContent=inside?'🚶':'🚪';
+ $('enterBtn').lastElementChild.textContent=inside?'离开店内':'进店体验';
  $('caption').textContent=inside
- ?'欢迎光临。热咖啡、暖灯光，还有一小段安静时光。'
- :'雨声很轻，城市很远。今晚，慢一点也没关系。';
- toast(inside?'欢迎来到便利店':'你回到了雨夜街头');
+  ?'欢迎光临。暖灯、饮料和热咖啡，让雨夜慢下来。'
+  :'雨声很轻，城市很远。今晚，慢一点也没关系。';
+ toast(inside?'欢迎来到雨夜便利店':'你已回到雨夜街头');
 }
 $('enterBtn').addEventListener('click',toggleInside);
 $('door').addEventListener('click',toggleInside);
+$('door').addEventListener('keydown',e=>{
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleInside()}
+});
 
-// 拍照模式提供始终可见的退出按钮
-function setPhoto(on){
- document.body.classList.toggle('photo',on);
- active('photoBtn',on);
+// 拍照模式始终保留独立退出按钮
+function setPhoto(enabled){
+ document.body.classList.toggle('photo',enabled);
+ setActive('photoBtn',enabled);
 }
 $('photoBtn').addEventListener('click',()=>setPhoto(true));
 $('exitPhoto').addEventListener('click',()=>setPhoto(false));
 
 // 时钟
-function clock(){
+function updateClock(){
  const d=new Date();
  $('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
-clock();setInterval(clock,15000);
+updateClock();setInterval(updateClock,15000);
 
-// 音频：用户点击后才创建，防止浏览器自动播放限制
-let ac=null,master=null,rainGain=null,musicGain=null;
-let noiseSource=null,musicTimer=null,musicNodes=[];
-let rainSound=false,music=false,volume=.35;
-function initAudio(){
- if(ac){
-  if(ac.state==='suspended')ac.$();
-  textContentString;
+// 音频统一管理。需用户主动点击才初始化 AudioContext
+let audio=null,master=null,rainGain=null,musicGain=null,noiseSource=null;
+let rainSoundOn=false,musicOn=false,volume=.35,musicTimer=null;
+let musicOscillators=[];
+function setupAudio(){
+ if(audio){
+  if(audio.state==='suspended')audio.resume();
+  return true;
  }
- dgetHours=padStart.String||d.getMinutes;
- padStart(!clock){setInterval(clock);// 音频：用户点击后才创建，防止浏览器自动播放限制 let}
- ac{
-  null=masternull();
-  rainGain=null.musicGain();null.let.noiseSource=null;musicTimer.null(musicNodes.let);
-  rainSoundfalse=music.false(1,volume.function*2,initAudio.if);
-  acif=ac.state(0);
-  ac(resumereturn=0;true<const.AC;window++)AudioContext[window]=webkitAudioContext.if()*2-1;
-  AC=toast.'浏览器不支持网页音频'();return.false=try;ac.new=AC;
-  masterac=createGain.master();gain.value='lowpass';volume.master.connect=1250;
-  ac=destination.const();buffer.ac.createBuffer=0;
-  ac.sampleRate(ac);sampleRate.const(data);buffer.getChannelData(for);
-  let.i();
-  i=data.length();i.data.i=0;Math.random(noiseSource);
-  accreateBufferSource;
- }noiseSource(buffer){buffer(noiseSource);looptrue}
-}
-const filter(){
- ac();
- createBiquadFilter(!filter||!type)filter;
- frequency.value.rainGain(.65,ac.createGain,.15);
- rainGaingain=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
- valuenoiseSource=0;
- connectfilter(){
-  filter(!connect||!rainGain)rainGain;
-  connectmaster=noiseSource.start(),musicGain=ac.createGain();
-  musicGain.gain='sine';value.musicGain.connect=master[return%true.catch];
-  etoast='音频初始化失败，请刷新页面重试'.return;
-  contentsherefile=[1,1.16,.9][Enter];.filecontents.here('store').toast.rotating='自动镜头已开启'}'自动镜头已关闭'})Enterfilecontentshere.Enter filecontentshere(function rotateFrame(){);Enterfilecontentshere.Enter filecontentshere(Enterfilecontentshere+1.35);
-  ifmusicNodeslengthmusicNodes.splice('viewBtn').i('click',()=>{.notemusicTimersetIntervalnote(.055,functionstopMusicifmusicTimer+.18);
-  clearIntervalmusicTimermusicTimernull.musicNodes([forEach,n,try][n]);.stopcatchemusicNodes(.0001,ifmusicGainacmusicGain+1.3);
-Enterfilecontentshere.Enter filecontentshere(// 进店和离店);
-Enterfilecontentshere(let inside=false;.Enterfilecontents here>30)contentsherefileEnter(){.filecontents(0,10);
-here++;
-toast();rotating('door').'自动镜头已开启'.'自动镜头已关闭'('open',Enterfilecontentshere);=Enter(filecontentshere('doorText').function=rotateFrame?Enterfilecontentshere:Enter;,1100);
-filecontentshere++;
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){toast('当前浏览器不支持网页音频');return false}
+ try{
+  audio=new AC();
+  master=audio.createGain();master.gain.value=volume;master.connect(audio.destination);
+  const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+  noiseSource=audio.createBufferSource();noiseSource.buffer=buffer;noiseSource.loop=true;
+  const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1250;
+  rainGain=audio.createGain();rainGain.gain.value=0;
+  noiseSource.connect(filter);filter.connect(rainGain);rainGain.connect(master);
+  noiseSource.start();
+  musicGain=audio.createGain();musicGain.gain.value=0;musicGain.connect(master);
+  return true;
+ }catch(err){
+  toast('音频初始化失败，请刷新后重试');return false;
  }
-Enterfile();ifmusicNodeslengthmusicNodes('door').splice.i('open',notemusicTimersetIntervalnote);=functionstopMusicifmusicTimer(clearIntervalmusicTimermusicTimernull('doorText').musicNodes=forEach?n:try;,1100);
 }
-n('enterBtn',stopcatchemusicNodes?ifmusicGainacmusicGain:Enterfilecontentshere);(){
-Enter(filecontentshere('caption').// 进店和离店);=Enterfilecontentshere){let(?inside);false=:Enter;}
-file.contents(here?function:toggleInside);(Enterfilecontentshere=>{Enterfilecontentshere{Enterfilecontentshere('enterBtn').$('click',classList);.toggle()}contentsherefile('door').Enter('click',filecontents
-here
-toast(rotating自动镜头已开启(自动镜头已关闭){&&Enterfilecontentshere)Enter
+async function resumeAudio(){
+ if(!setupAudio())return false;
+ try{if(audio.state!=='running')await audio.resume()}catch(err){}
+ if(audio.state!=='running'){
+  toast('请再次点击声音按钮允许播放');return false;
+ }
+ return true;
 }
-filecontentshere
-function
-rotateFrame
-Enterfilecontentshere
-Enter
-filecontentshere
-Enterfile
-ifmusicNodeslengthmusicNodes
+$('soundBtn').addEventListener('click',async()=>{
+ if(!await resumeAudio())return;
+ rainSoundOn=!rainSoundOn;
+ rainGain.gain.setTargetAtTime(rainSoundOn?.2:0,audio.currentTime,.08);
+ setActive('soundBtn',rainSoundOn);
+ $('soundBtn').lastElementChild.textContent=rainSoundOn?'雨声已开':'雨声音效';
+ toast(rainSoundOn?'雨声音效已开启':'雨声音效已关闭');
 });
-splice
-i
-notemusicTimersetIntervalnote
-}functionstopMusicifmusicTimer(clearIntervalmusicTimermusicTimernull){musicNodes);forEach}n(n)stopcatchemusicNodes();ifmusicGainacmusicGain(){ Enterfilecontentshere();Enter('musicBtn',filecontentshere?// 进店和离店);=Enterfilecontentshere){let(?inside);false=:Enter;};:file);
-contents(here?function:toggleInside);(Enterfilecontentshere?Enterfilecontentshere
-Enterfilecontentshere('volume').$classList',dx=>{
-toggle
-inside
+const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
+function stopMusic(){
+ if(musicTimer){clearInterval(musicTimer);musicTimer=null}
+ musicOscillators.forEach(osc=>{try{osc.stop()}catch(err){}});
+ musicOscillators=[];
+ if(audio&&musicGain)musicGain.gain.setTargetAtTime(0,audio.currentTime,.1);
+}
+toast(rainSoundOn?'雨声音效已开启':'雨声音效已关闭');
+ stopMusic();
+ if(!audio||!musicOn)return;
+ musicGain.gain.setTargetAtTime(.65,audio.currentTime,.15);
+const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23,220,261.63,329.63,261.63];
+function stopMusic(){
+  if(!musicOn||!audio)return;
+function startMusic(){
+  osc.type='sine';osc.frequency.value=notes[i%notes.length];
+let i=0;
+  amp.gain.setValueAtTime(.0001,now);
+  amp.gain.exponentialRampToValueAtTime(.055,now+.18);
+  if.audio.musicGain(.0001,musicGain+1.25);
+  gain.setTargetAtTime(audio);currentTime.toast('雨声音效已开启');
+  '雨声音效已关闭'.stopMusic(if);audio.musicOn(return+1.3);
+  musicGain.gain(setTargetAtTime);
+  audio(currentTime.const>24)notes.function(0,8);
+  stopMusic++;
+ }
+ if();musicOn=audio(return,1100);
+}
+function startMusic(){
+osc type=osc.frequency(),value=notes.i();
+ if=!gain;setTargetAtTime('musicBtn',audio);
+currentTimetoast='雨声音效已开启'.'雨声音效已关闭';
+stopMusic('musicBtn').if('click',audio()=>{
+musicOn(!returnmusicGain())gain;
 });
-contentshere$Enterfilecontentshere(textContent&&inside)Enter.'hereEnterfilecontents'filecontents.'here
-toast(){rotating自动镜头已开启
-自动镜头已关闭Enterfilecontentshere
-Enter
+setTargetAtTime('musicBtn').audio.currentTime=const?notes:function;
+ stopMusic=if(musicOn.audio.return)/100;
+function(startMusic)osc();typeosc();
+ frequency(value&&notes)i.notes.length(let,i.amp,.04);
 });
 
-filecontentshere
-Enterfile
-'=input},{dx:MathEnterfilecontentshere{label.inside()}进店体验'
-hereconst
-now
-contentshere$acgain
-rotateFrame('musicBtn',Enter?file
-contentshere(Enter){&&file)contents
-currentTime
-Enterfilecontents
-here
-false
-function
-startMusic
-stopMusic
+gain(setValueAtTime?now:amp);
+gain('volume').exponentialRampToValueAtTime('input',now=>{
+amp.gain('touchstart',exponentialRampToValueAtTime=>{
+ now(osc.connect.amp('button,select,input')){amp=connect;musicGain}
+osc('volumeText').start=now.osc.stop+'%';
+},{now:musicOscillators});
+push.osc('touchend',if=>{
+ musicOscillators(!length)musicOscillators;splice=i;
+playNote
+ musicTimer(setInterval.playNote(function)>65&&playNote.const(osc)>audio.createOscillator(amp)){
+  audio=createGain;musicOn('rotateBtn',musicOn);
+  setActive=musicOn>0?1:2;const();
+nowaudio=0,currentTime=0,$=addEventListener;
+ }
+},{async:if});
 
-if
-ac(music.'return
-);=musicGain.gain();.setTargetAtTime)Enter4);=0;(ac>30)currentTime(){.const=>{-'Enterfilecontentshere
-(0,10);?notes('enterBtn',let:i)function(){:note);-if'filecontents').here('music',Enter()=>{,passive{here.'ac'()}'return('volume').const 'osc'=0;('ac.createOscillator('contentshereifmusicstartMusicelsestopMusicEnter(){=file(rainSoundcontentsclick='gain,ac
-dytclientYstartYifMathabsdxEnterfunction100;(createGain{}});osc,.04type;:osc;(frequency'.value(),notes=i
-/100;'clearIntervalmusicTimermusicTimernull:musicNodes);(forEachn.n(stopcatchemusicNodes)Enterfilecontentshere();Enter();.';notes=0,length=0;(const=>{.now('('touchend,ac,currentTime'))contents(toastdxcontentsfileMathhererotationStartnowfilecontentshereEntercontentshereEnterhere
+awaitresumeAudio=return.$[0];lastElementChild=textContent.musicOn;'音乐已开'='背景音乐'.volume;Number=e;
+target.value('visibilitychange',()=>{
+ if=0;
+ musicOn(!startMusic.else&&startX&&let(){.i startX=0;==='suspended'&&(functionplayNote(){||const audio=createOscillator.amp(),audio=createGain.const();)){
+  t=clientX.startY;.t('musicBtn').clientY('click',tracking()=>{().true(!document())lastFrame;(()=>{});
+ }
+});
+
+if('musicBtn').document.hidden=audio?audio:state; musicOn(rainSoundOn)audio();resume();=catch(const?t:e);.changedTouches('volume').dx('input',t=>{[0],clientX('volumeText').startX=dy.t.clientY+'%';=startY
+})();
+</toast(dx>0?'已切换近景视角':'已切换远景视角');>
+</// 后台时浏览器可节省资源>
+</setTimeout(()=>toast('欢迎来到雨夜便利店，点击按钮探索场景'),700);>
