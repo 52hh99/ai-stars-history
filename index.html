@@ -4,59 +4,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#07111b">
-<title>深夜便利店 · 第一人称互动游戏</title>
+<meta name="theme-color" content="#07121d">
+<title>深夜便利店｜3D 第一人称游戏</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07111b;color:#eef6ff;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;touch-action:none}
-#game{position:fixed;inset:0}
+html,body,#game{width:100%;height:100%;margin:0;overflow:hidden}
+body{background:#07121d;color:#edf7ff;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;touch-action:none}
 canvas{display:block;width:100%;height:100%;touch-action:none}
-button{font:inherit;color:#fff;border:1px solid #ffffff35;background:#0c1b2cdb;border-radius:12px;padding:10px 14px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-button:active{background:#31536c}
-#loading,#startScreen{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at center,#183448,#050b12 75%);padding:24px}
-#startScreen{display:none}
-.panel{width:min(440px,100%);padding:25px;border:1px solid #9ddcff35;border-radius:20px;background:#071522eF;box-shadow:0 0 50px #0009}
-h1{font-size:28px;letter-spacing:3px;margin:0 0 10px}
-.sub{color:#9eb8cb;font-size:13px;line-height:1.8}
-.primary{background:#c9edff;color:#071522;font-weight:800;border:0;padding:13px 24px;margin-top:16px;width:100%}
-#hud{position:fixed;inset:0;pointer-events:none;display:none}
-.hudBtn,.interact,#phonePanel,#dialog,#toast,#objective,#reticle,#controls,#topInfo{pointer-events:auto}
-#topInfo{position:absolute;top:env(safe-area-inset-top,8px);left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.glass{background:#06121cbb;border:1px solid #c7eaff26;backdrop-filter:blur(8px);border-radius:12px;padding:9px 12px;font-size:12px}
-#clock{font-size:15px;font-weight:800;letter-spacing:1px}
-#objective{position:absolute;top:66px;left:12px;max-width:min(270px,70vw);font-size:12px;line-height:1.6}
-#objective strong{color:#9fe4ff;display:block;margin-bottom:3px}
-#reticle{position:absolute;left:50%;top:50%;width:9px;height:9px;border:1px solid #fff;transform:translate(-50%,-50%);border-radius:50%;box-shadow:0 0 8px #fff9;pointer-events:none}
-#prompt{position:absolute;left:50%;top:calc(50% + 20px);transform:translateX(-50%);white-space:nowrap;background:#06121ccc;padding:5px 10px;border-radius:7px;font-size:12px}
-#controls{position:absolute;inset:auto 0 max(14px,env(safe-area-inset-bottom,14px));height:160px;pointer-events:none}
-#movePad{position:absolute;left:16px;bottom:0;width:144px;height:144px;pointer-events:auto}
-.move{position:absolute;width:44px;height:44px;padding:0;font-size:20px;border-radius:13px;background:#071a2dcc}
-#forward{left:50px;top:0}
-#back{left:50px;bottom:0}
-#left{left:0;top:50px}
-#right{right:0;top:50px}
-#actionPad{position:absolute;right:14px;bottom:4px;display:flex;flex-direction:column;align-items:flex-end;gap:9px;pointer-events:auto}
-#interact{background:#c5ecff;color:#081624;border:0;font-weight:800;min-width:105px}
-#phoneBtn{min-width:105px}
-#lookHint{position:absolute;right:14px;top:125px;font-size:10px;color:#d6e9f7a8;text-align:right;pointer-events:none}
-#dialog{display:none;position:absolute;left:12px;right:12px;bottom:190px;max-width:520px;margin:auto;background:#071522f2;border:1px solid #9edfff44;border-radius:16px;padding:16px;box-shadow:0 12px 45px #0008}
-#speaker{font-size:12px;color:#93dfff;margin-bottom:8px}
+button{border:1px solid #bce8ff55;border-radius:12px;padding:10px 14px;background:#0a1b2be8;color:#f3faff;font:inherit;user-select:none;-webkit-tap-highlight-color:transparent}
+button:active{background:#2b5168}
+#loading,#start{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse,#17384b,#050a10 75%);text-align:center}
+#start{display:none}
+.panel{width:min(440px,100%);padding:24px;border:1px solid #9edfff45;border-radius:20px;background:#081522f2;box-shadow:0 18px 70px #0009}
+h1{margin:0 0 12px;font-size:28px;letter-spacing:3px}
+.small{font-size:12px;color:#a9c2d3;line-height:1.8}
+.primary{width:100%;margin-top:12px;background:#c5eaff;color:#081522;border:0;font-weight:800;padding:13px}
+#hud{display:none;position:fixed;inset:0;pointer-events:none}
+#top{position:absolute;top:max(8px,env(safe-area-inset-top));left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.glass{background:#06131fce;border:1px solid #d2efff2b;border-radius:12px;padding:9px 11px;backdrop-filter:blur(7px);font-size:12px}
+#time{font-size:16px;font-weight:800}
+#goal{position:absolute;top:68px;left:10px;max-width:76vw;line-height:1.6}
+#goal b{display:block;color:#a8e7ff}
+#reticle{position:absolute;left:50%;top:50%;width:9px;height:9px;border:1px solid #fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px #fff9}
+#prompt{position:absolute;left:50%;top:calc(50% + 18px);transform:translateX(-50%);font-size:12px;white-space:nowrap;background:#06121cdb;padding:5px 9px;border-radius:7px}
+#controls{position:absolute;left:0;right:0;bottom:max(12px,env(safe-area-inset-bottom));height:155px}
+#pad{position:absolute;left:14px;bottom:0;width:142px;height:142px;pointer-events:auto}
+.move{position:absolute;width:44px;height:44px;padding:0;font-size:20px;background:#071827e8}
+#up{left:49px;top:0}#down{left:49px;bottom:0}#left{left:0;top:49px}#right{right:0;top:49px}
+#actions{position:absolute;right:12px;bottom:4px;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
+#use{background:#c5eaff;color:#071521;font-weight:800;min-width:112px}
+#dialog{display:none;position:absolute;left:10px;right:10px;bottom:180px;max-width:540px;margin:auto;padding:15px;border-radius:16px;border:1px solid #9edfff55;background:#071522f5;pointer-events:auto}
+#speaker{color:#a0e4ff;font-size:12px;margin-bottom:7px}
 #dialogText{font-size:14px;line-height:1.8}
 #choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 #choices button{font-size:12px}
-#phonePanel{display:none;position:absolute;right:12px;top:65px;bottom:80px;width:min(340px,calc(100vw - 24px));background:#071521f5;border:1px solid #9bdfff55;border-radius:22px;padding:17px;overflow:auto;box-shadow:0 20px 60px #000b}
-#phonePanel h2{font-size:19px;margin:4px 0 12px}
-.phoneRow{padding:11px;margin:8px 0;border-radius:10px;background:#13283a;border:1px solid #ffffff12;font-size:12px;line-height:1.7}
-.phoneRow b{color:#9fe4ff}
+#phone{display:none;position:absolute;top:65px;right:10px;bottom:75px;width:min(340px,calc(100vw - 20px));padding:15px;border:1px solid #a5e4ff55;border-radius:20px;background:#071521f5;overflow:auto;pointer-events:auto}
 #phoneHeader{display:flex;justify-content:space-between;align-items:center}
-#toast{position:absolute;left:50%;top:25%;transform:translateX(-50%);max-width:85vw;background:#071521eF;border:1px solid #a5e5ff55;border-radius:10px;padding:10px 14px;font-size:13px;display:none;text-align:center}
-#soundState{color:#b8d6e9}
-@media(min-width:800px){
- #movePad{left:28px;bottom:16px}
- #actionPad{right:28px;bottom:20px}
- #dialog{bottom:35px}
- #objective{top:72px}
-}
+#phone h2{font-size:18px;margin:4px 0 12px}
+.note{padding:11px;margin:8px 0;background:#142a3b;border-radius:10px;font-size:12px;line-height:1.7}
+.note b{color:#a6e7ff}
+#toast{display:none;position:absolute;left:50%;top:25%;transform:translateX(-50%);max-width:85vw;padding:10px 14px;border:1px solid #a5e5ff55;border-radius:10px;background:#06131fee;text-align:center;font-size:13px}
+@media(min-width:800px){#dialog{bottom:25px}#pad{left:25px}#actions{right:25px}}
 </style>
 </head>
 <body>
@@ -65,64 +53,55 @@ h1{font-size:28px;letter-spacing:3px;margin:0 0 10px}
 <div id="loading">
  <div class="panel">
   <h1>深夜便利店</h1>
-  <p class="sub">正在准备雨夜场景……</p>
-  <p class="sub">如果加载失败，请检查网络是否可以访问 Three.js CDN。</p>
+  <p class="small">正在加载本地 Three.js 3D 引擎……</p>
+  <p class="small">请确认 three.module.js 与 index.html 位于同一个目录。</p>
  </div>
 </div>
 
-<div id="startScreen">
+<div id="start">
  <div class="panel">
   <h1>深夜便利店</h1>
-  <p class="sub">凌晨 02:17 · 暴雨 · 城市街角</p>
-  <p class="sub">你只是进来买一瓶水，却发现收银台上有一张时间不对的收据。店员似乎在隐瞒什么。</p>
-  <p class="sub">手机：左侧方向键移动，拖动画面转动视角。靠近物品后点击“交互”。</p>
-  <button class="primary" id="startBtn">进入便利店</button>
-  <p class="sub">建议佩戴耳机。音效需要点击开始后才能启用。</p>
+  <p class="small">凌晨 02:17 · 城市街角 · 暴雨</p>
+  <p class="small">你只是进来买瓶水，却发现一张时间异常的收据。店员似乎知道些什么。</p>
+  <p class="small">左侧方向键移动，拖动画面转向。靠近人物或线索后点击“交互”。</p>
+  <button class="primary" id="begin">进入便利店</button>
  </div>
 </div>
 
 <div id="hud">
- <div id="topInfo">
-  <div class="glass"><div id="clock">02:17 AM</div><div style="color:#9bb9cc;margin-top:3px">雨夜 · 便利店</div></div>
-  <button class="hudBtn" id="phoneBtn">▣ 手机 / 笔记</button>
+ <div id="top">
+  <div class="glass"><div id="time">02:17 AM</div><div>雨夜 · 便利店</div></div>
+  <button id="phoneButton" style="pointer-events:auto">手机 / 线索</button>
  </div>
- <div class="glass" id="objective"><strong>当前目标</strong><span id="objectiveText">调查收银台附近。</span></div>
+ <div id="goal" class="glass"><b>当前目标</b><span id="goalText">调查收银台附近。</span></div>
  <div id="reticle"></div>
  <div id="prompt">探索环境</div>
- <div id="lookHint">拖动屏幕转动视角<br>靠近物品后点击交互</div>
  <div id="controls">
-  <div id="movePad">
-   <button class="move" id="forward">▲</button>
-   <button class="move" id="back">▼</button>
-   <button class="move" id="left">◀</button>
-   <button class="move" id="right">▶</button>
+  <div id="pad">
+   <button class="move" id="up">▲</button><button class="move" id="down">▼</button>
+   <button class="move" id="left">◀</button><button class="move" id="right">▶</button>
   </div>
-  <div id="actionPad">
-   <button id="interact">交互 / 调查</button>
-   <button id="phoneBtn2">手机线索</button>
-  </div>
+  <div id="actions"><button id="use">交互 / 调查</button><button id="phoneButton2">打开手机</button></div>
  </div>
  <div id="dialog">
-  <div id="speaker">系统</div>
-  <div id="dialogText"></div>
-  <div id="choices"></div>
+  <div id="speaker">线索</div><div id="dialogText"></div><div id="choices"></div>
  </div>
- <div id="phonePanel">
+ <div id="phone">
   <div id="phoneHeader"><h2>手机 · 线索笔记</h2><button id="closePhone">关闭</button></div>
-  <div class="phoneRow"><b>时间</b><br>02:17 AM。雨势没有减弱。</div>
+  <div class="note"><b>当前时间</b><br>凌晨 02:17。雨一直没有停。</div>
   <div id="notes"></div>
-  <div class="phoneRow"><b>调查进度</b><div id="progress">0 / 4 条关键线索</div></div>
-  <button id="callButton" style="width:100%;margin-top:8px">尝试拨打报警电话</button>
-  <p class="sub">这是一款虚构剧情游戏，不会拨打真实电话。</p>
+  <div class="note"><b>关键线索</b><br><span id="progress">0 / 4</span></div>
+  <button id="alarm" style="width:100%">尝试拨打报警电话</button>
+  <p class="small">虚构剧情，不会拨打真实电话。</p>
  </div>
  <div id="toast"></div>
 </div>
 
 <script type="importmap">
 {
- "imports":{
-  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
- }
+  "imports": {
+    "three": "./three.module.js"
+  }
 }
 </script>
 
@@ -131,618 +110,497 @@ import * as THREE from "three";
 
 const $=id=>document.getElementById(id);
 const game=$("game");
-let scene,camera,renderer,clock;
+let scene,camera,renderer,gameClock;
 let started=false,phoneOpen=false,dialogOpen=false;
-let yaw=Math.PI,pitch=0;
-let audioCtx=null,rainSource=null,rainGain=null;
-const keys={forward:false,back:false,left:false,right:false};
-const interactables=[];
-const movingCars=[];
-const pedestrians=[];
-const rainSystems=[];
-const notes=[];
-const found=new Set();
-const story={receipt:false,cctv:false,clerk:false,driver:false,alarm:false,ending:false};
-let elapsed=0,lastPrompt="",currentTarget=null;
-const player={speed:3.0,radius:.32};
-const raycaster=new THREE.Raycaster();
-const center=new THREE.Vector2(0,0);
-const tmpV=new THREE.Vector3();
+let yaw=0,pitch=0,elapsed=0;
+const keys={up:false,down:false,left:false,right:false};
+const interactables=[],cars=[],people=[],rainObjects=[];
+const discovered=new Set(),notes=[];
+const story={receipt:false,cctv:false,clerk:false,driver:false,footprints:false,ending:false};
+let currentTarget=null,toastTimer=0;
 
-function mat(color,roughness=.7,metalness=0,extra={}){
+function material(color,roughness=.7,metalness=0,extra={}){
  return new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
 }
-function box(name,x,y,z,sx,sy,sz,material,opts={}){
- const mesh=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),material);
- mesh.name=name;mesh.position.set(x,y,z);
- if(opts.cast!==false)mesh.castShadow=true;
- mesh.receiveShadow=true;
- scene.add(mesh);return mesh;
+function cube(name,x,y,z,sx,sy,sz,mat,shadow=true){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat);
+ m.name=name;m.position.set(x,y,z);m.castShadow=shadow;m.receiveShadow=true;scene.add(m);return m;
 }
-function sphere(name,x,y,z,r,material){
- const m=new THREE.Mesh(new THREE.SphereGeometry(r,14,10),material);
- m.name=name;m.position.set(x,y,z);m.castShadow=true;scene.add(m);return m;
+function light(color,intensity,distance,x,y,z){
+ const l=new THREE.PointLight(color,intensity,distance);l.position.set(x,y,z);scene.add(l);return l;
 }
-function pointLight(color,intensity,distance,x,y,z){
- const l=new THREE.PointLight(color,intensity,distance,2);
- l.position.set(x,y,z);scene.add(l);return l;
+function interact(mesh,id,title,callback){
+ mesh.userData.action={id,title,callback};interactables.push(mesh);return mesh;
 }
-function addInteractable(mesh,id,title,description,callback){
- mesh.userData.interaction={id,title,description,callback};
- interactables.push(mesh);
- return mesh;
-}
-function note(id,title,text){
- if(found.has(id))return;
- found.add(id);notes.push({title,text});
- renderNotes();toast("已记录线索："+title);
-}
-function renderNotes(){
- $("notes").innerHTML=notes.length?notes.map(n=>
-  `<div class="phoneRow"><b>${escapeHtml(n.title)}</b><br>${escapeHtml(n.text)}</div>`
- ).join(""):'<div class="phoneRow">暂无线索。靠近可疑物品并点击“交互 / 调查”。</div>';
- $("progress").textContent=found.size+" / 4 条关键线索";
-}
-function escapeHtml(s){
- return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-let toastTimer=null;
-function toast(msg){
- const el=$("toast");el.textContent=msg;el.style.display="block";
- clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display="none",2300);
-}
-function showDialog(speaker,text,choices=[]){
+function say(speaker,text,choices=[]){
  dialogOpen=true;$("dialog").style.display="block";
  $("speaker").textContent=speaker;$("dialogText").textContent=text;
- const c=$("choices");c.innerHTML="";
- const list=choices.length?choices:[{text:"继续",run:closeDialog}];
- for(const choice of list){
-  const b=document.createElement("button");b.textContent=choice.text;
-  b.onclick=()=>{if(choice.run)choice.run();};c.appendChild(b);
+ const wrap=$("choices");wrap.innerHTML="";
+ const options=choices.length?choices:[{text:"继续",run:closeDialog}];
+ for(const item of options){
+  const b=document.createElement("button");b.textContent=item.text;
+  b.onclick=()=>item.run?.();wrap.appendChild(b);
  }
 }
 function closeDialog(){dialogOpen=false;$("dialog").style.display="none";}
-function finishStory(){
- if(found.size>=4&&!story.ending){
+function toast(text){
+ const el=$("toast");el.textContent=text;el.style.display="block";
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display="none",2200);
+}
+function safeText(s){
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function addNote(id,title,text){
+ if(discovered.has(id))return;
+ discovered.add(id);notes.push({title,text});renderNotes();toast("已记录线索："+title);updateGoal();
+}
+function renderNotes(){
+ $("notes").innerHTML=notes.length?notes.map(n=>`<div class="note"><b>${safeText(n.title)}</b><br>${safeText(n.text)}</div>`).join(""):'<div class="note">暂无线索。靠近物品或人物进行调查。</div>';
+ $("progress").textContent=discovered.size+" / 4 条关键线索";
+}
+function updateGoal(){
+ let t="调查收银台，找到异常收据。";
+ if(story.receipt&&!story.cctv)t="检查收银台旁的监控屏幕。";
+ else if(story.cctv&&!story.clerk)t="询问收银台后的店员。";
+ else if(story.clerk&&!story.driver)t="走到店外，询问雨中的司机。";
+ else if(story.driver&&!story.footprints)t="检查门边的湿脚印。";
+ else if(discovered.size>=4)t="返回店员身边，弄清 02:22 的秘密。";
+ $("goalText").textContent=t;
+ if(discovered.size>=4&&!story.ending){
   story.ending=true;
-  $("objectiveText").textContent="返回店员身边，弄清 02:22 发生了什么。";
-  showDialog("手机通知",
-   "你把收据、监控时间和司机的证词拼在了一起。凌晨 02:22，监控记录了一次不存在于当前时间线的进店事件。",
-   [{text:"去问店员",run:()=>{closeDialog();toast("继续调查店员。");}}]);
+  say("手机通知","你把收据、监控和司机的证词拼在了一起。凌晨 02:22，监控记录了一次不存在于当前时间线的进店事件。",[
+   {text:"继续调查",run:()=>{closeDialog();toast("返回店员身边，继续调查。");}}
+  ]);
  }
 }
 
-function setup(){
+function buildScene(){
  scene=new THREE.Scene();
- scene.background=new THREE.Color(0x07111b);
+ scene.background=new THREE.Color(0x07121d);
  scene.fog=new THREE.FogExp2(0x091827,.022);
-
- camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,150);
- camera.position.set(0,1.65,1.0);
+ camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.08,120);
+ camera.position.set(0,1.65,0);
  camera.rotation.order="YXZ";
- camera.rotation.y=yaw;
 
- renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
+ renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:"high-performance"});
  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
  renderer.setSize(innerWidth,innerHeight);
  renderer.shadowMap.enabled=true;
  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
- renderer.toneMapping=THREE.ACESFilmicToneMapping;
- renderer.toneMappingExposure=1.12;
  renderer.outputColorSpace=THREE.SRGBColorSpace;
+ renderer.toneMapping=THREE.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.1;
  game.appendChild(renderer.domElement);
- clock=new THREE.Clock();
+ gameClock=new THREE.Clock();
 
- scene.add(new THREE.HemisphereLight(0x9cbddc,0x15202a,1.05));
- const moon=new THREE.DirectionalLight(0x7eacdf,1.1);
- moon.position.set(-8,12,-10);scene.add(moon);
- moon.castShadow=false;
+ scene.add(new THREE.HemisphereLight(0xaac8df,0x1a2028,1.15));
+ const moon=new THREE.DirectionalLight(0x83b2e2,1.0);moon.position.set(-8,12,-10);scene.add(moon);
 
- buildStreet();
- buildStore();
- buildProps();
- buildRain();
- buildCars();
- buildPedestrians();
- buildInteractables();
+ buildStreet();buildStore();buildShelves();buildRain();buildCars();buildPeople();buildClues();
  window.addEventListener("resize",resize);
- $("loading").style.display="none";
- $("startScreen").style.display="flex";
+ $("loading").style.display="none";$("start").style.display="flex";
 }
 
 function buildStreet(){
- const asphalt=mat(0x111d28,.24,.22);
- box("wet road",0,-.18,-14,70,.3,26,asphalt,{cast:false});
- const sidewalk=mat(0x39434a,.48);
- box("sidewalk",0,-.05,-5.6,20,.22,2.1,sidewalk,{cast:false});
- for(let x=-30;x<=30;x+=5){
-  box("road marking",x,.0,-13.3,2.2,.015,.08,mat(0x9aadb8,.35),{cast:false});
- }
- const building=mat(0x17222d,.88);
- box("left building",-13,4,-11,10,8,18,building);
- box("right building",13,4,-11,10,8,18,building);
+ cube("road",0,-.22,-14,70,.3,30,material(0x111d28,.24,.2),false);
+ cube("sidewalk",0,-.04,-5.8,18,.2,2,material(0x40494c,.5),false);
+ for(let x=-30;x<=30;x+=5)cube("road marking",x,-.055,-13,2,.012,.07,material(0xb0b9bd,.4),false);
+ const buildingMat=material(0x17232e,.9);
+ cube("left building",-13,4,-12,10,8,20,buildingMat);
+ cube("right building",13,4,-12,10,8,20,buildingMat);
  for(let i=0;i<5;i++){
   const x=-22+i*11;
-  box("distant building",x,3,-23,7,6+Math.random()*5,6,mat(0x182634,.9));
-  for(let j=0;j<5;j++){
-   const win=box("window",x-2+j,3,-19.94,.32,.45,.04,
-    mat(Math.random()>.65?0x9cbbcb:0x273747,.4,0,{emissive:Math.random()>.65?0x284052:0x000000}));
+  cube("distant building",x,4,-28,7,8+Math.random()*5,7,material(0x182633,.9));
+  for(let j=0;j<4;j++){
+   cube("distant window",x-2+j*1.2,3,-24.45,.35,.5,.03,
+    material(0x4b687b,.35,0,{emissive:0x102a3b}),false);
   }
  }
- const lampMat=mat(0x9bbfff,.3,0,{emissive:0x5a8bff});
  for(const x of [-9,9]){
-  box("street lamp pole",x,2.7,-9,.12,5.4,.12,mat(0x263643,.5));
-  box("street lamp head",x,5.4,-9,.65,.13,.28,lampMat);
-  const l=pointLight(0x679bff,16,14,x,5.15,-9);
-  l.castShadow=false;
+  cube("lamp pole",x,2.7,-9,.12,5.4,.12,material(0x263643,.5));
+  cube("lamp head",x,5.4,-9,.65,.13,.28,material(0x9fc7ff,.3,0,{emissive:0x537fc0}));
+  light(0x679bff,15,15,x,5,-9);
  }
- // 雨夜积水：用低粗糙度的深色地面表现湿路。
  for(let i=0;i<18;i++){
-  const puddle=new THREE.Mesh(new THREE.CircleGeometry(.35+Math.random()*1.1,24),
-   new THREE.MeshStandardMaterial({color:0x253a4b,roughness:.13,metalness:.4,transparent:true,opacity:.42}));
-  puddle.rotation.x=-Math.PI/2;puddle.position.set((Math.random()-.5)*22,.006,-6-Math.random()*15);
-  puddle.scale.y=.35;scene.add(puddle);
+  const p=new THREE.Mesh(new THREE.CircleGeometry(.4+Math.random()*1.0,20),
+   new THREE.MeshStandardMaterial({color:0x344b5a,roughness:.13,metalness:.35,transparent:true,opacity:.42}));
+  p.rotation.x=-Math.PI/2;p.scale.y=.35;
+  p.position.set((Math.random()-.5)*22,.006,-6-Math.random()*18);scene.add(p);
  }
 }
 
 function buildStore(){
- const floor=mat(0x353d40,.28,.12);
- box("store floor",0,-.04,1,12,.18,12,floor,{cast:false});
- const wall=mat(0x28343b,.75);
- // 左右与后墙，正面敞开，方便进入街道。
- box("left wall",-6,2.1,1, .22,4.2,12,wall);
- box("right wall",6,2.1,1,.22,4.2,12,wall);
- box("back wall",0,2.1,7,12,4.2,.22,wall);
- box("ceiling",0,4.22,1,12,.18,12,mat(0x202d35,.8),{cast:false});
- // 店面上方招牌
- box("sign board",0,3.75,-5.12,7.2,.65,.2,mat(0x143e49,.42,0,{emissive:0x0c222b}));
- // 门框及玻璃侧窗
- const frame=mat(0x263d48,.4,.35);
- box("door frame left",-2.5,1.6,-4.9,.12,3.2,.18,frame);
- box("door frame right",2.5,1.6,-4.9,.12,3.2,.18,frame);
- box("door top",0,3.18,-4.9,5,.12,.18,frame);
- const glass=new THREE.MeshStandardMaterial({color:0x6d9db3,roughness:.15,metalness:.1,transparent:true,opacity:.17});
- box("front glass left",-4.1,1.7,-4.92,2.8,3.25,.06,glass,{cast:false});
- box("front glass right",4.1,1.7,-4.92,2.8,3.25,.06,glass,{cast:false});
- // 天花灯
+ const floor=material(0x353d40,.3,.1),wall=material(0x28343b,.75);
+ cube("floor",0,-.08,1,12,.18,12,floor,false);
+ cube("left wall",-6,2.1,1,.22,4.2,12,wall);
+ cube("right wall",6,2.1,1,.22,4.2,12,wall);
+ cube("back wall",0,2.1,7,12,4.2,.22,wall);
+ cube("ceiling",0,4.22,1,12,.18,12,material(0x202d35,.8),false);
+ cube("store sign",0,3.75,-5.08,7.2,.65,.2,material(0x143e49,.4,0,{emissive:0x0c222b}));
+ const frame=material(0x263d48,.4,.3);
+ cube("door left frame",-2.5,1.6,-4.9,.12,3.2,.18,frame);
+ cube("door right frame",2.5,1.6,-4.9,.12,3.2,.18,frame);
+ cube("door top frame",0,3.18,-4.9,5,.12,.18,frame);
+ const glass=new THREE.MeshStandardMaterial({color:0x6d9db3,roughness:.15,transparent:true,opacity:.16});
+ cube("front window left",-4.1,1.7,-4.92,2.8,3.25,.06,glass,false);
+ cube("front window right",4.1,1.7,-4.92,2.8,3.25,.06,glass,false);
  for(const x of [-3,0,3]){
-  box("light panel",x,4.08,1.5,1.8,.04,.5,mat(0xffe8bd,.25,0,{emissive:0xffdca1,emissiveIntensity:1.6}),{cast:false});
-  const l=pointLight(0xffdfad,20,9,x,3.8,1.5);l.castShadow=false;
+  cube("ceiling light",x,4.08,1.5,1.8,.04,.5,material(0xffe8bd,.25,0,{emissive:0xffdca1,emissiveIntensity:1.5}),false);
+  light(0xffdfad,19,9,x,3.75,1.5);
  }
- pointLight(0xffd8a1,14,8,0,2.6,5.8);
- // 收银台
- const counter=mat(0x493d32,.5);
- box("counter",0,.65,4.15,4.1,1.3,.9,counter);
- box("counter top",0,1.34,4.1,4.3,.12,1.05,mat(0x252b2d,.28,.22));
- box("register",-.8,1.55,3.9,.65,.35,.48,mat(0x111c24,.35));
- box("register screen",-.8,1.78,3.67,.5,.25,.04,mat(0x4cb5bb,.25,0,{emissive:0x124b50}));
- // 冰柜
+ light(0xffd8a1,12,8,0,2.6,5.8);
+ cube("counter",0,.65,4.15,4.1,1.3,.9,material(0x493d32,.5));
+ cube("counter top",0,1.34,4.1,4.3,.12,1.05,material(0x252b2d,.28,.2));
+ cube("cash register",-.8,1.55,3.9,.65,.35,.48,material(0x111c24,.35));
+ cube("register screen",-.8,1.78,3.65,.5,.25,.035,material(0x4cb5bb,.25,0,{emissive:0x124b50}));
  for(const x of [-4.9,4.9]){
-  box("refrigerator",x,1.55,0,1.2,3.1,4.3,mat(0x243843,.3,.25));
-  for(let j=0;j<4;j++){
-   box("fridge shelf",x,0.55+j*.63,-1.6,1.08,.035,1.5,mat(0x78909a,.3,.2));
-  }
-  box("fridge glass",x,1.6,-2.12,1.05,2.8,.035,
-   new THREE.MeshStandardMaterial({color:0x9acbdc,roughness:.14,metalness:.08,transparent:true,opacity:.16}),{cast:false});
+  cube("refrigerator",x,1.55,0,1.2,3.1,4.3,material(0x243843,.3,.2));
+  for(let j=0;j<4;j++)cube("fridge shelf",x,.55+j*.63,-1.6,1.08,.035,1.5,material(0x78909a,.3,.15));
+  cube("fridge glass",x,1.6,-2.12,1.05,2.8,.035,
+   new THREE.MeshStandardMaterial({color:0x9acbdc,roughness:.14,transparent:true,opacity:.13}),false);
  }
 }
 
-function buildProps(){
- const shelf=mat(0x4a5458,.72);
- const bottleMats=[0x7fc4d4,0xe4b96e,0x8ac5a1,0xd9857e,0x9baee3].map(c=>mat(c,.3,.1));
+function buildShelves(){
+ const shelf=material(0x4a5458,.7);
+ const colors=[0x7fc4d4,0xe4b96e,0x8ac5a1,0xd9857e,0x9baee3];
  for(const x of [-3.6,3.6]){
   for(const z of [-1.6,1.0]){
-   box("aisle shelf",x,1.05,z,1.35,2.1,2.2,shelf);
+   cube("aisle shelf",x,1.05,z,1.35,2.1,2.2,shelf);
    for(let level=0;level<3;level++){
-    box("shelf plank",x,0.45+level*.62,z,1.4,.06,2.25,mat(0x737b7d,.55));
+    cube("shelf plank",x,.45+level*.62,z,1.4,.06,2.25,material(0x737b7d,.55));
     for(let n=0;n<5;n++){
-     const bx=x-.48+n*.24;
-     const b=new THREE.Mesh(new THREE.CylinderGeometry(.055,.065,.32,8),bottleMats[(n+level)%bottleMats.length]);
-     b.position.set(bx,.64+level*.62,z-.7+Math.random()*1.4);b.castShadow=true;scene.add(b);
-     const cap=new THREE.Mesh(new THREE.CylinderGeometry(.027,.027,.045,8),mat(0xd6d7cf,.35));
-     cap.position.set(b.position.x,b.position.y+.18,b.position.z);scene.add(cap);
+     const bottle=new THREE.Mesh(new THREE.CylinderGeometry(.055,.065,.32,8),material(colors[(n+level)%colors.length],.3,.1));
+     bottle.position.set(x-.48+n*.24,.64+level*.62,z-.7+Math.random()*1.4);bottle.castShadow=true;scene.add(bottle);
     }
    }
   }
  }
- // 货架顶上的小价签
- for(let i=0;i<8;i++){
-  box("price label",-4.1+i*1.17,2.25,2.1,.25,.13,.025,mat(0xf3e7bd,.8));
- }
- // 门旁垃圾桶与纸箱
- const bin=mat(0x293e47,.65);
- const trash=box("trash bin",4.6,.5,-3.9,.55,1,.55,bin);
- box("cardboard box",-4.7,.3,3.2,.7,.6,.7,mat(0x8a6848,.95));
+ for(let i=0;i<8;i++)cube("price label",-4.1+i*1.17,2.25,2.1,.25,.13,.025,material(0xf3e7bd,.8));
+ cube("cardboard box",-4.7,.3,3.2,.7,.6,.7,material(0x8a6848,.95));
+ cube("trash bin",4.6,.5,-3.9,.55,1,.55,material(0x293e47,.65));
 }
 
 function buildRain(){
- const count=1300;
- const positions=new Float32Array(count*3);
- const speeds=new Float32Array(count);
+ const count=1000,pos=new Float32Array(count*3),speed=new Float32Array(count);
  for(let i=0;i<count;i++){
-  positions[i*3]=(Math.random()-.5)*34;
-  positions[i*3+1]=Math.random()*13;
-  positions[i*3+2]=-5-Math.random()*27;
-  speeds[i]=8+Math.random()*9;
+  pos[i*3]=(Math.random()-.5)*34;pos[i*3+1]=Math.random()*13;pos[i*3+2]=-5-Math.random()*28;
+  speed[i]=8+Math.random()*9;
  }
- const geo=new THREE.BufferGeometry();
- geo.setAttribute("position",new THREE.BufferAttribute(positions,3));
- const rain=new THREE.Points(geo,new THREE.PointsMaterial({
-  color:0x9ac8e5,size:.045,transparent:true,opacity:.66,depthWrite:false
- }));
- rain.userData={speeds,positions,count};scene.add(rain);rainSystems.push(rain);
- // 玻璃雨痕与偶尔闪过的水滴光点
+ const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+ const rain=new THREE.Points(geo,new THREE.PointsMaterial({color:0xa4cce5,size:.045,transparent:true,opacity:.7,depthWrite:false}));
+ rain.userData={pos,speed,count};scene.add(rain);rainObjects.push(rain);
  const dropMat=new THREE.MeshBasicMaterial({color:0x7baac2,transparent:true,opacity:.35});
- for(let i=0;i<50;i++){
-  const d=new THREE.Mesh(new THREE.SphereGeometry(.018+Math.random()*.018,6,6),dropMat);
-  d.position.set((Math.random()-.5)*5,Math.random()*2.7,-4.82);scene.add(d);
-  d.userData.phase=Math.random()*6;
-  rainSystems.push(d);
+ for(let i=0;i<36;i++){
+  const d=new THREE.Mesh(new THREE.SphereGeometry(.018,6,6),dropMat);
+  d.position.set((Math.random()-.5)*5,Math.random()*2.7,-4.82);
+  d.userData.phase=Math.random()*6;scene.add(d);rainObjects.push(d);
  }
 }
 
-function makeCar(x,z,color){
+function makeCar(x,z,color,speed){
  const root=new THREE.Group();root.position.set(x,.05,z);scene.add(root);
- const body=mat(color,.25,.35);
- const dark=mat(0x101820,.38,.12);
- const shell=new THREE.Mesh(new THREE.BoxGeometry(2.1,.62,1.02),body);
- shell.position.y=.42;shell.castShadow=true;root.add(shell);
- const roof=new THREE.Mesh(new THREE.BoxGeometry(1.05,.42,.82),mat(0x344c5c,.24,.15));
- roof.position.set(-.12,.91,0);root.add(roof);
- const windshield=new THREE.Mesh(new THREE.BoxGeometry(.8,.27,.025),mat(0x7da6b9,.16,.12));
- windshield.position.set(.35,.9,-.42);root.add(windshield);
+ const body=material(color,.25,.3);
+ const shell=new THREE.Mesh(new THREE.BoxGeometry(2.1,.62,1.02),body);shell.position.y=.42;shell.castShadow=true;root.add(shell);
+ const roof=new THREE.Mesh(new THREE.BoxGeometry(1.05,.42,.82),material(0x344c5c,.24,.15));roof.position.set(-.12,.91,0);root.add(roof);
+ const windshield=new THREE.Mesh(new THREE.BoxGeometry(.8,.27,.025),material(0x7da6b9,.16,.1));windshield.position.set(.35,.9,-.42);root.add(windshield);
  for(const xx of [-.68,.68])for(const zz of [-.53,.53]){
-  const w=new THREE.Mesh(new THREE.CylinderGeometry(.23,.23,.12,12),dark);
-  w.rotation.x=Math.PI/2;w.position.set(xx,.24,zz);root.add(w);
+  const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.23,.23,.12,12),material(0x101820,.38,.1));
+  wheel.rotation.x=Math.PI/2;wheel.position.set(xx,.24,zz);root.add(wheel);
  }
- const headmat=new THREE.MeshBasicMaterial({color:0xffe8bd});
- for(const zz of [-.34,.34]){
-  const h=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.04),headmat);
-  h.position.set(1.06,.46,zz);root.add(h);
+ for(const z0 of [-.34,.34]){
+  const h=new THREE.Mesh(new THREE.BoxGeometry(.12,.12,.04),new THREE.MeshBasicMaterial({color:0xffe8bd}));
+  h.position.set(1.06,.46,z0);root.add(h);
+  const t=new THREE.Mesh(new THREE.BoxGeometry(.08,.12,.04),new THREE.MeshBasicMaterial({color:0xff3838}));
+  t.position.set(-1.06,.46,z0);root.add(t);
  }
- const tailmat=new THREE.MeshBasicMaterial({color:0xff3838});
- for(const zz of [-.34,.34]){
-  const t=new THREE.Mesh(new THREE.BoxGeometry(.08,.12,.04),tailmat);
-  t.position.set(-1.06,.46,zz);root.add(t);
- }
- root.userData.speed=2.3+Math.random()*1.5;
- root.userData.startX=x;
- movingCars.push(root);
+ root.userData.speed=speed;cars.push(root);
 }
 function buildCars(){
- makeCar(-15,-8,0x293e51);
- makeCar(13,-12,0x6c3933);
- makeCar(-4,-17,0x69716f);
+ makeCar(-15,-8,0x293e51,3.1);
+ makeCar(13,-12,0x6c3933,-2.5);
+ makeCar(-5,-19,0x69716f,2.0);
 }
 
-function makePerson(x,z,color,kind="pedestrian"){
+function makePerson(x,z,color,kind){
  const root=new THREE.Group();root.position.set(x,0,z);scene.add(root);
- const coat=mat(color,.9);
- const skin=mat(0xd1a58b,.85);
- const head=new THREE.Mesh(new THREE.SphereGeometry(.15,12,10),skin);
- head.position.y=1.55;root.add(head);
- const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.22,.62,4,8),coat);
- torso.position.y=1.05;root.add(torso);
+ const coat=material(color,.9),skin=material(0xd1a58b,.85);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.15,12,10),skin);head.position.y=1.55;root.add(head);
+ const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.22,.62,4,8),coat);torso.position.y=1.05;root.add(torso);
  for(const side of [-1,1]){
-  const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.5,3,6),mat(0x1c2934,.9));
+  const leg=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.5,3,6),material(0x1c2934,.9));
   leg.position.set(side*.11,.43,0);root.add(leg);
   const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.06,.4,3,6),coat);
-  arm.position.set(side*.25,1.08,0);arm.rotation.z=side*.15;root.add(arm);
+  arm.position.set(side*.25,1.08,0);root.add(arm);
  }
  if(kind==="umbrella"){
-  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.8,6),mat(0x28333c));
-  pole.position.set(.05,2.0,0);root.add(pole);
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.8,6),material(0x28333c));pole.position.y=2;root.add(pole);
   const canopy=new THREE.Mesh(new THREE.SphereGeometry(.68,16,8,0,Math.PI*2,0,Math.PI/2),
    new THREE.MeshStandardMaterial({color:0x253a4d,roughness:.45,side:THREE.DoubleSide}));
   canopy.position.y=2.3;canopy.scale.y=.35;root.add(canopy);
  }
- root.userData={kind,originX:x,originZ:z,phase:Math.random()*6,walk:kind==="umbrella"};
- pedestrians.push(root);return root;
+ root.userData={kind,ox:x,oz:z,phase:Math.random()*6};
+ people.push(root);return root;
 }
-function buildPedestrians(){
+function buildPeople(){
  makePerson(-4.4,-5.5,0x253e52,"umbrella");
  makePerson(7,-10,0x60483f,"umbrella");
- const clerk=makePerson(.6,5.0,0x425b63,"clerk");
- clerk.rotation.y=Math.PI;
- pedestrians.push(clerk);
+ makePerson(.6,5,0x425b63,"clerk");
 }
 
-function buildInteractables(){
- // 收据
- const paper=box("receipt",.95,1.43,3.78,.22,.018,.32,mat(0xe7dfc8,.95));
+function buildClues(){
+ const paper=cube("receipt",.95,1.43,3.78,.22,.018,.32,material(0xe7dfc8,.95));
  paper.rotation.y=.16;
- addInteractable(paper,"receipt","异常收据","收据上的时间比当前时间晚了五分钟。",()=>{
-  if(!story.receipt){
-   story.receipt=true;
-   note("receipt","异常收据","收据打印时间：02:22。可现在明明才 02:17。");
-   showDialog("线索 · 收据","纸张被雨水打湿了一角，但时间印得很清楚：02:22。收银系统的时钟似乎比墙上的时钟快了五分钟。",[
-    {text:"收起收据",run:()=>{closeDialog();updateObjective();}}
-   ]);
-  }else showDialog("收据","你已经检查过收据。时间仍然是 02:22。");
+ interact(paper,"receipt","异常收据",()=>{
+  story.receipt=true;
+  addNote("receipt","异常收据","收据打印时间是 02:22，但当前时间明明是 02:17。");
+  say("收据","纸张被雨水打湿了一角，但时间印得很清楚：02:22。",[{text:"收起收据",run:closeDialog}]);
  });
- // 监控屏
- const monitor=box("cctv monitor",-1.45,2.15,4.05,.65,.42,.12,mat(0x111a22,.25));
- const screen=box("cctv screen",-1.45,2.16,3.975,.55,.3,.025,mat(0x244c57,.3,0,{emissive:0x0a2529}));
- addInteractable(screen,"cctv","监控屏幕","监控画面出现短暂的时间跳跃。",()=>{
-  if(!story.cctv){
-   story.cctv=true;
-   note("cctv","异常监控","监控在 02:22 出现了 11 秒的黑屏，恢复后门口多了一道模糊的人影。");
-   showDialog("监控屏幕","你调出最近一段录像。02:22，画面黑了十一秒。恢复时，门口多了一个人影，但门口感应器没有记录开门。",[
-    {text:"保存监控记录",run:()=>{closeDialog();updateObjective();}}
-   ]);
-  }else showDialog("监控屏幕","录像停留在那道模糊的人影上。");
+
+ const screen=cube("monitor screen",-1.45,2.16,3.97,.55,.3,.025,material(0x244c57,.3,0,{emissive:0x0a2529}));
+ interact(screen,"cctv","监控屏幕",()=>{
+  story.cctv=true;
+  addNote("cctv","异常监控","监控在 02:22 黑屏 11 秒，恢复后门口出现了模糊人影。");
+  say("监控屏幕","录像在 02:22 黑屏了十一秒。恢复后，门口多了一个人影，但门感应器没有记录开门。",[{text:"保存记录",run:closeDialog}]);
  });
- // 店员
- const clerk=pedestrians.find(p=>p.userData.kind==="clerk");
- addInteractable(clerk,"clerk","疲惫的店员","他一直在看墙上的时钟。",()=>{
+
+ const clerk=people.find(p=>p.userData.kind==="clerk");
+ interact(clerk,"clerk","疲惫的店员",()=>{
   if(!story.clerk){
-   showDialog("店员","这么大的雨，你怎么还没回去？……别管那张收据，系统偶尔会出错。",[
+   say("店员","这么大的雨，你怎么还没回去？别管那张收据，系统偶尔会出错。",[
     {text:"你在害怕什么？",run:()=>{
      story.clerk=true;
-     note("clerk","店员的反应","店员极力否认收据异常，却在听到 02:22 时明显紧张。");
-     showDialog("店员","我没害怕。只是……如果有人敲门，先看看监控。不要直接开门。",[
-      {text:"记下他说的话",run:()=>{closeDialog();updateObjective();}}
-     ]);
+     addNote("clerk","店员的反应","店员极力否认收据异常，却在听到 02:22 时明显紧张。");
+     say("店员","如果有人敲门，先看看监控。不要直接开门。",[{text:"记下这句话",run:closeDialog}]);
     }},
-    {text:"只是买瓶水",run:()=>{closeDialog();toast("店员没有继续说话。");}}
+    {text:"只是买瓶水",run:closeDialog}
    ]);
   }else{
-   showDialog("店员",found.size>=3?
-    "你已经知道得够多了。02:22 那个人……他不应该出现在录像里。":
-    "别盯着时钟看。雨停了就回家。",[
-     {text:"问他 02:22 的事",run:()=>{
-      showDialog("店员","五年前，也是这个时间，有个司机进店买水。第二天，他的车在路边找到了，人却再也没出现。",[
-       {text:"继续调查",run:()=>{closeDialog();updateObjective();}}
-      ]);
-     }},
-     {text:"离开对话",run:closeDialog}
-    ]);
+   say("店员","五年前，也是这个时间，有个司机进来买水。第二天，他的车在路边找到了，人却再也没出现。",[{text:"结束对话",run:closeDialog}]);
   }
  });
- // 门边的湿脚印
- const print=box("wet footprints",1.8,.012,-3.8,.7,.015,.26,
-  new THREE.MeshStandardMaterial({color:0x111e29,roughness:.2,transparent:true,opacity:.6}));
- addInteractable(print,"footprints","门边的脚印","脚印从雨里延伸进来，却没有延伸出去。",()=>{
-  note("footprints","奇怪的脚印","门边有一串湿脚印，朝店内延伸，却没有任何朝外的脚印。");
-  showDialog("门边","脚印在收银台前突然中断。地面还湿着，像是有人刚刚站在这里。",[
-   {text:"拍下照片并记录",run:()=>{closeDialog();updateObjective();}}
-  ]);
+
+ const prints=cube("wet footprints",1.8,.012,-3.8,.7,.015,.26,
+  new THREE.MeshStandardMaterial({color:0x111e29,roughness:.2,transparent:true,opacity:.6}),false);
+ interact(prints,"prints","门边的脚印",()=>{
+  story.footprints=true;
+  addNote("prints","奇怪的脚印","脚印朝店内延伸，却没有任何朝外的脚印。");
+  say("门边","脚印在收银台前突然中断，地面还湿着，像是有人刚刚站在这里。",[{text:"记录脚印",run:closeDialog}]);
  });
- // 店外出租车司机
+
  const driver=makePerson(-3.5,-6.5,0x5c5144,"umbrella");
- addInteractable(driver,"driver","雨中的司机","他站在街边，像是在等某个人。",()=>{
+ interact(driver,"driver","雨中的司机",()=>{
   if(!story.driver){
-   showDialog("雨中司机","你也看见那张收据了？我五年前在这里等过一个人。他说自己马上出来，可便利店里的人都说他从没进来过。",[
-    {text:"那个人长什么样？",run:()=>{
+   say("雨中司机","五年前我在这里等过一个人。他说马上出来，可店里的人都说他从没进来过。",[
+    {text:"他长什么样？",run:()=>{
      story.driver=true;
-     note("driver","司机的证词","司机称五年前曾在此等人，对方进入便利店后消失；店员却否认见过他。");
-     showDialog("雨中司机","穿着深色外套，手里拿着一瓶水。奇怪的是……那晚和今晚一样，收据时间都是 02:22。",[
-      {text:"记录证词",run:()=>{closeDialog();updateObjective();}}
-     ]);
+     addNote("driver","司机的证词","司机称五年前有人进入便利店后消失，而收据时间同样是 02:22。");
+     say("司机","深色外套，手里拿着一瓶水。那晚的收据时间也是 02:22。",[{text:"记下证词",run:closeDialog}]);
     }},
-    {text:"你是不是认错地方了？",run:()=>{closeDialog();toast("司机没有回答，只看向便利店。");}}
+    {text:"你认错地方了",run:closeDialog}
    ]);
-  }else showDialog("雨中司机","如果你看到他出来，别追过去。雨会把一切都冲走。");
+  }else say("司机","如果你看到他出来，别追过去。雨会把一切都冲走。",[{text:"离开",run:closeDialog}]);
  });
- // 可购买的水瓶
- const water=sphere("water bottle",-.3,1.52,3.72,.12,mat(0x78c8df,.2,.12,{transparent:true,opacity:.85}));
- addInteractable(water,"water","矿泉水","一瓶冷藏矿泉水。",()=>{
-  showDialog("矿泉水","瓶身冰凉，标签上的生产日期却被刮掉了。你决定先把它放回去。",[
-   {text:"放回货架",run:()=>{closeDialog();toast("你把矿泉水放回了收银台。");}}
-  ]);
+
+ const water=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.3,10),
+  material(0x78c8df,.2,.1,{transparent:true,opacity:.8}));
+ water.position.set(-.3,1.52,3.72);scene.add(water);
+ interact(water,"water","矿泉水",()=>{
+  say("矿泉水","瓶身冰凉，标签上的生产日期却被刮掉了。",[{text:"放回去",run:closeDialog}]);
  });
 }
 
-function updateObjective(){
- let text="检查收银台，找到异常的收据。";
- if(story.receipt&&!story.cctv)text="调查收银台旁的监控屏幕。";
- else if(story.cctv&&!story.clerk)text="问问店员，他知道什么。";
- else if(story.clerk&&!story.driver)text="走到店外，询问雨中的司机。";
- else if(story.driver&&found.size<4)text="检查门边湿脚印，并用手机整理线索。";
- else if(found.size>=4)text="带着四条线索返回店员身边。";
- $("objectiveText").textContent=text;
- finishStory();
+let audio=null;
+function startAudio(){
+ try{
+  audio=new (window.AudioContext||window.webkitAudioContext)();
+  if(audio.state==="suspended")audio.resume();
+  const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.2;
+  const src=audio.createBufferSource();src.buffer=buffer;src.loop=true;
+  const filter=audio.createBiquadFilter();filter.type="lowpass";filter.frequency.value=1500;
+  const gain=audio.createGain();gain.gain.value=.05;
+  src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start();
+ }catch(e){console.warn("音频未启用",e);}
+}
+function beep(freq=650){
+ if(!audio)return;
+ try{
+  const o=audio.createOscillator(),g=audio.createGain();
+  o.frequency.value=freq;g.gain.setValueAtTime(.035,audio.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.1);
+  o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.1);
+ }catch(e){}
+}
+function beginGame(){
+ started=true;$("start").style.display="none";$("hud").style.display="block";
+ startAudio();beep(520);toast("雨声已开启。开始调查。");
 }
 
-function getTarget(){
- let best=null,bestD=2.65;
- const forward=new THREE.Vector3();
- camera.getWorldDirection(forward);
+function targetObject(){
+ const direction=new THREE.Vector3();camera.getWorldDirection(direction);
+ let best=null,limit=2.6;
  for(const obj of interactables){
   if(!obj.visible)continue;
   const p=new THREE.Vector3();obj.getWorldPosition(p);
-  const d=p.distanceTo(camera.position);
-  if(d>bestD)continue;
-  const dir=p.sub(camera.position).normalize();
-  const dot=dir.dot(forward);
-  if(dot<.12)continue;
-  bestD=d;best=obj;
+  const d=p.distanceTo(camera.position);if(d>limit)continue;
+  const to=p.sub(camera.position).normalize();
+  if(to.dot(direction)<.12)continue;
+  limit=d;best=obj;
  }
  return best;
 }
-function interact(){
+function doInteract(){
  if(!started||dialogOpen||phoneOpen)return;
- const target=getTarget();
- if(!target){
-  toast("附近没有可调查的物品。靠近目标后再试。");return;
- }
- const data=target.userData.interaction;
- if(data&&data.callback)data.callback();
+ const obj=targetObject();
+ if(!obj){toast("附近没有可调查的物品，请靠近目标。");return;}
+ obj.userData.action.callback();
+ beep(700);
 }
-
 function togglePhone(){
  if(!started||dialogOpen)return;
- phoneOpen=!phoneOpen;
- $("phonePanel").style.display=phoneOpen?"block":"none";
-}
-function startAudio(){
- try{
-  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  if(audioCtx.state==="suspended")audioCtx.resume();
-  const length=2*audioCtx.sampleRate;
-  const buffer=audioCtx.createBuffer(1,length,audioCtx.sampleRate);
-  const data=buffer.getChannelData(0);
-  for(let i=0;i<length;i++){
-   // 低音量宽带噪声模拟持续雨声
-   data[i]=(Math.random()*2-1)*.22;
-  }
-  rainSource=audioCtx.createBufferSource();
-  rainSource.buffer=buffer;rainSource.loop=true;
-  const filter=audioCtx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=1800;
-  rainGain=audioCtx.createGain();rainGain.gain.value=.055;
-  rainSource.connect(filter);filter.connect(rainGain);rainGain.connect(audioCtx.destination);
-  rainSource.start();
-  $("soundState").textContent="雨声已启用";
- }catch(e){console.warn("音频不可用",e);}
-}
-function beep(freq=620,duration=.09){
- if(!audioCtx)return;
- try{
-  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
-  osc.type="sine";osc.frequency.value=freq;
-  gain.gain.setValueAtTime(.045,audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
-  osc.connect(gain);gain.connect(audioCtx.destination);
-  osc.start();osc.stop(audioCtx.currentTime+duration);
- }catch(e){}
+ phoneOpen=!phoneOpen;$("phone").style.display=phoneOpen?"block":"none";
 }
 
-function begin(){
- started=true;
- $("startScreen").style.display="none";$("hud").style.display="block";
- startAudio();beep(500,.12);
- toast("雨声已开启。开始调查这家便利店。");
-}
-function resize(){
- if(!camera||!renderer)return;
- camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight);
- renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
-}
-
-function bindControls(){
- $("startBtn").addEventListener("click",begin);
- $("interact").addEventListener("click",interact);
- $("phoneBtn").addEventListener("click",togglePhone);
- $("phoneBtn2").addEventListener("click",togglePhone);
- $("closePhone").addEventListener("click",()=>{phoneOpen=false;$("phonePanel").style.display="none";});
- $("callButton").addEventListener("click",()=>{
-  story.alarm=true;
-  showDialog("手机","你尝试拨打报警电话，但手机没有信号。屏幕上却出现一条陌生短信：‘不要让他在 02:22 出门。’",[
-   {text:"保存短信",run:()=>{
-    note("message","未知短信","手机无信号时收到一条短信：不要让他在 02:22 出门。");
-    closeDialog();
-   }},
-   {text:"关闭手机",run:closeDialog}
+function bind(){
+ $("begin").onclick=beginGame;
+ $("use").onclick=doInteract;
+ $("phoneButton").onclick=togglePhone;$("phoneButton2").onclick=togglePhone;
+ $("closePhone").onclick=()=>{phoneOpen=false;$("phone").style.display="none";};
+ $("alarm").onclick=()=>{
+  say("手机","手机没有信号，但屏幕突然出现一条陌生短信：不要让他在 02:22 出门。",[
+   {text:"保存短信",run:()=>{addNote("message","未知短信","手机无信号时出现短信：不要让他在 02:22 出门。");closeDialog();}},
+   {text:"关闭",run:closeDialog}
   ]);
- });
- for(const [id,key] of [["forward","forward"],["back","back"],["left","left"],["right","right"]]){
-  const el=$(id);
-  const down=e=>{e.preventDefault();keys[key]=true;};
-  const up=e=>{e.preventDefault();keys[key]=false;};
-  el.addEventListener("pointerdown",down);
-  el.addEventListener("pointerup",up);
-  el.addEventListener("pointercancel",up);
-  el.addEventListener("pointerleave",up);
+ };
+ for(const [id,key] of [["up","up"],["down","down"],["left","left"],["right","right"]]){
+  const el=$(id),down=e=>{e.preventDefault();keys[key]=true;},up=e=>{e.preventDefault();keys[key]=false;};
+  el.addEventListener("pointerdown",down);el.addEventListener("pointerup",up);
+  el.addEventListener("pointercancel",up);el.addEventListener("pointerleave",up);
  }
  window.addEventListener("keydown",e=>{
-  if(e.code==="KeyW"||e.code==="ArrowUp")keys.forward=true;
-  if(e.code==="KeyS"||e.code==="ArrowDown")keys.back=true;
+  if(e.code==="KeyW"||e.code==="ArrowUp")keys.up=true;
+  if(e.code==="KeyS"||e.code==="ArrowDown")keys.down=true;
   if(e.code==="KeyA"||e.code==="ArrowLeft")keys.left=true;
   if(e.code==="KeyD"||e.code==="ArrowRight")keys.right=true;
-  if(e.code==="KeyE"||e.code==="Enter")interact();
+  if(e.code==="KeyE"||e.code==="Enter")doInteract();
   if(e.code==="KeyQ"||e.code==="KeyN")togglePhone();
-  if(e.code==="Escape"){closeDialog();phoneOpen=false;$("phonePanel").style.display="none";}
+  if(e.code==="Escape"){closeDialog();phoneOpen=false;$("phone").style.display="none";}
  });
  window.addEventListener("keyup",e=>{
-  if(e.code==="KeyW"||e.code==="ArrowUp")keys.forward=false;
-  if(e.code==="KeyS"||e.code==="ArrowDown")keys.back=false;
-  if(e.code==="KeyA"||e.code==="ArrowLeft")keys.left=false;
-  if(e.code==="KeyD"||e.code==="ArrowRight")keys.right=false;
+  if(["KeyW","ArrowUp"].includes(e.code))keys.up=false;
+  if(["KeyS","ArrowDown"].includes(e.code))keys.down=false;
+  if(["KeyA","ArrowLeft"].includes(e.code))keys.left=false;
+  if(["KeyD","ArrowRight"].includes(e.code))keys.right=false;
  });
- let pointerDown=false,lastX=0,lastY=0,dragged=false;
+ let dragging=false,lastX=0,lastY=0;
  renderer.domElement.addEventListener("pointerdown",e=>{
-  if(e.clientX>innerWidth*.42&&e.clientY>innerHeight*.16){
-   pointerDown=true;lastX=e.clientX;lastY=e.clientY;dragged=false;
-   try{renderer.domElement.setPointerCapture(e.pointerId);}catch(err){}
+  if(e.clientX>innerWidth*.38&&e.clientY>innerHeight*.12&&!phoneOpen&&!dialogOpen){
+   dragging=true;lastX=e.clientX;lastY=e.clientY;
+   try{renderer.domElement.setPointerCapture(e.pointerId);}catch(_){}
   }
  });
  renderer.domElement.addEventListener("pointermove",e=>{
-  if(!pointerDown||!started||phoneOpen||dialogOpen)return;
-  const dx=e.clientX-lastX,dy=e.clientY-lastY;
-  lastX=e.clientX;lastY=e.clientY;
-  if(Math.abs(dx)+Math.abs(dy)>1)dragged=true;
-  yaw-=dx*.004;
-  pitch-=dy*.003;
-  pitch=THREE.MathUtils.clamp(pitch,-1.15,1.15);
+  if(!dragging||!started||phoneOpen||dialogOpen)return;
+  const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+  yaw-=dx*.004;pitch=THREE.MathUtils.clamp(pitch-dy*.003,-1.1,1.1);
  });
- const release=()=>{pointerDown=false;};
+ const release=()=>dragging=false;
  renderer.domElement.addEventListener("pointerup",release);
  renderer.domElement.addEventListener("pointercancel",release);
- // 电脑鼠标点击画面也可交互；手机使用屏幕按钮。
- renderer.domElement.addEventListener("dblclick",interact);
+ renderer.domElement.addEventListener("dblclick",doInteract);
 }
 
 function movePlayer(dt){
  if(!started||phoneOpen||dialogOpen)return;
- let f=(keys.forward?1:0)-(keys.back?1:0);
+ let f=(keys.up?1:0)-(keys.down?1:0);
  let s=(keys.right?1:0)-(keys.left?1:0);
  if(!f&&!s)return;
- const len=Math.hypot(f,s);f/=len;s/=len;
- const forward=new THREE.Vector3(-Math.sin(yaw),0,-Math.cos(yaw));
- const right=new THREE.Vector3(Math.cos(yaw),0,-Math.sin(yaw));
- const dx=(forward.x*f+right.x*s)*player.speed*dt;
- const dz=(forward.z*f+right.z*s)*player.speed*dt;
- let nx=camera.position.x+dx,nz=camera.position.z+dz;
- // 店内边界和街道边界。门口区域可以正常进出。
- nx=THREE.MathUtils.clamp(nx,-5.55,5.55);
- nz=THREE.MathUtils.clamp(nz,-20,6.35);
- // 货架与收银台的简易碰撞，避免穿过大型家具。
- const obstacles=[
-  [-4.9,-1.6,1.0,2.2],[-4.9,1.0,1.0,2.2],
-  [4.9,-1.6,1.0,2.2],[4.9,1.0,1.0,2.2],
-  [0,4.15,4.5,.9]
+ const function=movePlayer.dt(if,started);phoneOpen/=dialogOpen;return/=let;
+ fkeys=upkeys.Vector3(-down.let(s),0,-keys.right(keys));
+ leftif=fs.Vector3(return.const(len),0,-Math.hypot(f));
+ sf=len.s.len+(const.forward*new+THREE.Math*sin)*3*yaw;
+ Mathcos=yaw.const.right+(new.THREE*Math+cos.yaw*Math)*3*sin;
+ yawconst=nx.camera.position(x,-5.55,5.55);
+ forwardx=f.right.x(s,-21,6.35);
+ dt
+ const nz=[
+  [-4.9,-1.6,1.15,2.3],[-4.9,1,1.15,2.3],
+  [4.9,-1.6,1.15,2.3],[4.9,1,1.15,2.3],
+  [0,4.15,4.5,1.0]
  ];
- let blocked=false;
- for(const [ox,oz,rx,rz] of obstacles){
-  if(Math.abs(nx-ox)<rx*.5+.3&&Math.abs(nz-oz)<rz*.5+.3){blocked=true;break;}
+ cameraposition=z;
+ forward(z [f,right,z,s]dtlet){
+  x(THREE.MathUtils(clamp-nx)<let/2+.3&&z.THREE(MathUtils-clamp)<nz/2+.3){// 简单家具碰撞：货架与柜台不能直接穿过。=const;obstacles;}
  }
- if(!blocked){camera.position.x=nx;camera.position.z=nz;}
+ let(!blocked){false.for.const=ox;oz.rx.rz=of;}
 }
 
-function animateWorld(dt){
- elapsed+=dt;
- // 雨滴持续下落，离开视野后重新从高处生成。
- for(const obj of rainSystems){
-  if(obj.isPoints){
-   const a=obj.geometry.attributes.position.array;
-   for(let i=0;i<obj.userData.count;i++){
-    a[i*3+1]-=obj.userData.speeds[i]*dt;
-    a[i*3]+=.25*dt;
-    if(a[i*3+1]<0){
-     a[i*3+1]=10+Math.random()*4;
-     a[i*3]=-17+Math.random()*34;
-     a[i*3+2]=-5-Math.random()*27;
+obstaclesifMathabsxoxrxMath(absz=oz.rz(1,blocked.true*2,break.if);){
+ blockedcamerapositionx+=xcamera=position.z(0);;
+ zEnterfilecontents(here(Enterfile=0;contents<here.const;buffer++)audio[createBuffer]=(audio.sampleRate()*2-1)*.2; audiosampleRateEnterfilecontentshere=const.data();buffer.getChannelData=Enter;file.contents=here; forletii){
+  datalength=i.data();i.Math="lowpass";random.Enter.file=1500;(contentshereconstsrc.audio createBufferSource=src.buffer();buffer.src.loop=.05;){
+   trueEnterfilecontentshereconstfilteraudio=}createBiquadFilter(filter){type.filter(frequency,value);}.Enterfilecontentshere.const gainaudiocreateGain.gain gain(value=650){.Enterfilecontentshere;
+   Enterfilecontentshere(catchfilecontentseconsolewarn="音频未启用".e(),Enter=file.contents();=0;hereEnterfilecontents<herefunctionbeepfreq.Enter filecontentshere.Enter filecontentshere;Enterhereconsto++){
+    audiocreateOscillatorgaudio[createGainEnter(){*3+1]-=filecontentshereEnter.file=contents;here("start").Enter.file="none";contents("hud").here.Enter="block";.filecontentshereEnter[file();contents(520);here(Enter);]*filecontentsherefunction;beginGameEnterfilecontents[herestarted(){*3]+=.25*true$styledisplay;
+    $style=displayEnter.Vector3();file.contents(here);(startAudiobeeptoast"雨声已开启。开始调查。"[Enterfile=contents,here=2.6;*3+1]<0){
+     Enterfilecontentshere[function(targetObjectEnterofinteractables){*3+1]=10+filecontentshereconst.direction newTHREEcamera()*4;
+     getWorldDirectiondirection=Enterfile.Vector3();contents.here(let);[bestnulllimitEnter*3]=-17+filecontents=here.for(const.obj);Enter(file>contents)here;.Enterfilecontentshere()*34;
+     const p=new.THREE(obj.getWorldPosition).p();[Enterfilecontentshere*3+2]=-5-constdpdistanceTo.camera positionifd()*28;
     }
    }
-   obj.geometry.attributes.position.needsUpdate=true;
-  }else{
-   obj.position.y+=Math.sin(elapsed*1.8+obj.userData.phase)*.0008;
+   limitcontinueEnterfile.contents here;.consttopsub.camera positionnormalizeEnter.file contents(){=hereEnterfilecontents;
+  }hereEnterfilecontentshereEnter=file();.contentsherereturnbest.Enter(!file){contents(here);Enter;}+=filecontentshere.function doInteract(Enter*1.8+file.contentsfile(){.here)*.0008;
+ }
+ Enter(file=!contents;here("phone").const.obj=targetObject?"block":"none"; Enterfile(){){
+  contents.here("begin").if=obj;.toast+="附近没有可调查的物品，请靠近目标。"("use").return=Enter;.file.filecontents("phoneButton").here=Enterfilecontents;herebufferaudiocreateBuffer("phoneButton2").audiosampleRateaudiosampleRate=Enter;*contentshereconstdata;
+  buffergetChannelDataEnterfile("closePhone").contents=()=>{here=for;let("phone").i.i="none";};(datalengthidataiMathrandomEnterfile.contents("alarm").hereconstsrcaudio=()=>{.createBufferSource herecatche>0&&src(buffer,buffersrclooptrue,[.Enter Enterfilecontents.{file:Enter,contents:()=>{hereconstfilteraudio("message",createBiquadFilter,filter);type();}},>23)filter.{frequency:value,Enterfilecontentshere:const}.gain=-23;
+  audio(createGain.gain(gain [value,Enterfilecontentshere]Enter[["up","up"],["down","down"],["left","left"],["right","right"]]){.Enter<0&&filecontents=contents(console),warn="音频未启用"=>{e.here();file[contents]=here;},function=beep=>{freqEnterfilecontents.here();Enter[file]=contents;};.hereEnterfilecontents.hereconstoaudio $styledisplay<-23)createOscillatorgaudiocreateGain.Enter file.contents herefilecontentshereEnterfile=23;
+  here.Enter file.contents here=.05+Enter.file contents(here*7+Enter(file.contents==="Escape"){here();function=beginGame;Enter("phone").filecontentsherestarted.true="none";}.$styledisplayEnter.file contentsherestartAudio)*.008;
+ }
+ beep(toast){
+  "雨声已开启。开始调查。"Enter=filecontentshereEnter,file=0,contentsherefunction=0;=targetObject.Enterfilecontents hereconstdirectionnew;
+  THREE(cameragetWorldDirectiondirection.Enterfilecontentshere contentshereEnter==="umbrella"){
+   let.best null.limit Enter=file.contents here=for.constobjofinteractables-Enter,filecontentshere=Enterfilecontentshere.constpnewTHREEobjgetWorldPositionpEnterfilecontentshereconstdpdistanceTocamera-positionifdlimitcontinue;Enter=file.contents;here=consttopsub.camera;+positionnormalizeEnter.filecontentshereEnter filecontentshereEnter(file*.32+filecontentsherereturn=()=>best=Enterfilecontents;.here)*.7;
+   Enterfilecontents.herefunctiondoInteractEnter file.contents here=Enter.file contents(here){+const.obj targetObject(Enter=(file.contents?1:0)-(buffergetChannelDataEnterfile.contents?1:0);*.22+hereforlet.i i=(datalengthidataiMathrandomEnterfile.contentsfile?1:0)-(hereconstsrcaudio.createBufferSource?1:0);)*.35;
+   src.buffer buffersrclooptrue.Enter file=contents.hereconstfilteraudio(createBiquadFilter,filter);type=filter;=frequency.value Enterfilecontentsherecontents=const.Vector3(-gain.audio(createGain),0,-gain.gain(onclick));(value*.32+Enterfilecontentshere=Enter.Vector3(file.contents(console),0,-warn."音频未启用"(e));.here)*.2;
   }
  }
- // 汽车持续在湿漉漉的道路上穿行。
- for(const car of movingCars){
-  car.position.x+=car.userData.speed*dt;
-  if(car.position.x>22)car.position.x=-22;
-  car.position.y=.045+Math.sin(elapsed*7+car.position.x)*.008;
+ file=contents.here.function+(beep.freqEnterfilecontents*here+Enter.file*contents)*3*hereEnterfilecontents; hereconstoaudio=17+createOscillatorgaudiocreateGain=Enter<-.file.contents+(herefilter.Enter*filecontentshereEnter+file.here*Enter)*3*file;.contents(here=Enter.file.contents(here,-5.55,5.55);/25);
+ Enter("time").file contents=here.function.beginGame(Enter,-21,6.35);="02:"+filecontentsherestarted(true
+}
+$styledisplay(){
+ $styledisplayEnter(!file)contentsherestartAudio;
+ beep=toast;="雨声已开启。开始调查。"();
+ Enter(filecontentshereEnter [file,contentsherefunction,targetObject,Enterfilecontents]positionnormalizeEnter){("prompt").hereconstdirectionnew THREE=cameragetWorldDirectiondirection?Enterfilecontentshere+let.best null.limit Enter(file){.contents:here;
+}
+for(constobjofinteractables{ Enter(){
+ filecontentshere(!Enterfilecontentshere=constpnewTHREEobjgetWorldPositionpEnterfilecontentshereconstdpdistanceTocamera.positionifdlimitcontinue.Enter;||!file)contents(here
+consttopsub
+camera.filecontentshereEnter filecontentshereEnter=file
+filecontentsherereturn
+best(){
+Enterfilecontents
+here
+Enterfilecontents(herefunctiondoInteractEnter("time").file="02:"+contents(!here||!Enter=file.contents;||!here)eclientXlastXdye%60).const=obj.Entercontentshere consttopsubhereEnter(file.contentshereEnterfile minute=17+contentsfile.e(hereEnterfile/25);(),.05);(2,"0")+contentshereEnterfile(contentshereconstdx);camera(){(file);;){
+Enter.contents here.constrelease("prompt").draggingfalse=EnterfilecontentshereEnter?file+contentshereEnter.file.contents.hereEnter:file;="YXZ";contentshereEnterfile.contentsherefunctionmovePlayer dtEnterfilecontentshereEnterfilecontents.hereletfkeys upkeys(){=down;Enter.file contents.here let=s;
+car.of keysrightkeysleft(Enter,contents=here.EnterfilecontentsTHREEEnter(Mathsin.EnterEnterfilecontentshereEnterfilecontentshere(),.05););
+file(){();
+contentshere.Enterfilecontents here(Enter);();
  }
- // 雨伞行人缓慢行走，店员留在柜台后。
- for(const p of pedestrians){
-  const u=p.userData;
-  if(u.walk){
-   p.position.x=u.originX+Math.sin(elapsed*.32+u.phase)*.75;
-   p.position.z=u.originZ+Math.cos(elapsed*.22+u.phase)*.4;
-   p.rotation.y=Math.sin(elapsed*.32+u.phase)*.25;
-  }
- }
- //
+}file(file){
+}
+
+contentshere("loading").Enterfile contents.hereelse obj="flex";{
+positiony("loading").Math sin=elapsed("loading").userData.phase)Enter;="flex";+file=contents.here Enter(filecontentsherefor.constcarsEnterfilecontentshereEnterfile contentshere=17+obj.hereEnterfile(herefor
+Enter.const("prompt")./25);(),.05);(p(contentshereEnterfilehere("time").contentsEnterfilecontents="02:"+ofpeople(Enterfilecontentshere%60)." const(){=u;p.userData herebufferaudiocreateBuffer.Enter filecontentshereEnterfile=contentshere;+Enterfilecontentshere(){();(Enterfile"(2,"0")+contents;){("loading").here Enterfilecontentshere(filecontents);hereEnter(){(file);=contents.here.const minute(Math,floor=elapsedEnterfilecontentshere$textContentStringminutepadStartAM.Enter(filecontentshereEnter.filecontentsherefunction(),.05);)
+;.updateUI();||Enterfilecontents{here()Enterfilecontents();;.}currentTarget(userDataactiontitle){"靠近物品或人物以交互".Enter filehereEnterfilecont
+here();))+contents";(" here();=Enter?file+contents.here.function.resizeEnterfile:contentshereEnterfile;="("contentsherecurrentTargetEnter;file.contentshere ;();;.}EnterEnter(filecontentshereEnterfilecontentshereEnterfilecontentshere){letdraggingfalselastX.lastYEnterfilecontents " loading(herefile);contents(here."("";+hereEnterfilecontents(hereconstoaudio("Enter();))+file";(" contents();=here?display+Enter.file.contents.$:style;="(""<flex+loading(here.$||innerHTML('<div class=";panel."><h1>加载失败</h1><p class=" small."("";+hereEnterfilecontents(hereconstoaudio("">请检查 three.module.js 是否已上传到与 index.html 相同的目录，且文件名完全一致。></p><p class="").createOscillatorgaudiocreateGainEnterfilecontents=hereeEnterfilecontentshereEnterfile").createOscillatorgaudiocreateGainEnterfilecontents=hereeEnterfilecontentshereEnterfile
+").here.Enter=filecontentshereEnterfilecontentshere">ents
+small
+errhere
+}
+message$textContent
+StringcurrentTarget
+forwardherediverr"交互："
