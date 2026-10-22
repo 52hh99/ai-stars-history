@@ -3,63 +3,54 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>深夜便利店｜第一人称恐怖游戏</title>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "./three.module.js"
-  }
-}
-</script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>深夜便利店｜第一人称游戏</title>
 
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030609;color:#e9f4ff;font-family:Arial,"Microsoft YaHei",sans-serif;touch-action:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030609;color:#eaf5ff;font-family:Arial,"Microsoft YaHei",sans-serif;touch-action:none}
 canvas{display:block}
-button{border:1px solid #607b89;background:#14232d;color:#eafaff;padding:11px 14px;border-radius:8px;font-size:14px}
-button:active{background:#31505e}
-#loading,#start,#dialog,#phone{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#030609eF;z-index:10;padding:20px}
-.panel{width:min(500px,100%);padding:24px;background:#101b22;border:1px solid #536875;border-radius:14px;box-shadow:0 0 35px #000}
-h1{font-size:28px;margin:0 0 12px;color:#bceaff}
-p{line-height:1.7;color:#c0d1da}
-.small{font-size:12px;color:#a7bac4}
+button{border:1px solid #617b89;background:#142630;color:#effaff;padding:11px 14px;border-radius:8px;font-size:14px}
+button:active{background:#345463}
+.panel{width:min(500px,100%);padding:23px;background:#101b22;border:1px solid #536875;border-radius:14px;box-shadow:0 0 35px #000}
+h1{font-size:26px;margin:0 0 12px;color:#bceaff}
+p{line-height:1.7;color:#c4d4dd}
+.small{font-size:12px;color:#a7bac4;overflow-wrap:anywhere}
 .primary{background:#a9eaff;color:#08121a;font-weight:bold;border:0}
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#030609ed;z-index:10;padding:18px}
 #start,#dialog,#phone{display:none}
 #hud{position:fixed;inset:0;z-index:3;pointer-events:none}
-#top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.hudbox{background:#07121bd9;border:1px solid #66808b99;border-radius:8px;padding:9px 11px;font-size:12px}
-#objective{position:absolute;top:65px;left:12px;max-width:75%;background:#07121bd9;padding:10px;border-radius:8px;font-size:13px}
-#hint{position:absolute;bottom:155px;left:50%;transform:translateX(-50%);width:max-content;max-width:90%;text-align:center;background:#06121bdc;padding:10px 14px;border-radius:8px;font-size:13px}
+#top{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
+.hudbox{background:#07121bdc;border:1px solid #66808b99;border-radius:8px;padding:9px 11px;font-size:12px}
+#objective{position:absolute;top:62px;left:12px;max-width:85%;background:#07121bdc;padding:10px;border-radius:8px;font-size:13px}
 #crosshair{position:absolute;left:50%;top:50%;width:8px;height:8px;border:1px solid #d8f8ff;border-radius:50%;transform:translate(-50%,-50%)}
-#controls{position:absolute;bottom:15px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-#pad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(2,45px);gap:4px}
-#pad button{padding:0;background:#0b1b26cc}
-#actions{display:flex;flex-direction:column;gap:7px;align-items:flex-end}
-#actions button{background:#0b1b26dd}
+#hint{position:absolute;bottom:150px;left:50%;transform:translateX(-50%);width:max-content;max-width:90%;text-align:center;background:#06121bdc;padding:10px 14px;border-radius:8px;font-size:12px}
+#controls{position:absolute;bottom:12px;left:10px;right:10px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+#pad{display:grid;grid-template-columns:repeat(3,45px);grid-template-rows:repeat(2,43px);gap:4px}
+#pad button{padding:0;background:#0b1b26df}
+#actions{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+#actions button{background:#0b1b26ed;padding:10px}
 #dialog .panel,#phone .panel{max-height:80vh;overflow:auto}
-#dialogText{white-space:pre-line}
 #notes{padding-left:20px;line-height:1.8}
-#phone{z-index:12}
-#toast{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);z-index:8;background:#14252e;padding:12px 18px;border-radius:9px;display:none;text-align:center}
-#vignette{position:fixed;inset:0;pointer-events:none;z-index:2;box-shadow:inset 0 0 110px 30px #000b;background:linear-gradient(0deg,#02070b66,transparent 35%,#02070b33)}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:2;box-shadow:inset 0 0 100px 25px #000a}
+#toast{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);z-index:8;background:#14252e;padding:12px 18px;border-radius:9px;display:none;text-align:center;max-width:90%}
 </style>
 </head>
 <body>
 
-<div id="loading">
+<div id="loading" class="overlay">
   <div class="panel">
-    <h1>正在准备雨夜场景……</h1>
-    <p>正在加载本地 3D 引擎，请稍候。</p>
+    <h1>正在加载本地 3D 引擎</h1>
+    <p>正在准备雨夜便利店，请稍候……</p>
+    <p class="small">如果加载失败，本页面会显示具体错误。</p>
   </div>
 </div>
 
-<div id="start">
+<div id="start" class="overlay">
   <div class="panel">
     <h1>深夜便利店</h1>
     <p>凌晨两点，你走进一家仍在营业的便利店。窗外暴雨不停，店员似乎认识你，但你不记得自己来过这里。</p>
-    <p class="small">移动：屏幕下方方向键。转向：拖动画面。靠近线索后点击“调查”。打开笔记可查看已收集线索。</p>
+    <p class="small">移动：下方方向键。转向：拖动画面。靠近线索后点击“调查”。笔记可查看收集到的线索。</p>
     <button class="primary" id="startBtn">进入便利店</button>
     <button id="soundBtn">开启雨声音效</button>
   </div>
@@ -70,9 +61,9 @@ p{line-height:1.7;color:#c0d1da}
     <div class="hudbox">深夜便利店 · 第一人称</div>
     <div class="hudbox" id="clock">02:17 AM</div>
   </div>
-  <div id="objective">目标：进入便利店，寻找异常线索。</div>
+  <div id="objective">目标：寻找便利店里的异常线索。</div>
   <div id="crosshair"></div>
-  <div id="hint">拖动画面转向，使用方向键移动</div>
+  <div id="hint">使用方向键移动，拖动画面转向</div>
   <div id="controls">
     <div id="pad">
       <span></span><button data-move="forward">▲</button><span></span>
@@ -89,7 +80,7 @@ p{line-height:1.7;color:#c0d1da}
 <div id="vignette"></div>
 <div id="toast"></div>
 
-<div id="dialog">
+<div id="dialog" class="overlay">
   <div class="panel">
     <h1 id="dialogTitle">发现线索</h1>
     <p id="dialogText"></p>
@@ -97,548 +88,361 @@ p{line-height:1.7;color:#c0d1da}
   </div>
 </div>
 
-<div id="phone">
+<div id="phone" class="overlay">
   <div class="panel">
     <h1>线索笔记</h1>
-    <p class="small">你收集到的线索会记录在这里。</p>
     <ul id="notes"></ul>
     <button class="primary" id="phoneClose">返回游戏</button>
   </div>
 </div>
 
 <script type="module">
-import * as THREE from "three";
-
 const $ = id => document.getElementById(id);
 
+let THREE;
 let scene, camera, renderer, clock;
-let rain, rainPositions, rainSpeeds;
-let gameStarted = false;
-let soundOn = false;
-let audioContext = null;
-let rainSource = null;
-let rainGain = null;
-let elapsed = 0;
-let lastHint = "";
-let currentTarget = null;
-let endingShown = false;
-
+let rain, rainSpeeds;
+let audioContext = null, rainGain = null, rainSource = null;
+let soundOn = false, gameStarted = false, elapsed = 0, endingShown = false;
+let player = {x:0,z:5,yaw:0,speed:3.2};
 const keys = {};
-const notes = [];
 const found = new Set();
 const interactables = [];
+const colliders = [];
 const people = [];
 const cars = [];
 const movers = [];
-const colliders = [];
 
-const player = {
-  x: 0,
-  z: 5,
-  yaw: 0,
-  speed: 3.2
-};
+function showError(title, detail) {
+  $("loading").style.display = "flex";
+  $("loading").innerHTML = "";
 
-const clueData = [
-  {
-    id: "receipt",
-    title: "奇怪的收据",
-    text: "收据上的时间是 02:17。商品栏只有一行：‘替你保管的记忆’。最底下写着你的名字，但你不记得自己买过任何东西。",
-    pos: [-2.5, 0, -3]
-  },
-  {
-    id: "monitor",
-    title: "监控画面",
-    text: "监控里，便利店门口站着一个浑身湿透的人。你抬头看向玻璃门，门外却空无一人。监控时间比墙上的钟慢了十七分钟。",
-    pos: [2.6, 1.5, -5.2]
-  },
-  {
-    id: "footprints",
-    title: "湿脚印",
-    text: "一串湿脚印从门口延伸到货架尽头，却没有返回的痕迹。脚印停在一面普通的墙前，墙后传来很轻的敲击声。",
-    pos: [3.2, 0, 1]
-  },
-  {
-    id: "note",
-    title: "留给你的纸条",
-    text: "纸条写着：‘如果店员问你是不是第一次来，不要回答。’字迹与你自己的笔迹极为相似。",
-    pos: [-3.2, 0, 2]
-  }
-];
+  const panel = document.createElement("div");
+  panel.className = "panel";
 
-function showDialog(title, text) {
-  $("dialogTitle").textContent = title;
-  $("dialogText").textContent = text;
-  $("dialog").style.display = "flex";
+  const h = document.createElement("h1");
+  h.textContent = title;
+  panel.appendChild(h);
+
+  const p = document.createElement("p");
+  p.textContent = "错误信息：";
+  panel.appendChild(p);
+
+  const msg = document.createElement("p");
+  msg.className = "small";
+  msg.style.color = "#ffb8b8";
+  msg.textContent = String(detail || "未知错误");
+  panel.appendChild(msg);
+
+  const help = document.createElement("p");
+  help.className = "small";
+  help.textContent = "请截图保存错误信息并发给 ChatGPT。确认 three.module.js 与 index.html 在同一目录。";
+  panel.appendChild(help);
+
+  const btn = document.createElement("button");
+  btn.className = "primary";
+  btn.textContent = "重新加载";
+  btn.onclick = () => location.reload();
+  panel.appendChild(btn);
+
+  $("loading").appendChild(panel);
 }
 
-function toast(message) {
-  $("toast").textContent = message;
-  $("toast").style.display = "block";
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => $("toast").style.display = "none", 1800);
-}
+window.addEventListener("error", event => {
+  console.error(event.error || event.message);
+});
 
-function updateObjective() {
-  const count = found.size;
-  if (count === 0) {
-    $("objective").textContent = "目标：调查便利店里的异常物品。线索 " + count + "/4";
-  } else if (count < 4) {
-    $("objective").textContent = "目标：继续寻找异常线索。线索 " + count + "/4";
-  } else {
-    $("objective").textContent = "目标：与店员交谈，弄清这里发生了什么。线索 4/4";
-    if (!endingShown) {
-      endingShown = true;
-      setTimeout(() => showDialog(
-        "雨夜的真相",
-        "四条线索终于拼在一起。\n\n你想起了这家便利店：很久以前的那个雨夜，你曾经走进这里，答应把一段不愿面对的记忆留在店里。\n\n店员看着你说：‘欢迎回来。这次，你想把记忆带走吗？’\n\n雨还在下。门已经打开了。故事暂时结束……"
-      ), 500);
+window.addEventListener("unhandledrejection", event => {
+  console.error(event.reason);
+});
+
+async function loadEngine() {
+  try {
+    THREE = await import("./three.module.js");
+    if (!THREE || !THREE.WebGLRenderer) {
+      throw new Error("模块已返回，但没有找到 THREE.WebGLRenderer。请确认文件是官方 Three.js 模块。");
     }
+    startGame();
+  } catch (error) {
+    console.error("Three.js 加载失败：", error);
+    showError("3D 引擎加载失败", error?.message || error);
   }
 }
 
-function addNote(item) {
-  if (found.has(item.id)) {
-    toast("这条线索已经记录过了");
-    return;
-  }
-  found.add(item.id);
-  notes.push(item.title + "：" + item.text);
-  const li = document.createElement("li");
-  li.textContent = item.title + " — " + item.text;
-  $("notes").appendChild(li);
-  toast("已记录线索：" + item.title);
-  updateObjective();
+function mat(color, roughness=0.8, metalness=0) {
+  return new THREE.MeshStandardMaterial({color,roughness,metalness});
 }
 
-function material(color, roughness = 0.85, metalness = 0) {
-  return new THREE.MeshStandardMaterial({
-    color,
-    roughness,
-    metalness
-  });
-}
-
-function addBox(name, x, y, z, sx, sy, sz, color, opts = {}) {
-  const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(sx, sy, sz),
-    material(color, opts.roughness ?? 0.8, opts.metalness ?? 0)
-  );
+function box(name,x,y,z,sx,sy,sz,color,collider=false) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx,sy,sz),mat(color));
   mesh.name = name;
-  mesh.position.set(x, y, z);
+  mesh.position.set(x,y,z);
   scene.add(mesh);
-  if (opts.collider) {
-    colliders.push({
-      x, z,
-      hx: sx / 2 + 0.35,
-      hz: sz / 2 + 0.35
-    });
-  }
+  if (collider) colliders.push({x,z,hx:sx/2+0.3,hz:sz/2+0.3});
   return mesh;
 }
 
-function addLight(color, intensity, x, y, z, distance = 10) {
-  const light = new THREE.PointLight(color, intensity, distance);
-  light.position.set(x, y, z);
-  scene.add(light);
-  return light;
+function light(color,intensity,x,y,z,distance=12) {
+  const l = new THREE.PointLight(color,intensity,distance);
+  l.position.set(x,y,z);
+  scene.add(l);
 }
 
-function addTextSprite(text, color = "#ffffff") {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 128;
-  const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "rgba(2,10,15,0.88)";
-  ctx.fillRect(0, 0, 512, 128);
+function spriteText(text,color="#bdefff") {
+  const c = document.createElement("canvas");
+  c.width = 512; c.height = 128;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "rgba(2,10,15,.9)";
+  ctx.fillRect(0,0,512,128);
   ctx.strokeStyle = color;
   ctx.lineWidth = 5;
-  ctx.strokeRect(4, 4, 504, 120);
+  ctx.strokeRect(4,4,504,120);
   ctx.fillStyle = color;
   ctx.font = "bold 44px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(text, 256, 64);
-  const texture = new THREE.CanvasTexture(canvas);
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true
-  }));
-  sprite.scale.set(2.8, 0.7, 1);
-  return sprite;
+  ctx.fillText(text,256,64);
+  const texture = new THREE.CanvasTexture(c);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true}));
+  s.scale.set(2.8,.7,1);
+  return s;
 }
 
-function addInteractable(id, title, x, y, z, radius, callback) {
+function addTarget(id,title,x,y,z,radius,callback) {
   const marker = new THREE.Mesh(
-    new THREE.SphereGeometry(0.12, 12, 8),
-    new THREE.MeshBasicMaterial({
-      color: 0x8deaff,
-      transparent: true,
-      opacity: 0.85
-    })
+    new THREE.SphereGeometry(.12,12,8),
+    new THREE.MeshBasicMaterial({color:0x8deaff})
   );
-  marker.position.set(x, y, z);
+  marker.position.set(x,y,z);
   scene.add(marker);
-
-  interactables.push({
-    id, title, x, y, z, radius, callback, marker
-  });
+  interactables.push({id,title,x,y,z,radius,callback,marker});
 }
 
-function makePerson(name, x, z, shirtColor, pantsColor, isDriver = false) {
+function person(name,x,z,shirtColor,pantsColor) {
   const group = new THREE.Group();
-  group.position.set(x, 0, z);
+  group.position.set(x,0,z);
   scene.add(group);
 
-  const shirt = new THREE.Mesh(
-    new THREE.BoxGeometry(0.48, 0.72, 0.28),
-    material(shirtColor)
-  );
-  shirt.position.y = 1.05;
-  group.add(shirt);
+  const torso = new THREE.Mesh(new THREE.BoxGeometry(.48,.72,.28),mat(shirtColor));
+  torso.position.y=1.05; group.add(torso);
 
-  const head = new THREE.Mesh(
-    new THREE.SphereGeometry(0.19, 12, 10),
-    material(0xb9957b)
-  );
-  head.position.y = 1.58;
-  group.add(head);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(.19,12,10),mat(0xb9957b));
+  head.position.y=1.58; group.add(head);
 
-  const legs = new THREE.Mesh(
-    new THREE.BoxGeometry(0.42, 0.65, 0.25),
-    material(pantsColor)
-  );
-  legs.position.y = 0.36;
-  group.add(legs);
+  const legs = new THREE.Mesh(new THREE.BoxGeometry(.42,.65,.25),mat(pantsColor));
+  legs.position.y=.36; group.add(legs);
 
-  people.push({ name, group, x, z, isDriver });
+  people.push({name,group});
   return group;
 }
 
+const clueData = [
+  {id:"receipt",title:"奇怪的收据",text:"收据上的时间是 02:17。商品栏只有一行：‘替你保管的记忆’。底下写着你的名字。",x:-2.5,z:-3},
+  {id:"monitor",title:"监控画面",text:"监控里站着一个浑身湿透的人。你看向玻璃门，门外却空无一人。",x:2.6,z:-5.2},
+  {id:"footprints",title:"湿脚印",text:"湿脚印从门口延伸到货架尽头，却没有返回的痕迹。",x:3.2,z:1},
+  {id:"note",title:"留给你的纸条",text:"纸条写着：‘如果店员问你是不是第一次来，不要回答。’字迹与你自己的笔迹相似。",x:-3.2,z:2}
+];
+
 function buildStore() {
-  // 地板、天花板和墙体
-  addBox("floor", 0, -0.15, 0, 12, 0.3, 16, 0x27353a);
-  addBox("ceiling", 0, 4, 0, 12, 0.25, 16, 0x151f25);
+  box("floor",0,-.15,0,12,.3,16,0x27353a);
+  box("ceiling",0,4,0,12,.25,16,0x151f25);
+  box("backwall",0,2,-8,12,4,.25,0x26353a);
+  box("leftwall",-6,2,0,.25,4,16,0x26353a);
+  box("rightwall",6,2,0,.25,4,16,0x26353a);
+  box("frontleft",-4.7,2,8,2.6,4,.25,0x26353a);
+  box("frontright",4.7,2,8,2.6,4,.25,0x26353a);
 
-  addBox("backwall", 0, 2, -8, 12, 4, 0.25, 0x26353a);
-  addBox("leftwall", -6, 2, 0, 0.25, 4, 16, 0x26353a);
-  addBox("rightwall", 6, 2, 0, 0.25, 4, 16, 0x26353a);
-
-  // 正面两侧墙，中间留出入口
-  addBox("frontleft", -4.7, 2, 8, 2.6, 4, 0.25, 0x26353a);
-  addBox("frontright", 4.7, 2, 8, 2.6, 4, 0.25, 0x26353a);
-
-  // 门框与玻璃
-  addBox("doorframe1", -1.4, 2, 8, 0.12, 4, 0.22, 0x70818a);
-  addBox("doorframe2", 1.4, 2, 8, 0.12, 4, 0.22, 0x70818a);
+  box("doorframe1",-1.4,2,8,.12,4,.22,0x70818a);
+  box("doorframe2",1.4,2,8,.12,4,.22,0x70818a);
 
   const glass = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.65, 3.4),
-    new THREE.MeshStandardMaterial({
-      color: 0x6598a7,
-      transparent: true,
-      opacity: 0.22,
-      roughness: 0.15,
-      metalness: 0.2
-    })
+    new THREE.PlaneGeometry(2.65,3.4),
+    new THREE.MeshStandardMaterial({color:0x6598a7,transparent:true,opacity:.22,roughness:.15})
   );
-  glass.position.set(0, 2, 7.86);
+  glass.position.set(0,2,7.86);
   scene.add(glass);
 
-  // 招牌
-  const sign = addTextSprite("深夜便利店", "#8deaff");
-  sign.position.set(0, 3.45, 7.65);
-  sign.scale.set(3.8, 0.95, 1);
+  const sign=spriteText("深夜便利店");
+  sign.position.set(0,3.45,7.65);
+  sign.scale.set(3.8,.95,1);
+  scene.add(sign);
 
-  // 货架
-  for (const z of [-4, -1, 2]) {
-    addBox("shelf", -1.8, 1, z, 1.1, 1.9, 0.55, 0x59656b, { collider: true });
-    addBox("shelf", 1.8, 1, z, 1.1, 1.9, 0.55, 0x59656b, { collider: true });
-
-    for (let row = 0; row < 3; row++) {
-      for (let i = 0; i < 4; i++) {
-        const colors = [0xe8a34e, 0x6ec9d7, 0xd85d62, 0x8fc978, 0xb4a2e8];
-        addBox(
-          "product",
-          -2.15 + i * 0.23,
-          0.45 + row * 0.48,
-          z,
-          0.16, 0.28, 0.2,
-          colors[(i + row) % colors.length]
-        );
-        addBox(
-          "product",
-          1.45 + i * 0.23,
-          0.45 + row * 0.48,
-          z,
-          0.16, 0.28, 0.2,
-          colors[(i + row + 2) % colors.length]
-        );
-      }
+  for(const z of [-4,-1,2]) {
+    box("shelf",-1.8,1,z,1.1,1.9,.55,0x59656b,true);
+    box("shelf",1.8,1,z,1.1,1.9,.55,0x59656b,true);
+    const colors=[0xe8a34e,0x6ec9d7,0xd85d62,0x8fc978,0xb4a2e8];
+    for(let row=0;row<3;row++) for(let i=0;i<4;i++) {
+      box("product",-2.15+i*.23,.45+row*.48,z,.16,.28,.2,colors[(i+row)%colors.length]);
+      box("product",1.45+i*.23,.45+row*.48,z,.16,.28,.2,colors[(i+row+2)%colors.length]);
     }
   }
 
-  // 收银台
-  addBox("counter", 0, 0.6, -5.9, 2.8, 1.2, 0.9, 0x5b5147, { collider: true });
-  addBox("register", 0.2, 1.35, -5.8, 0.65, 0.3, 0.4, 0x151b1e);
-  addBox("clock", 0, 3.25, -7.82, 1.1, 0.5, 0.12, 0x121a1f);
+  box("counter",0,.6,-5.9,2.8,1.2,.9,0x5b5147,true);
+  box("register",.2,1.35,-5.8,.65,.3,.4,0x151b1e);
+  box("clock",0,3.25,-7.82,1.1,.5,.12,0x121a1f);
 
-  addLight(0x8bdfff, 1.5, 0, 3.4, -2, 12);
-  addLight(0xffd8a1, 1.0, 0, 3.2, 5, 10);
-  addLight(0x7ecfff, 0.7, -4, 2.8, -4, 8);
-  addLight(0x7ecfff, 0.7, 4, 2.8, -4, 8);
+  light(0x8bdfff,1.5,0,3.4,-2,12);
+  light(0xffd8a1,1,0,3.2,5,10);
+  light(0x7ecfff,.7,-4,2.8,-4,8);
+  light(0x7ecfff,.7,4,2.8,-4,8);
 
-  // 外部雨夜街道
-  addBox("street", 0, -0.23, 13, 30, 0.15, 24, 0x101a20);
-  for (let i = 0; i < 12; i++) {
-    const lane = addBox(
-      "lane",
-      -12 + i * 2.2, -0.14, 13,
-      0.08, 0.02, 9,
-      0x63717a
-    );
-    lane.material.transparent = true;
-    lane.material.opacity = 0.5;
-  }
+  box("street",0,-.23,13,30,.15,24,0x101a20);
+  for(let i=0;i<12;i++) box("lane",-12+i*2.2,-.14,13,.08,.02,9,0x63717a);
 
-  // 路灯
-  for (const x of [-9, 9]) {
-    addBox("lampPole", x, 2, 12, 0.12, 4, 0.12, 0x343f45);
-    addLight(0xffd79a, 2.1, x, 4, 12, 12);
+  for(const x of [-9,9]) {
+    box("lampPole",x,2,12,.12,4,.12,0x343f45);
+    light(0xffd79a,2.1,x,4,12,12);
   }
 }
 
 function buildPeople() {
-  // 店员
-  makePerson("店员", 0, -6.7, 0x345b6b, 0x222b30);
-
-  // 雨中的行人
-  const pedestrian = makePerson("雨中行人", -7, 12, 0x333f70, 0x171d25);
-  movers.push({
-    group: pedestrian,
-    baseX: -7,
-    baseZ: 12,
-    amplitude: 2.6,
-    speed: 0.48,
-    phase: 0
-  });
-
-  // 远处的司机
-  makePerson("司机", 10, 14, 0x61473d, 0x24272c, true);
+  person("店员",0,-6.7,0x345b6b,0x222b30);
+  const p=person("雨中行人",-7,12,0x333f70,0x171d25);
+  movers.push({group:p,x:-7,z:12,phase:0,amplitude:2.6});
+  person("司机",10,14,0x61473d,0x24272c);
 }
 
 function buildCars() {
-  for (let i = 0; i < 3; i++) {
-    const car = new THREE.Group();
-    const body = new THREE.Mesh(
-      new THREE.BoxGeometry(1.7, 0.55, 3.1),
-      material([0x8a343a, 0x314e64, 0x9c9b8b][i], 0.35, 0.25)
-    );
-    body.position.y = 0.55;
-    car.add(body);
+  for(let i=0;i<3;i++) {
+    const car=new THREE.Group();
+    const body=new THREE.Mesh(new THREE.BoxGeometry(1.7,.55,3.1),mat([0x8a343a,0x314e64,0x9c9b8b][i],.35,.25));
+    body.position.y=.55; car.add(body);
 
-    const roof = new THREE.Mesh(
-      new THREE.BoxGeometry(1.25, 0.55, 1.5),
-      material(0x202a30, 0.3, 0.2)
-    );
-    roof.position.set(0, 1.05, -0.1);
-    car.add(roof);
+    const roof=new THREE.Mesh(new THREE.BoxGeometry(1.25,.55,1.5),mat(0x202a30));
+    roof.position.set(0,1.05,-.1); car.add(roof);
 
-    for (const x of [-0.65, 0.65]) {
-      for (const z of [-0.95, 0.95]) {
-        const wheel = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.27, 0.27, 0.15, 12),
-          material(0x101214)
-        );
-        wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(x, 0.32, z);
-        car.add(wheel);
-      }
+    for(const x of [-.65,.65]) for(const z of [-.95,.95]) {
+      const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.27,.27,.15,12),mat(0x101214));
+      wheel.rotation.z=Math.PI/2;
+      wheel.position.set(x,.32,z); car.add(wheel);
     }
 
-    const headlightMaterial = new THREE.MeshBasicMaterial({ color: 0xffefb0 });
-    for (const x of [-0.5, 0.5]) {
-      const lamp = new THREE.Mesh(
-        new THREE.BoxGeometry(0.25, 0.15, 0.06),
-        headlightMaterial
-      );
-      lamp.position.set(x, 0.65, -1.56);
-      car.add(lamp);
+    for(const x of [-.5,.5]) {
+      const lamp=new THREE.Mesh(new THREE.BoxGeometry(.25,.15,.06),new THREE.MeshBasicMaterial({color:0xffefb0}));
+      lamp.position.set(x,.65,-1.56); car.add(lamp);
     }
 
-    car.position.set(-14 - i * 12, 0, 15 + i * 3);
+    car.position.set(-14-i*12,0,15+i*3);
     scene.add(car);
-    cars.push({ group: car, speed: 3 + i * 0.7, startZ: 15 + i * 3 });
+    cars.push({group:car,speed:3+i*.7});
   }
 }
 
 function buildRain() {
-  const count = 1100;
-  rainPositions = new Float32Array(count * 3);
-  rainSpeeds = new Float32Array(count);
+  const count=1000;
+  const positions=new Float32Array(count*3);
+  rainSpeeds=new Float32Array(count);
 
-  for (let i = 0; i < count; i++) {
-    rainPositions[i * 3] = (Math.random() - 0.5) * 34;
-    rainPositions[i * 3 + 1] = Math.random() * 15;
-    rainPositions[i * 3 + 2] = Math.random() * 32 - 2;
-    rainSpeeds[i] = 7 + Math.random() * 7;
+  for(let i=0;i<count;i++) {
+    positions[i*3]=(Math.random()-.5)*34;
+    positions[i*3+1]=Math.random()*15;
+    positions[i*3+2]=Math.random()*32-2;
+    rainSpeeds[i]=7+Math.random()*7;
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(rainPositions, 3));
-
-  rain = new THREE.Points(
-    geometry,
-    new THREE.PointsMaterial({
-      color: 0x9fcfe3,
-      size: 0.055,
-      transparent: true,
-      opacity: 0.7
-    })
-  );
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.BufferAttribute(positions,3));
+  rain=new THREE.Points(geometry,new THREE.PointsMaterial({
+    color:0x9fcfe3,size:.055,transparent:true,opacity:.7
+  }));
   scene.add(rain);
 }
 
 function buildPuddles() {
-  for (let i = 0; i < 16; i++) {
-    const puddle = new THREE.Mesh(
-      new THREE.CircleGeometry(0.5 + Math.random() * 1.2, 20),
-      new THREE.MeshStandardMaterial({
-        color: 0x304d59,
-        transparent: true,
-        opacity: 0.45,
-        roughness: 0.15,
-        metalness: 0.45
-      })
+  for(let i=0;i<16;i++) {
+    const puddle=new THREE.Mesh(
+      new THREE.CircleGeometry(.5+Math.random()*1.2,20),
+      new THREE.MeshStandardMaterial({color:0x304d59,transparent:true,opacity:.45,roughness:.15,metalness:.45})
     );
-    puddle.rotation.x = -Math.PI / 2;
-    puddle.position.set(
-      (Math.random() - 0.5) * 24,
-      -0.12,
-      9 + Math.random() * 17
-    );
-    puddle.scale.y = 0.35;
+    puddle.rotation.x=-Math.PI/2;
+    puddle.position.set((Math.random()-.5)*24,-.12,9+Math.random()*17);
+    puddle.scale.y=.35;
     scene.add(puddle);
   }
 }
 
-function buildClues() {
-  for (const item of clueData) {
-    const marker = addTextSprite("?", "#b6f1ff");
-    marker.position.set(item.pos[0], 1.4, item.pos[2]);
-    marker.scale.set(0.5, 0.5, 1);
-
-    addInteractable(
-      item.id,
-      item.title,
-      item.pos[0],
-      item.pos[1] + 0.7,
-      item.pos[2],
-      2.0,
-      () => {
-        addNote(item);
-        showDialog(item.title, item.text);
-      }
-    );
-  }
-
-  addInteractable(
-    "clerk",
-    "店员",
-    0, 0.7, -6.7,
-    2.1,
-    () => {
-      if (found.size < 4) {
-        showDialog("店员", "店员擦拭着柜台，没有抬头。\n\n“外面雨很大。你最好再逛逛，看看有没有什么东西落下了。”");
-      } else {
-        showDialog("店员", "店员终于抬起头。\n\n“你想起来了，对吗？这次，你想把记忆带走吗？”");
-      }
-    }
-  );
-
-  addInteractable(
-    "door",
-    "玻璃门",
-    0, 1, 7.5,
-    2.0,
-    () => {
-      if (found.size < 4) {
-        showDialog("玻璃门", "门外暴雨如注。你觉得自己还没有找到离开的理由。");
-      } else {
-        showDialog("离开便利店", "你推开玻璃门，走进冰冷的雨中。\n\n身后的招牌闪烁了两下。再回头时，便利店已经不见了。");
-      }
-    }
-  );
+function addNote(item) {
+  if(found.has(item.id)) { toast("这条线索已经记录过了"); return; }
+  found.add(item.id);
+  const li=document.createElement("li");
+  li.textContent=item.title+"："+item.text;
+  $("notes").appendChild(li);
+  toast("已记录线索："+item.title);
+  updateObjective();
 }
 
-function buildScene() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x07111a);
-  scene.fog = new THREE.FogExp2(0x07111a, 0.027);
+function updateObjective() {
+  $("objective").textContent="目标：寻找异常线索（"+found.size+"/4）";
+  if(found.size>=4&&!endingShown) {
+    endingShown=true;
+    setTimeout(()=>showDialog("雨夜的真相",
+      "四条线索终于拼在一起。\n\n你想起了这家便利店：很久以前的那个雨夜，你曾答应把一段记忆留在这里。\n\n店员说：‘欢迎回来。这次，你想把记忆带走吗？’\n\n雨还在下。门已经打开了。故事暂时结束……"),500);
+  }
+}
 
-  camera = new THREE.PerspectiveCamera(
-    72,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-  );
-  camera.position.set(player.x, 1.65, player.z);
-  camera.rotation.order = "YXZ";
+function buildTargets() {
+  for(const item of clueData) {
+    const marker=spriteText("?");
+    marker.position.set(item.x,1.4,item.z);
+    marker.scale.set(.5,.5,1);
+    scene.add(marker);
+    addTarget(item.id,item.title,item.x,.7,item.z,2,()=>{
+      addNote(item);
+      showDialog(item.title,item.text);
+    });
+  }
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: false,
-    powerPreference: "high-performance"
+  addTarget("clerk","店员",0,.7,-6.7,2.1,()=>{
+    showDialog("店员",found.size<4
+      ?"店员擦拭着柜台，没有抬头。\n\n“外面雨很大。你最好再逛逛，看看有没有什么落下了。”"
+      :"店员终于抬起头。\n\n“你想起来了，对吗？这次，你想把记忆带走吗？”");
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
-  document.body.insertBefore(renderer.domElement, $("loading"));
 
-  scene.add(new THREE.HemisphereLight(0x8eb9d1, 0x111820, 1.1));
+  addTarget("door","玻璃门",0,1,7.5,2,()=>{
+    showDialog("玻璃门",found.size<4
+      ?"门外暴雨如注。你觉得自己还没有找到离开的理由。"
+      :"你推开玻璃门，走进冰冷的雨中。\n\n身后的招牌闪烁了两下。再回头时，便利店已经不见了。");
+  });
+}
 
-  buildStore();
-  buildPeople();
-  buildCars();
-  buildRain();
-  buildPuddles();
-  buildClues();
+function showDialog(title,text) {
+  $("dialogTitle").textContent=title;
+  $("dialogText").textContent=text;
+  $("dialog").style.display="flex";
+}
 
-  clock = new THREE.Clock();
-
-  $("loading").style.display = "none";
-  $("start").style.display = "flex";
+function toast(text) {
+  $("toast").textContent=text;
+  $("toast").style.display="block";
+  clearTimeout(toast.timer);
+  toast.timer=setTimeout(()=>$("toast").style.display="none",1800);
 }
 
 function initSound() {
   try {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtx) {
-      toast("当前浏览器不支持程序雨声音效");
+    const AC=window.AudioContext||window.webkitAudioContext;
+    if(!AC) {
+      toast("当前浏览器不支持程序雨声；游戏仍可继续");
       return;
     }
 
-    if (!audioContext) {
-      audioContext = new AudioCtx();
-      const bufferSize = 2 * audioContext.sampleRate;
-      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-      const data = buffer.getChannelData(0);
+    if(!audioContext) {
+      audioContext=new AC();
+      const length=audioContext.sampleRate*2;
+      const buffer=audioContext.createBuffer(1,length,audioContext.sampleRate);
+      const data=buffer.getChannelData(0);
+      for(let i=0;i<length;i++) data[i]=(Math.random()*2-1)*.18;
 
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.22;
-      }
+      rainSource=audioContext.createBufferSource();
+      rainSource.buffer=buffer;
+      rainSource.loop=true;
 
-      rainSource = audioContext.createBufferSource();
-      rainSource.buffer = buffer;
-      rainSource.loop = true;
+      const filter=audioContext.createBiquadFilter();
+      filter.type="lowpass";
+      filter.frequency.value=850;
 
-      const filter = audioContext.createBiquadFilter();
-      filter.type = "lowpass";
-      filter.frequency.value = 950;
-
-      rainGain = audioContext.createGain();
-      rainGain.gain.value = 0;
+      rainGain=audioContext.createGain();
+      rainGain.gain.value=0;
 
       rainSource.connect(filter);
       filter.connect(rainGain);
@@ -646,303 +450,214 @@ function initSound() {
       rainSource.start();
     }
 
-    audioContext.resume();
-    soundOn = !soundOn;
-    rainGain.gain.setTargetAtTime(
-      soundOn ? 0.12 : 0,
-      audioContext.currentTime,
-      0.15
-    );
-
-    $("soundToggle").textContent = "雨声：" + (soundOn ? "开启" : "关闭");
-    $("soundBtn").textContent = soundOn ? "关闭雨声音效" : "开启雨声音效";
-  } catch (error) {
+    audioContext.resume().then(()=>{
+      soundOn=!soundOn;
+      rainGain.gain.setTargetAtTime(soundOn?.12:0,audioContext.currentTime,.15);
+      $("soundToggle").textContent="雨声："+(soundOn?"开启":"关闭");
+      $("soundBtn").textContent=soundOn?"关闭雨声音效":"开启雨声音效";
+    }).catch(()=>toast("音频启动失败，请再次点击开启雨声"));
+  } catch(error) {
     console.error(error);
-    toast("音效初始化失败，请检查浏览器设置");
+    toast("雨声音效启动失败，游戏仍可继续");
   }
-}
-
-function bind() {
-  // 注意：此处必须在 buildScene() 之后调用，因为需要 renderer.domElement。
-  $("startBtn").addEventListener("click", () => {
-    gameStarted = true;
-    $("start").style.display = "none";
-    toast("雨夜开始了……");
-  });
-
-  $("soundBtn").addEventListener("click", initSound);
-  $("soundToggle").addEventListener("click", initSound);
-
-  $("interactBtn").addEventListener("click", interact);
-  $("notesBtn").addEventListener("click", () => {
-    $("phone").style.display = "flex";
-  });
-  $("phoneClose").addEventListener("click", () => {
-    $("phone").style.display = "none";
-  });
-  $("dialogClose").addEventListener("click", () => {
-    $("dialog").style.display = "none";
-  });
-
-  document.querySelectorAll("[data-move]").forEach(button => {
-    const key = button.dataset.move;
-    const down = event => {
-      event.preventDefault();
-      keys[key] = true;
-    };
-    const up = event => {
-      event.preventDefault();
-      keys[key] = false;
-    };
-
-    button.addEventListener("pointerdown", down);
-    button.addEventListener("pointerup", up);
-    button.addEventListener("pointercancel", up);
-    button.addEventListener("pointerleave", up);
-  });
-
-  let drag = null;
-  renderer.domElement.addEventListener("pointerdown", event => {
-    if (!gameStarted || $("dialog").style.display === "flex" ||
-        $("phone").style.display === "flex") return;
-    drag = { x: event.clientX, y: event.clientY };
-  });
-
-  renderer.domElement.addEventListener("pointermove", event => {
-    if (!drag || !gameStarted) return;
-    const dx = event.clientX - drag.x;
-    const dy = event.clientY - drag.y;
-    player.yaw -= dx * 0.004;
-    camera.rotation.x = THREE.MathUtils.clamp(
-      camera.rotation.x - dy * 0.003,
-      -1.1,
-      1.1
-    );
-    drag = { x: event.clientX, y: event.clientY };
-  });
-
-  const endDrag = () => drag = null;
-  renderer.domElement.addEventListener("pointerup", endDrag);
-  renderer.domElement.addEventListener("pointercancel", endDrag);
-
-  window.addEventListener("keydown", event => {
-    if (event.code === "KeyW" || event.code === "ArrowUp") keys.forward = true;
-    if (event.code === "KeyS" || event.code === "ArrowDown") keys.back = true;
-    if (event.code === "KeyA" || event.code === "ArrowLeft") keys.left = true;
-    if (event.code === "KeyD" || event.code === "ArrowRight") keys.right = true;
-    if (event.code === "KeyE" || event.code === "Space") interact();
-    if (event.code === "KeyJ") $("phone").style.display = "flex";
-    if (event.code === "Escape") {
-      $("dialog").style.display = "none";
-      $("phone").style.display = "none";
-    }
-  });
-
-  window.addEventListener("keyup", event => {
-    if (event.code === "KeyW" || event.code === "ArrowUp") keys.forward = false;
-    if (event.code === "KeyS" || event.code === "ArrowDown") keys.back = false;
-    if (event.code === "KeyA" || event.code === "ArrowLeft") keys.left = false;
-    if (event.code === "KeyD" || event.code === "ArrowRight") keys.right = false;
-  });
-
-  window.addEventListener("blur", () => {
-    Object.keys(keys).forEach(key => keys[key] = false);
-  });
-
-  window.addEventListener("resize", () => {
-    if (!renderer || !camera) return;
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  });
 }
 
 function interact() {
-  if (!gameStarted || $("dialog").style.display === "flex" ||
-      $("phone").style.display === "flex") return;
+  if(!gameStarted||$("dialog").style.display==="flex"||$("phone").style.display==="flex") return;
 
-  let best = null;
-  let bestDistance = Infinity;
-
-  for (const item of interactables) {
-    const dx = item.x - player.x;
-    const dz = item.z - player.z;
-    const distance = Math.hypot(dx, dz);
-
-    if (distance < item.radius && distance < bestDistance) {
-      best = item;
-      bestDistance = distance;
-    }
+  let best=null,dist=Infinity;
+  for(const item of interactables) {
+    const d=Math.hypot(item.x-player.x,item.z-player.z);
+    if(d<item.radius&&d<dist) { best=item;dist=d; }
   }
-
-  if (best) {
-    best.callback();
-  } else {
-    toast("附近没有可调查的物品");
-  }
+  if(best) best.callback();
+  else toast("附近没有可调查的物品");
 }
 
-function canMoveTo(x, z) {
-  // 室内和店外活动范围
-  if (x < -14 || x > 14 || z < -7.5 || z > 24) return false;
-
-  // 简单碰撞检测，避免穿过货架和收银台
-  for (const c of colliders) {
-    if (Math.abs(x - c.x) < c.hx && Math.abs(z - c.z) < c.hz) {
-      return false;
-    }
+function canMoveTo(x,z) {
+  if(x< -14||x>14||z< -7.5||z>24) return false;
+  for(const c of colliders) {
+    if(Math.abs(x-c.x)<c.hx&&Math.abs(z-c.z)<c.hz) return false;
   }
   return true;
 }
 
 function updatePlayer(dt) {
-  if (!gameStarted || $("dialog").style.display === "flex" ||
-      $("phone").style.display === "flex") return;
+  if(!gameStarted||$("dialog").style.display==="flex"||$("phone").style.display==="flex") return;
 
-  let forward = 0;
-  let sideways = 0;
+  let f=(keys.forward?1:0)-(keys.back?1:0);
+  let s=(keys.right?1:0)-(keys.left?1:0);
+  if(!f&&!s) return;
+  const len=Math.hypot(f,s)||1; f/=len; s/=len;
 
-  if (keys.forward) forward += 1;
-  if (keys.back) forward -= 1;
-  if (keys.right) sideways += 1;
-  if (keys.left) sideways -= 1;
+  const speed=player.speed*dt;
+  const dx=(-Math.sin(player.yaw)*f+Math.cos(player.yaw)*s)*speed;
+  const dz=(-Math.cos(player.yaw)*f-Math.sin(player.yaw)*s)*speed;
+  if(canMoveTo(player.x+dx,player.z)) player.x+=dx;
+  if(canMoveTo(player.x,player.z+dz)) player.z+=dz;
 
-  if (forward === 0 && sideways === 0) return;
-
-  const length = Math.hypot(forward, sideways) || 1;
-  forward /= length;
-  sideways /= length;
-
-  const speed = player.speed * dt;
-  const dx = (
-    -Math.sin(player.yaw) * forward +
-    Math.cos(player.yaw) * sideways
-  ) * speed;
-  const dz = (
-    -Math.cos(player.yaw) * forward -
-    Math.sin(player.yaw) * sideways
-  ) * speed;
-
-  const nextX = player.x + dx;
-  const nextZ = player.z + dz;
-
-  if (canMoveTo(nextX, player.z)) player.x = nextX;
-  if (canMoveTo(player.x, nextZ)) player.z = nextZ;
-
-  camera.position.set(player.x, 1.65, player.z);
-  camera.rotation.order = "YXZ";
-  camera.rotation.y = player.yaw;
+  camera.position.set(player.x,1.65,player.z);
+  camera.rotation.order="YXZ";
+  camera.rotation.y=player.yaw;
 }
 
 function updateRain(dt) {
-  if (!rain) return;
-  const positions = rain.geometry.attributes.position.array;
-
-  for (let i = 0; i < rainSpeeds.length; i++) {
-    positions[i * 3 + 1] -= rainSpeeds[i] * dt;
-    positions[i * 3] -= dt * 0.7;
-
-    if (positions[i * 3 + 1] < 0) {
-      positions[i * 3 + 1] = 13 + Math.random() * 3;
-      positions[i * 3] = player.x + (Math.random() - 0.5) * 34;
-      positions[i * 3 + 2] = player.z + (Math.random() - 0.5) * 34;
+  if(!rain) return;
+  const positions=rain.geometry.attributes.position.array;
+  for(let i=0;i<rainSpeeds.length;i++) {
+    positions[i*3+1]-=rainSpeeds[i]*dt;
+    positions[i*3]-=dt*.7;
+    if(positions[i*3+1]<0) {
+      positions[i*3+1]=13+Math.random()*3;
+      positions[i*3]=player.x+(Math.random()-.5)*34;
+      positions[i*3+2]=player.z+(Math.random()-.5)*34;
     }
   }
-
-  rain.geometry.attributes.position.needsUpdate = true;
-}
-
-function updateCars(dt) {
-  for (const car of cars) {
-    car.group.position.x += car.speed * dt;
-
-    if (car.group.position.x > 18) {
-      car.group.position.x= -18;
-    }
-  }
-}
-
-function updatePeople() {
-  for (const mover of movers) {
-    mover.phase += 0.012;
-    mover.group.position.x = mover.baseX + Math.sin(mover.phase) * mover.amplitude;
-    mover.group.position.z = mover.baseZ + Math.sin(mover.phase * 0.6) * 0.5;
-  }
+  rain.geometry.attributes.position.needsUpdate=true;
 }
 
 function updateMarkers() {
-  let nearest = null;
-  let nearestDistance = Infinity;
+  let nearest=null,dist=Infinity;
+  for(const item of interactables) {
+    const d=Math.hypot(item.x-player.x,item.z-player.z);
+    if(d<item.radius&&d<dist) {nearest=item;dist=d;}
+  }
+  $("hint").textContent=nearest
+    ?"可调查："+nearest.title+" · 点击“调查 / 交谈”"
+    :"使用方向键移动，拖动画面转向";
+  $("clock").textContent="02:"+String(17+Math.floor(elapsed/25)%43).padStart(2,"0")+" AM";
+}
 
-  for (const item of interactables) {
-    const dx = item.x - player.x;
-    const dz = item.z - player.z;
-    const d = Math.hypot(dx, dz);
+function loop() {
+  requestAnimationFrame(loop);
+  const dt=Math.min(clock.getDelta(),.05);
+  elapsed+=dt;
+  updatePlayer(dt);
+  updateRain(dt);
 
-// 远处的司机rain = new THREE.Points(.new THREE.PointsMaterial({.color: 0x9fcfe3, = !size: 0.055,.transparent: true,(opacity: 0.7.function buildPuddles() {) || for (let i = 0; i < 16; i++) {.const puddle = new THREE.Mesh( === "clerk" || new THREE.CircleGeometry(0.5 + Math.random() * 1.2, 20),.new THREE.MeshStandardMaterial({ === "door";
+  for(const car of cars) {
+    car.group.position.x+=car.speed*dt;
+    if(car.group.position.x>18) car.group.position.x=-18;
+  }
 
-makePerson("司机", 10, 14, 0x61473d, 0x24272c, true);color: 0x304d59, (transparent: true, < opacity: 0.45,.roughness: 0.15, && metalness: 0.45 < puddle.rotation.x = -Math.PI / 2;) {
-function buildCars() {(Math.random() - 0.5) * 24, = 9 + Math.random() * 17;
-for (let i = 0; i < 3; i++) {puddle.scale.y = 0.35; = function buildClues() {;
+  for(const mover of movers) {
+    mover.phase+=dt*.8;
+    mover.group.position.x=mover.x+Math.sin(mover.phase)*mover.amplitude;
+    mover.group.position.z=mover.z+Math.sin(mover.phase*.6)*.5;
+  }
+
+  updateMarkers();
+  renderer.render(scene,camera);
+}
+
+function bind() {
+  $("startBtn").addEventListener("click",()=>{
+    gameStarted=true;
+    $("start").style.display="none";
+    toast("雨夜开始了……");
+  });
+
+  $("soundBtn").addEventListener("click",initSound);
+  $("soundToggle").addEventListener("click",initSound);
+  $("interactBtn").addEventListener("click",interact);
+  $("notesBtn").addEventListener("click",()=>$("phone").style.display="flex");
+  $("phoneClose").addEventListener("click",()=>$("phone").style.display="none");
+  $("dialogClose").addEventListener("click",()=>$("dialog").style.display="none");
+
+  document.querySelectorAll("[data-move]").forEach(button=>{
+    const key=button.dataset.move;
+    const down=e=>{e.preventDefault();keys[key]=true;};
+    const up=e=>{e.preventDefault();keys[key]=false;};
+    button.addEventListener("pointerdown",down);
+    button.addEventListener("pointerup",up);
+    button.addEventListener("pointercancel",up);
+    button.addEventListener("pointerleave",up);
+  });
+
+  let drag=null;
+  renderer.domElement.addEventListener("pointerdown",e=>{
+    if(!gameStarted||$("dialog").style.display==="flex"||$("phone").style.display==="flex") return;
+    drag={x:e.clientX,y:e.clientY};
+  });
+  renderer.domElement.addEventListener("pointermove",e=>{
+    if(!drag||!gameStarted) return;
+    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
+    player.yaw-=dx*.004;
+    camera.rotation.x=THREE.MathUtils.clamp(camera.rotation.x-dy*.003,-1.1,1.1);
+    drag={x:e.clientX,y:e.clientY};
+  });
+  const endDrag=()=>drag=null;
+  renderer.domElement.addEventListener("pointerup",endDrag);
+  renderer.domElement.addEventListener("pointercancel",endDrag);
+
+  window.addEventListener("keydown",e=>{
+    if(e.code==="KeyW"||e.code==="ArrowUp") keys.forward=true;
+    if(e.code==="KeyS"||e.code==="ArrowDown") keys.back=true;
+    if(e.code==="KeyA"||e.code==="ArrowLeft") keys.left=true;
+    if(e.code==="KeyD"||e.code==="ArrowRight") keys.right=true;
+    if(e.code==="KeyE"||e.code==="Space") interact();
+    if(e.code==="KeyJ") $("phone").style.display="flex";
+    if(e.code==="Escape") {
+      $("dialog").style.display="none";
+      $("phone").style.display="none";
     }
+  });
+
+  window.addEventListener("keyup",e=>{
+    if(e.code==="KeyW"||e.code==="ArrowUp") keys.forward=false;
+    if(e.code==="KeyS"||e.code==="ArrowDown") keys.back=false;
+    if(e.code==="KeyA"||e.code==="ArrowLeft") keys.left=false;
+    if(e.code==="KeyD"||e.code==="ArrowRight") keys.right=false;
+  });
+
+  window.addEventListener("blur",()=>Object.keys(keys).forEach(k=>keys[k]=false));
+  window.addEventListener("resize",()=>{
+    if(!renderer||!camera) return;
+    camera.aspect=innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth,innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+  });
+}
+
+function startGame() {
+  try {
+    scene=new THREE.Scene();
+    scene.background=new THREE.Color(0x07111a);
+    scene.fog=new THREE.FogExp2(0x07111a,.027);
+
+    camera=new THREE.PerspectiveCamera(72,innerWidth/innerHeight,.1,100);
+    camera.position.set(player.x,1.65,player.z);
+    camera.rotation.order="YXZ";
+
+    renderer=new THREE.WebGLRenderer({antialias:false,powerPreference:"high-performance"});
+    renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+    renderer.setSize(innerWidth,innerHeight);
+    renderer.outputColorSpace=THREE.SRGBColorSpace;
+    renderer.toneMapping=THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure=1.1;
+    document.body.insertBefore(renderer.domElement,$("loading"));
+
+    scene.add(new THREE.HemisphereLight(0x8eb9d1,0x111820,1.1));
+    buildStore();
+    buildPeople();
+    buildCars();
+    buildRain();
+    buildPuddles();
+    buildTargets();
+
+    clock=new THREE.Clock();
+    bind();
+    $("loading").style.display="none";
+    $("start").style.display="flex";
+    loop();
+  } catch(error) {
+    console.error("游戏初始化失败：",error);
+    showError("游戏初始化失败",error?.stack||error?.message||error);
   }
-
-const car = new THREE.Group();for (const item of clueData) { = const marker = addTextSprite("?", "#b6f1ff");;
-const body = new THREE.Mesh(marker.position.set(item.pos[0], 1.4, item.pos[2]); marker.scale.set(0.5, 0.5, 1); = item.pos[1] + 0.7,
-new THREE.BoxGeometry(1.7, 0.55, 3.1),() => { + showDialog(item.loop, min.renderer);.clockclock, + 0, 0.7, -6.7,
-getDelta([0x8a343a, 0x314e64, 0x9c9b8b][elapsed], 0.35, 0.25)() => {;
-
-dt.updatePlayer.dt = 0.55;if (found.size < 4) { (showDialog("店员", "店员擦拭着柜台，没有抬头。\n\n“外面雨很大。你最好再逛逛，看看有没有什么东西落下了。”"); !== } else {) {
-const roof = new THREE.Mesh(showDialog("店员", "店员终于抬起头。\n\n“你想起来了，对吗？这次，你想把记忆带走吗？”");("hint")."玻璃门", = 0, 1, 7.5,;
-new THREE.BoxGeometry(1.25, 0.55, 1.5),() => { = if (found.size < 4) {;
-  }
-
-material(0x202a30, 0.3, 0.2)showDialog("玻璃门", "门外暴雨如注。你觉得自己还没有找到离开的理由。");("clock").} else { = "02:" +
-roof.position.set(0, 1.05, -0.1);showDialog("离开便利店", "你推开玻璃门，走进冰冷的雨中。\n\n身后的招牌闪烁了两下。再回头时，便利店已经不见了。");(17 + function buildScene() {.scene = new THREE.Scene();(scene.background = new THREE.Color(0x07111a); / 25) % 43).scene.fog = new THREE.FogExp2(0x07111a, 0.027);(2, "0") +
-for (const x of [-0.65, 0.65]) {camera = new THREE.PerspectiveCamera(;
 }
 
-window.innerWidth / window.innerHeight,// 远处的司机rain = new THREE.Points(.new THREE.PointsMaterial({.color: 0x9fcfe3, = !size: 0.055,.transparent: true,(opacity: 0.7.function buildPuddles() {) || for (let i = 0; i < 16; i++) {.const puddle = new THREE.Mesh( === "clerk" || new THREE.CircleGeometry(0.5 + Math.random() * 1.2, 20),.new THREE.MeshStandardMaterial({ === "door"; (makePerson "司机" true [-0.95, 0.95]) { color.transparent.true(opacity.roughness, 1.65, metalness.puddle);() {
-  rotation.x.Math = "YXZ";(PI = function buildCars.Math({);
-random Math = random for.let(i: i, (!i: "high-performance"puddlescale.y(function.buildClues(const.car || 1, 1.5))newTHREE.Group(for.const, item.of);) clueData.const = marker.addTextSprite;;
-
-const
-body
-
-new
-THREE
-Mesh
-marker
-position
-
-set
-}
-
-item
-pos
-item
-pos
-marker
-scale
-set
-item
-}
-
-pos
-new
-THREE
-BoxGeometry
-showDialog
-item
-title
-item
-text: const AudioCtx = window.AudioContext || window.webkitAudioContext;(if (!AudioCtx) {);,."<": "&lt;",(">": "&gt;",);
-'"': "&quot;",("loading")."toast("当前浏览器不支持程序雨声音效");(if (!audioContext) {);("clock").audioContext = new AudioCtx();(const bufferSize = 2 * audioContext.sampleRate;); = "02:" +
-const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);();(17 + camera.button.addEventListener("pointerdown", down);const data = buffer.getChannelData(0);keys[key] = false;button.addEventListener("pointerup", up);.button.addEventListener("pointercancel", up); = !button.addEventListener("pointerleave", up);.let drag = null;(renderer.domElement.addEventListener("pointerdown", event => {.// 远处的司机rain = new THREE.Points(.new THREE.PointsMaterial({.color: 0x9fcfe3, = !size: 0.055,.transparent: true,(opacity: 0.7.function buildPuddles() {) || for (let i = 0; i < 16; i++) {.const puddle = new THREE.Mesh( === "clerk" || new THREE.CircleGeometry(0.5 + Math.random() * 1.2, 20),.new THREE.MeshStandardMaterial({ === "door"; (makePerson "司机" true [-0.95, 0.95]) { color.transparent.true(opacity.roughness, 1.65, metalness.puddle);() { (!rotation || x("dialog").Math.PI === "flex" ||) || buildCars("phone").Math.random === "flex") Math;.random = { for: let.i, : i,: i.puddlescale }y"clerk" || function.buildClues.const(car("pointermove", newTHREE => {.Group (!forconstcodegetDeltaelapsed"door";(); dtupdatePlayerdt
-keys roofnew.THREE === " || if.hint === " || keys.Mesh === "ArrowUp")showDialog("店员" ("店员终于抬起头。 (“你想起来了，对吗？这次，你想把记忆带走吗？”"."玻璃门" === "KeyS" || || , =..new === "ArrowDown")THREEBoxGeometry = if.found === "KeyA"size"ArrowLeft") keys.material = showDialog;) {"玻璃门"("hint")."门外暴雨如注。你觉得自己还没有找到离开的理由。" (else.roof === "KeyD" || positionset, -."ArrowRight") showDialog."离开便利店" = "你推开玻璃门，走进冰冷的雨中。(身后的招牌闪烁了两下。再回头时，便利店已经不见了。"("blur", () => {;(function.buildScene).scene(newTHREE[Scenescene] = background)new.THREEColor("resize", () => {;).scene (!fog/ 25) % 43).new.THREE = forconst.FogExp2(0x07111a, 0.027);(2, "0") +) x;("clock"). (!of.camera = new.THREEPerspectiveCamera / window.innerWidth"02:" +(/[&<>"']/g, window./ 25) % 43).innerHeight("phone").for.const === "flex") z;(2, "0")of camera = position;set[player * 3 + 1] -= x[player] * z;{) "&": "&amp;",(camera.rotation, order.renderer);(17 + new.|| !,(renderersetPixelRatioMath.min(window.devicePixelRatio; || !
-"<THREE&WebGLRenderer;",(">const&wheel;newTHREE").'"door&#39;";(lastHint ($ < textContent.hint && lastHint < hint) {, $ = textContent;);();;"
-}
-renderersetSizewindowinnerWidthwindow· '"} String = Math; floor = elapsed;(dtMathconst = sceneif) { (? camera + return.|| ! + const : || !;(dt (Math !== min) {).clock("hint").clock = getDelta;(/[&<>"' / g"."elapsed/Meshantialias, elapsedfalsepowerPreferenceinnerHeight({) {<rendereroutputColorSpace(THREE {.}SRGBColorSpace(rendereroutputColorSpace)elapsedfalsepowerPreferenceinnerHeight{ || SRGBColorSpace("loading").dtcar
-'<p class="small">请确认 three.module.js 与 index.html 位于同一目录，且文件名正确。</p>'
-, .<<; ||chartrueBufferAttributerainPositions("position"// 已修正：先创建场景和 renderer，再绑定触屏事件，最后启动动画循环。 += trybuildScene"flex"bind.loop(catch, err); console = error[err$ * 3] -= style * 0.7;(display$;innerHTML (div[class * 3 + 1] < 0) {)) + '</p>'加载失败safeText"panel"><h1>/h1>'("'": "&#39;" + '<p class="small">请确认 three.module.js 与 index.html 位于同一目录，且文件名正确。</<p>'<classsmall="primary" /'[safeText * 3 + 1] = 13 + err.message() * 3;;="primary" String="location.reload()">err'[button] = 7 + class.onclick() * 7;></="location.reload()">button</重新加载><div(body, 3));>
+loadEngine();
+</script>
+</body>
+</html>
