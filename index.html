@@ -1,148 +1,111 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#050914">
-<title>蓝色星球 · 3D 地球仪</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#07120f">
+<title>王者峡谷 · 战场探索</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050914;color:#edf7ff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
-#globe{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
-.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 35%,#03061066 75%,#02040bd9 130%);z-index:1}
-.top{position:fixed;z-index:3;left:18px;top:18px;pointer-events:none;text-shadow:0 2px 18px #000}
-.kicker{font-size:10px;letter-spacing:.24em;color:#8be9ff;font-weight:700}.title{font-size:clamp(22px,4vw,34px);font-weight:750;letter-spacing:.02em;margin-top:4px}.desc{font-size:12px;color:#9fb7d2;margin-top:5px}
-.status{position:fixed;z-index:3;left:18px;top:105px;display:flex;gap:8px;align-items:center;font-size:11px;color:#a9c6df}.dot{width:6px;height:6px;border-radius:50%;background:#69e7ff;box-shadow:0 0 12px #69e7ff}
-.panel{position:fixed;z-index:4;right:16px;top:16px;bottom:16px;width:min(300px,calc(100vw - 32px));border:1px solid #8dcff52b;border-radius:22px;background:linear-gradient(150deg,#0b1935d9,#071021df);box-shadow:0 18px 60px #0008;backdrop-filter:blur(18px);padding:16px;display:flex;flex-direction:column;overflow:hidden}
-.panelHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.panelTitle{font-size:14px;font-weight:700;letter-spacing:.04em}.eyebrow{font-size:10px;color:#7f9cb9;letter-spacing:.14em;margin-top:4px}
-.iconBtn,button{color:#e7f7ff;background:#112746;border:1px solid #3b6787;border-radius:12px;padding:9px 11px;font:inherit;cursor:pointer}.iconBtn{padding:6px 10px}.iconBtn:active,button:active{transform:scale(.98)}
-.places{overflow:auto;margin:15px -5px 12px;padding:0 5px;display:flex;flex-direction:column;gap:8px;overscroll-behavior:contain}
-.place{display:flex;align-items:center;gap:11px;text-align:left;width:100%;background:#0d1b30a8;border:1px solid #26435c;border-radius:14px;padding:10px;transition:background .2s,border-color .2s}
-.place.active{background:#173c55cc;border-color:#63dfff;box-shadow:inset 0 0 20px #2bb8e51a}
-.place .pin{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--c);box-shadow:0 0 13px var(--c)}
-.place .name{font-size:12px;font-weight:650}.place .region{font-size:10px;color:#8fa9c5;margin-top:3px}
-.footer{margin-top:auto;border-top:1px solid #25415a;padding-top:12px}.selected{font-size:12px;font-weight:700}.coords{font-size:10px;color:#8fa9c5;margin-top:4px}
-.controls{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}.controls button{font-size:11px;flex:1}.controls button.active{background:#164c66;border-color:#6ce8ff}
-.tip{position:fixed;z-index:3;bottom:20px;left:18px;font-size:11px;color:#b0c5da;text-shadow:0 2px 8px #000;pointer-events:none}
-#toast{position:fixed;z-index:9;left:50%;top:50%;transform:translate(-50%,-50%);background:#071629eF;border:1px solid #4a8eb0;border-radius:12px;padding:10px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}
-#loading{position:fixed;z-index:8;inset:0;display:grid;place-items:center;background:#050914;color:#bdeeff;font-size:13px;letter-spacing:.06em;transition:opacity .4s}
-.spinner{width:25px;height:25px;border:2px solid #254b63;border-top-color:#70e9ff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:620px){.top{top:14px;left:14px}.status{top:91px;left:14px}.panel{top:auto;left:10px;right:10px;bottom:10px;width:auto;height:220px;padding:12px;border-radius:18px}.panelHead{flex-shrink:0}.places{flex-direction:row;overflow-x:auto;overflow-y:hidden;margin:10px -3px;padding:0 3px;gap:8px}.place{min-width:145px;width:145px;align-items:flex-start;padding:9px}.place .region{white-space:normal}.footer{display:flex;align-items:center;gap:10px;padding-top:9px;flex-wrap:wrap}.selected{font-size:11px}.coords{margin:0}.controls{margin:0 0 0 auto;flex-wrap:nowrap}.controls button{padding:7px 9px;white-space:nowrap}.tip{bottom:244px;left:14px;font-size:10px}}
+:root{--aqua:#8df8dc;--gold:#ffd58c;--glass:rgba(7,19,20,.83);--edge:rgba(160,235,206,.24)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07120f;color:#eafff4;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;touch-action:none}#map{position:fixed;inset:0;width:100%;height:100%;display:block}
+.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,7,6,.18) 70%,rgba(0,5,5,.8) 125%)}
+header{position:fixed;z-index:5;left:14px;right:14px;top:calc(12px + env(safe-area-inset-top));display:flex;justify-content:space-between;align-items:flex-start;gap:10px;pointer-events:none}
+.logo,.state,.panel,.detail,.tool{border:1px solid var(--edge);background:var(--glass);backdrop-filter:blur(15px);box-shadow:0 10px 34px #0004}
+.logo{border-radius:15px;padding:11px 14px;pointer-events:auto}.eyebrow{font-size:9px;letter-spacing:.24em;color:var(--aqua);font-weight:800}.logo h1{font-size:clamp(18px,4vw,25px);margin:4px 0 2px;letter-spacing:.08em}.logo p{font-size:10px;color:#a8c9b9;margin:0}.state{border-radius:999px;padding:9px 12px;font-size:10px;color:#c6eee0;white-space:nowrap}
+.panel{position:fixed;z-index:5;right:14px;top:50%;transform:translateY(-50%);width:218px;max-height:68vh;overflow:auto;border-radius:16px;padding:10px;scrollbar-width:none}.panel::-webkit-scrollbar{display:none}.panelhead{display:flex;align-items:center;justify-content:space-between;padding:3px 4px 8px}.panelhead strong{font-size:10px;letter-spacing:.16em;color:var(--aqua)}.panelhead span{font-size:9px;color:#8aafa0}
+.place{display:flex;align-items:center;gap:9px;width:100%;padding:9px 7px;border:1px solid transparent;border-radius:10px;background:transparent;color:#e8fff4;text-align:left;font:inherit;cursor:pointer}.place.active{border-color:#8df8dc59;background:#8df8dc13}.gem{width:9px;height:9px;flex:0 0 9px;border-radius:50%;background:var(--c);box-shadow:0 0 9px var(--c),0 0 20px color-mix(in srgb,var(--c),transparent 55%)}.place b{display:block;font-size:11px;font-weight:650}.place small{display:block;color:#8fb3a2;font-size:9px;margin-top:2px}
+footer{position:fixed;z-index:5;left:14px;bottom:calc(13px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:7px;max-width:calc(100% - 28px);flex-wrap:wrap}.detail{border-radius:14px;padding:10px 12px;width:min(250px,48vw)}.detail .eyebrow{font-size:8px}.detail strong{display:block;font-size:13px;margin-top:4px}.detail p{font-size:10px;color:#a4c4b3;line-height:1.45;margin:4px 0 0}
+.tool{border-radius:999px;color:#e7fff3;padding:9px 12px;font-size:10px;cursor:pointer}.tool:active{background:#8df8dc24}.mini{display:none;position:fixed;z-index:6;right:14px;top:calc(88px + env(safe-area-inset-top))}
+.hint{position:fixed;z-index:2;left:50%;bottom:20px;transform:translateX(-50%);font-size:10px;color:#9cc5b0;white-space:nowrap;text-shadow:0 2px 8px #000;pointer-events:none}
+@media(max-width:620px){header{left:9px;right:9px;top:calc(8px + env(safe-area-inset-top))}.logo{padding:8px 10px}.logo p{display:none}.state{padding:8px 9px;font-size:9px}.panel{right:9px;top:auto;bottom:calc(105px + env(safe-area-inset-bottom));transform:none;width:150px;max-height:42vh;padding:7px}.panelhead{padding:3px 3px 5px}.place{padding:7px 4px;gap:7px}.place b{font-size:10px}.place small{font-size:8px}footer{left:9px;bottom:calc(9px + env(safe-area-inset-bottom));gap:5px}.detail{width:150px;padding:8px 9px}.detail strong{font-size:11px}.detail p{font-size:9px}.tool{padding:8px 9px;font-size:9px}.hint{display:none}.mini{right:9px;top:calc(78px + env(safe-area-inset-top))}}
+@media(max-height:540px){.panel{max-height:42vh}.logo p{display:none}.detail p{display:none}footer{bottom:6px}}
 </style>
 </head>
 <body>
-<canvas id="globe"></canvas><div class="vignette"></div>
-<header class="top"><div class="kicker">PLANET EARTH / 01</div><div class="title">蓝色星球</div><div class="desc">在星海中，寻找属于你的坐标。</div></header>
-<div class="status"><span class="dot"></span><span id="liveStatus">地球正在缓慢自转</span></div>
-<aside class="panel">
- <div class="panelHead"><div><div class="panelTitle">精选坐标</div><div class="eyebrow">SELECTED DESTINATIONS</div></div><button class="iconBtn" id="hidePanel" aria-label="收起地点列表">−</button></div>
- <div class="places" id="places"></div>
- <div class="footer"><div><div class="selected" id="selectedName">太平洋 · 初始视角</div><div class="coords" id="selectedCoords">拖动地球，探索世界</div></div>
- <div class="controls"><button id="auto" class="active">自动旋转：开</button><button id="home">重置视角</button></div></div>
-</aside>
-<div class="tip">拖动旋转 · 点击发光标记聚焦 · 滚轮或双指缩放</div><div id="toast"></div>
-<div id="loading"><div style="text-align:center"><div class="spinner"></div>正在点亮地球…</div></div>
+<canvas id="map"></canvas><div class="shade"></div>
+<header><div class="logo"><div class="eyebrow">BATTLEFIELD ATLAS · 5V5</div><h1>王者峡谷</h1><p>峡谷地形 · 三路推进 · 野区资源探索</p></div><div class="state" id="state">● 自动巡游中</div></header>
+<aside class="panel" id="panel"><div class="panelhead"><strong>峡谷坐标 / LANDMARKS</strong><span>08 LOCATIONS</span></div><div id="list"></div><button class="tool" id="hide" style="width:100%;margin-top:6px">收起地点列表 −</button></aside><button class="tool mini" id="show">地点列表 ☰</button>
+<footer><div class="detail"><div class="eyebrow">FOCUS POINT</div><strong id="focusName">中央河道</strong><p id="focusDesc">河道横贯峡谷，连接两侧野区与三条兵线。</p></div><button class="tool" id="auto">自动巡游：开</button><button class="tool" id="reset">重置视角</button><button class="tool" id="labels">标记名称：开</button></footer>
+<div class="hint">拖动地图浏览 · 点击发光地标聚焦 · 双指缩放</div>
 <script>
-(()=>{'use strict';
-const canvas=document.getElementById('globe'),ctx=canvas.getContext('2d');const $=id=>document.getElementById(id);
-const places=[
-{name:'台北',region:'台湾 · 东亚',lat:25.033,lon:121.5654,color:'#79eaff'},
-{name:'东京',region:'日本 · 东亚',lat:35.6762,lon:139.6503,color:'#ffbd88'},
-{name:'巴黎',region:'法国 · 欧洲',lat:48.8566,lon:2.3522,color:'#c4a0ff'},
-{name:'纽约',region:'美国 · 北美洲',lat:40.7128,lon:-74.006,color:'#ff83a6'},
-{name:'开普敦',region:'南非 · 非洲',lat:-33.9249,lon:18.4241,color:'#8df5c6'},
-{name:'里约热内卢',region:'巴西 · 南美洲',lat:-22.9068,lon:-43.1729,color:'#ffe78c'},
-{name:'悉尼',region:'澳大利亚 · 大洋洲',lat:-33.8688,lon:151.2093,color:'#89aaff'},
-{name:'冰岛',region:'北大西洋',lat:64.1466,lon:-21.9426,color:'#75f1ef'}
+(()=>{
+'use strict';
+const canvas=document.getElementById('map'),c=canvas.getContext('2d',{alpha:false}),$=id=>document.getElementById(id);
+const P=[
+{id:'river',n:'中央河道',s:'峡谷中轴 · 水域',d:'河道横贯峡谷，连接两侧野区与三条兵线。',x:0,y:0,col:'#8df8dc'},
+{id:'blue',n:'蓝方蓝区',s:'蓝 Buff · 魔法资源',d:'蓝色能量石阵深藏于林木之间，周围分布野怪营地与蜿蜒小径。',x:-.51,y:-.27,col:'#76bfff'},
+{id:'red',n:'红方红区',s:'红 Buff · 战斗资源',d:'赤红晶核照亮岩壁，红区道路连接边路与河道入口。',x:.51,y:.27,col:'#ff9b76'},
+{id:'dragon',n:'暴君巢穴',s:'河道资源 · 争夺区域',d:'古老石环与金色符文围绕巢穴，河面映出温暖的能量光。',x:-.36,y:.28,col:'#ffd48a'},
+{id:'lord',n:'主宰巢穴',s:'史诗资源 · 暗影区域',d:'紫色能量在深处缓慢流动，岩石平台与暗色植被构成巢穴。',x:.36,y:-.29,col:'#c9a0ff'},
+{id:'top',n:'上路防御塔',s:'上路 · 边线推进',d:'石板兵线沿峡谷北侧延伸，防御塔伫立在高地与野区交界。',x:-.72,y:-.52,col:'#a6f0cf'},
+{id:'mid',n:'中路防御塔',s:'中路 · 核心通道',d:'中路连接双方高地，是峡谷最直接的推进路线。',x:0,y:.51,col:'#9eeaff'},
+{id:'bot',n:'下路防御塔',s:'下路 · 边线推进',d:'南侧石道穿过密林与防御工事，通往河道和外侧高地。',x:.72,y:.52,col:'#a6f0cf'}
 ];
-let W=0,H=0,D=1,rotY=-.4,rotX=.15,targetY=rotY,targetX=rotX,zoom=1,targetZoom=1,auto=true,drag=null,last=0,interactingUntil=0,selected=-1,hidden=false;
-let stars=[],clouds=[],landPolys=[],earthCanvas=null,earthCtx=null,earthTextureReady=false;
-function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(D,0,0,D,0,0);draw()}
-function toast(s){let e=$('toast');e.textContent=s;e.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.opacity=0,1600)}
-function list(){const el=$('places');places.forEach((p,i)=>{let b=document.createElement('button');b.className='place';b.style.setProperty('--c',p.color);b.innerHTML='<span class="pin"></span><span><div class="name">'+p.name+'</div><div class="region">'+p.region+'</div></span>';b.onclick=()=>focusPlace(i);el.appendChild(b)})}
-function updateList(){[...$('places').children].forEach((e,i)=>e.classList.toggle('active',i===selected))}
-function vec(lat,lon){let a=lat*Math.PI/180,b=lon*Math.PI/180;return{x:Math.cos(a)*Math.sin(b),y:Math.sin(a),z:Math.cos(a)*Math.cos(b)}}
-function rotate(v){let cy=Math.cos(rotY),sy=Math.sin(rotY),cx=Math.cos(rotX),sx=Math.sin(rotX);let x=v.x*cy+v.z*sy,z=-v.x*sy+v.z*cy,y=v.y;return{x,y:y*cx-z*sx,z:y*sx+z*cx}}
-function project(v,cx,cy,r){let q=rotate(v);return{x:cx+q.x*r,y:cy-q.y*r,z:q.z,visible:q.z>-.06}}
-function focusPlace(i){selected=i;let p=places[i],v=vec(p.lat,p.lon);targetY=-Math.atan2(v.x,v.z);targetX=Math.atan2(v.y,Math.sqrt(v.x*v.x+v.z*v.z));targetX=Math.max(-1.25,Math.min(1.25,targetX));auto=false;interactingUntil=performance.now()+5000;$('auto').textContent='自动旋转：关';$('auto').classList.remove('active');$('liveStatus').textContent='镜头正在聚焦：'+p.name;$('selectedName').textContent=p.name+' · '+p.region;$('selectedCoords').textContent=p.lat.toFixed(4)+'°, '+p.lon.toFixed(4)+'°';updateList()}
-function buildTexture(){
- earthCanvas=document.createElement('canvas');earthCanvas.width=1024;earthCanvas.height=512;earthCtx=earthCanvas.getContext('2d');
- let g=earthCtx.createLinearGradient(0,0,0,512);g.addColorStop(0,'#0d3452');g.addColorStop(.5,'#0c5278');g.addColorStop(1,'#092943');earthCtx.fillStyle=g;earthCtx.fillRect(0,0,1024,512);
- // procedural stylized continents using polygons in equirectangular coordinates (longitude maps x, latitude maps y)
- const polys=[
- [[70,90],[115,70],[155,90],[175,130],[155,160],[140,205],[115,220],[95,180],[80,145]],
- [[150,230],[190,240],[210,285],[195,350],[175,390],[155,340],[145,285]],
- [[260,80],[310,65],[360,90],[390,120],[370,150],[340,145],[320,175],[285,160],[260,125]],
- [[320,185],[355,195],[370,240],[355,295],[330,350],[310,315],[300,265]],
- [[420,100],[470,70],[530,75],[565,105],[600,95],[635,125],[620,155],[585,160],[570,190],[530,175],[500,205],[470,180],[445,145]],
- [[485,205],[520,220],[535,270],[515,330],[490,370],[465,310],[470,255]],
- [[620,85],[690,70],[755,90],[800,125],[780,160],[740,170],[715,145],[680,155],[650,125]],
- [[700,200],[750,205],[775,245],[755,280],[730,270],[710,240]],
- [[820,290],[870,275],[905,300],[890,325],[850,330]],
- [[910,125],[930,110],[945,130],[935,155]]
+let W=innerWidth,H=innerHeight,ratio=1,camX=0,camY=0,zoom=1,tx=0,ty=0,tz=1,drag=false,px=0,py=0,downX=0,downY=0,moved=false,auto=true,showLabels=true,selected='river',lastAction=0,frameId=0,stars=[],fireflies=[],pointers=new Map(),pinch=0;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function resize(){W=innerWidth;H=innerHeight;ratio=Math.min(devicePixelRatio||1,1.65);canvas.width=W*ratio;canvas.height=H*ratio;canvas.style.width=W+'px';canvas.style.height=H+'px';c.setTransform(ratio,0,0,ratio,0,0);stars=Array.from({length:Math.max(65,Math.floor(W*H/7500))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.15,a:Math.random()*.42+.08,p:Math.random()*6.28}));fireflies=Array.from({length:120},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.8+.3,p:Math.random()*6.28}));}
+function pos(x,y){let s=Math.min(W,H)*.43*zoom;return{x:W/2+(x+camX)*s,y:H/2+(y+camY)*s,s}}
+function rounded(x,y,w,h,r,fill,stroke){c.beginPath();c.roundRect(x,y,w,h,r);if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.stroke()}}
+function drawTerrain(t){
+ const scale=Math.min(W,H)*.43*zoom,cx=W/2+camX*scale,cy=H/2+camY*scale;
+ c.save();c.translate(cx,cy);c.scale(scale,scale);
+ // Outer island silhouette and layered relief
+ const land=[[-.03,-.02,.97,.88],[-.62,-.45,.34,.46],[-.66,.42,.36,.45],[.65,-.43,.36,.48],[.65,.42,.37,.46],[0,-.72,.65,.21],[0,.72,.68,.22]];
+ land.forEach((b,i)=>{let [x,y,rx,ry]=b;let g=c.createRadialGradient(x-.12,y-.15,.03,x,y,Math.max(rx,ry));g.addColorStop(0,i%2?'#2d5944':'#315d43');g.addColorStop(.48,'#1c4938');g.addColorStop(.82,'#15392e');g.addColorStop(1,'#0b2925');c.fillStyle=g;c.beginPath();for(let k=0;k<=80;k++){let a=k*Math.PI*2/80,w=1+.055*Math.sin(a*3+i*1.2)+.035*Math.cos(a*7+i);let xx=x+Math.cos(a)*rx*w,yy=y+Math.sin(a)*ry*w;k?c.lineTo(xx,yy):c.moveTo(xx,yy)}c.closePath();c.fill();c.strokeStyle='rgba(152,210,149,.12)';c.lineWidth=.006;c.stroke()});
+ // rocky ridges / cliff contours
+ for(let i=0;i<9;i++){c.beginPath();for(let k=0;k<55;k++){let a=k*Math.PI*2/54,rx=.25+i*.074,ry=.18+i*.061,x=Math.cos(a)*rx-.02,y=Math.sin(a)*ry+.02;k?c.lineTo(x,y):c.moveTo(x,y)}c.closePath();c.strokeStyle=`rgba(143,190,132,${.04+i*.003})`;c.lineWidth=.004;c.stroke()}
+ // river bed, water and luminous current
+ const river=[[-1.05,-.12],[-.82,-.19],[-.59,-.1],[-.38,-.02],[-.16,.02],[.05,.09],[.28,.13],[.48,.21],[.72,.27],[1.02,.39]];
+ function strokeLine(points,color,width){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.strokeStyle=color;c.lineWidth=width;c.lineCap='round';c.lineJoin='round';c.stroke()}
+ strokeLine(river,'rgba(45,237,212,.12)',.25);strokeLine(river,'#103d3e',.19);strokeLine(river,'#1b6861',.135);strokeLine(river,'rgba(112,242,214,.25)',.012);
+ // three lanes and paths to each base
+ const lanes=[
+ [[-.9,-.62],[-.65,-.47],[-.4,-.28],[-.18,-.08],[0,.09],[.22,.3],[.5,.49],[.83,.66]],
+ [[-.9,.65],[-.62,.48],[-.4,.29],[-.18,.16],[0,.09],[.22,-.1],[.44,-.29],[.68,-.48],[.9,-.65]],
+ [[-.76,-.86],[-.73,-.59],[-.68,-.36],[-.46,-.16],[-.18,.03],[0,.09],[.2,.25],[.48,.4],[.72,.57],[.77,.84]]
  ];
- earthCtx.fillStyle='#347b78';earthCtx.strokeStyle='#69b5a5';earthCtx.lineWidth=2;
- polys.forEach((poly,k)=>{earthCtx.beginPath();poly.forEach((p,i)=>i?earthCtx.lineTo(p[0]/1024*1024,p[1]/512*512):earthCtx.moveTo(p[0],p[1]));earthCtx.closePath();earthCtx.fill();earthCtx.stroke()});
- // soft latitude/longitude grid
- earthCtx.strokeStyle='rgba(132,220,255,.13)';earthCtx.lineWidth=1;for(let x=0;x<=1024;x+=64){earthCtx.beginPath();earthCtx.moveTo(x,0);earthCtx.lineTo(x,512);earthCtx.stroke()}for(let y=0;y<=512;y+=32){earthCtx.beginPath();earthCtx.moveTo(0,y);earthCtx.lineTo(1024,y);earthCtx.stroke()}
- // polar ice
- earthCtx.fillStyle='#bce8ed';earthCtx.fillRect(0,0,1024,18);earthCtx.fillRect(0,494,1024,18);
- // random ocean speckles
- for(let i=0;i<1800;i++){let x=Math.random()*1024,y=Math.random()*512;earthCtx.fillStyle=Math.random()>.5?'rgba(99,192,211,.10)':'rgba(1,20,45,.12)';earthCtx.fillRect(x,y,Math.random()*3+1,Math.random()*2+1)}
- earthTextureReady=true;
+ lanes.forEach((l,i)=>{strokeLine(l,'rgba(5,13,12,.72)',.065);strokeLine(l,'#5d7657',.044);strokeLine(l,'rgba(196,201,151,.28)',.004);strokeLine(l,'rgba(224,217,165,.12)',.002)});
+ // stone paths and camp rings
+ P.forEach((p,i)=>{if(p.id==='river')return;c.beginPath();c.ellipse(p.x,p.y,i<5?.092:.065,i<5?.065:.05,-.3,0,Math.PI*2);c.fillStyle='rgba(8,19,17,.45)';c.fill();c.strokeStyle='rgba(178,205,151,.45)';c.lineWidth=.007;c.stroke();for(let j=0;j<7;j++){let a=j*Math.PI*2/7;c.beginPath();c.arc(p.x+Math.cos(a)*.077,p.y+Math.sin(a)*.052,.008,0,Math.PI*2);c.fillStyle='#6f8961';c.fill()}});
+ // forest canopy clusters, deliberate uneven groves
+ for(let i=0;i<650;i++){let x=Math.sin(i*127.1+2)*.88,y=Math.cos(i*61.7+1)*.78;let riverY=.09+.29*x;if(Math.abs(y-riverY)<.13)continue;let r=.004+(i%5)*.0013;c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fillStyle=i%5===0?'rgba(113,176,102,.42)':i%3===0?'rgba(6,27,24,.6)':'rgba(25,70,43,.45)';c.fill();if(i%11===0){c.beginPath();c.arc(x-.002,y-.002,r*.4,0,Math.PI*2);c.fillStyle='rgba(165,211,126,.24)';c.fill()}}
+ // base citadels
+ [-.83,.83].forEach((x,i)=>{let y=i?-.69:.69;c.beginPath();c.arc(x,y,.115,0,Math.PI*2);c.fillStyle='#172c28';c.fill();c.strokeStyle='rgba(194,215,161,.55)';c.lineWidth=.012;c.stroke();for(let k=0;k<6;k++){let a=k*Math.PI/3;c.beginPath();c.arc(x+Math.cos(a)*.075,y+Math.sin(a)*.075,.012,0,Math.PI*2);c.fillStyle=i?'#f19a78':'#78c6ff';c.fill()}});
+ c.restore();
 }
-function starfield(){stars=[];for(let i=0;i<220;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.4+.25,a:Math.random()*.6+.15,phase:Math.random()*6.28})}
-function draw(){
- if(!W||!H)return;
- ctx.clearRect(0,0,W,H);ctx.fillStyle='#050914';ctx.fillRect(0,0,W,H);
- const now=performance.now()/1000;
- for(const s of stars){ctx.globalAlpha=s.a*(.75+.25*Math.sin(now*1.1+s.phase));ctx.fillStyle='#b9e8ff';ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
- // subtle nebula glow
- let neb=ctx.createRadialGradient(W*.45,H*.44,2,W*.45,H*.44,Math.max(W,H)*.65);neb.addColorStop(0,'rgba(23,81,125,.2)');neb.addColorStop(1,'rgba(4,9,22,0)');ctx.fillStyle=neb;ctx.fillRect(0,0,W,H);
- let panelOn=innerWidth<=620&&!hidden;let cx= W*.5,cy=H*.49,r=Math.min(W*.34,H*.37)*zoom;
- if(innerWidth>620){cx=W*.43;r=Math.min(W*.32,H*.40)*zoom}else{cy=H*.39;r=Math.min(W*.42,H*.29)*zoom}
- // atmospheric halo
- let halo=ctx.createRadialGradient(cx,cy,r*.72,cx,cy,r*1.45);halo.addColorStop(0,'rgba(53,187,255,0)');halo.addColorStop(.7,'rgba(53,187,255,.13)');halo.addColorStop(1,'rgba(53,187,255,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(cx,cy,r*1.45,0,Math.PI*2);ctx.fill();
- // sphere shading and ocean
- let sphere=ctx.createRadialGradient(cx-r*.35,cy-r*.38,r*.05,cx,cy,r*1.08);sphere.addColorStop(0,'#2b9ec5');sphere.addColorStop(.42,'#11638d');sphere.addColorStop(.78,'#0b3458');sphere.addColorStop(1,'#020b1c');ctx.fillStyle=sphere;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
- ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();
- // latitude-longitude lines projected on sphere
- ctx.strokeStyle='rgba(123,213,244,.16)';ctx.lineWidth=.7;
- for(let lat=-60;lat<=60;lat+=30){ctx.beginPath();for(let lon=-180;lon<=180;lon+=3){let p=project(vec(lat,lon),cx,cy,r);if(p.z>0){if(lon===-180)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)}}ctx.stroke()}
- for(let lon=-150;lon<=180;lon+=30){ctx.beginPath();let first=true;for(let lat=-90;lat<=90;lat+=2){let p=project(vec(lat,lon),cx,cy,r);if(p.z>0){if(first){ctx.moveTo(p.x,p.y);first=false}else ctx.lineTo(p.x,p.y)}}ctx.stroke()}
- // stylized continents as many projected dots, forming land masses
- for(let lat=-65;lat<=75;lat+=2.5)for(let lon=-180;lon<180;lon+=3){
-   const n=Math.sin((lon+lat*1.7)*.075)+Math.cos((lon-lat*1.2)*.11)+Math.sin(lon*.17+lat*.08);
-   const land=(lat>5&&lat<72&&lon>-165&&lon<-30&&n>.2)||(lat>-55&&lat<12&&lon>-82&&lon<-32&&n>-.3)||(lat>-35&&lat<70&&lon>-18&&lon<55&&n>-.15)||(lat>5&&lat<78&&lon>45&&lon<160&&n>-.15)||(lat>-45&&lat<0&&lon>112&&lon<155&&n>.0);
-   if(!land)continue;let p=project(vec(lat,lon),cx,cy,r);if(p.z<0)continue;
-   ctx.globalAlpha=.32+Math.max(0,p.z)*.38;ctx.fillStyle=(lat>58||lat<-48)?'#b8e1d9':'#55b49d';ctx.beginPath();ctx.arc(p.x,p.y,Math.max(.65,r/230),0,Math.PI*2);ctx.fill();
- }
- ctx.globalAlpha=1;
- // directional lighting
- let shade=ctx.createLinearGradient(cx-r,cy-r*.1,cx+r,cy+r*.15);shade.addColorStop(0,'rgba(0,4,20,.65)');shade.addColorStop(.38,'rgba(0,10,30,.03)');shade.addColorStop(1,'rgba(0,2,16,.66)');ctx.fillStyle=shade;ctx.fillRect(cx-r,cy-r,r*2,r*2);
- ctx.restore();
- // rim highlight
- ctx.beginPath();ctx.arc(cx,cy,r-.5,0,Math.PI*2);ctx.strokeStyle='rgba(117,224,255,.6)';ctx.lineWidth=1.2;ctx.stroke();
- // location markers
- for(let i=0;i<places.length;i++){let p=places[i],v=rotate(vec(p.lat,p.lon));if(v.z<-.02)continue;let x=cx+v.x*r,y=cy-v.y*r,scale=.7+.3*Math.max(0,v.z),rr=(i===selected?5:3.2)*scale;
-   ctx.globalAlpha=.18;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(x,y,rr*4.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.8;ctx.strokeStyle=p.color;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,rr*2.1+Math.sin(now*2+i)*1.1,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,rr,0,Math.PI*2);ctx.fill();ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(x,y,rr*.62,0,Math.PI*2);ctx.fill();
-   if(i===selected){ctx.font='12px system-ui';ctx.fillStyle='#effaff';ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.fillText(p.name,x+10,y-10);ctx.shadowBlur=0}
- }
- // pointer drag indicator
- if(drag){ctx.strokeStyle='rgba(150,235,255,.7)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(drag.x,drag.y);ctx.lineTo(drag.x+drag.dx,drag.y+drag.dy);ctx.stroke()}
+function marker(p,t){let q=pos(p.x,p.y),active=p.id===selected,r=active?6.3:4.4; c.save();c.globalAlpha=active?1:.83;
+ const glow=c.createRadialGradient(q.x,q.y,0,q.x,q.y,active?34:22);glow.addColorStop(0,p.col+'70');glow.addColorStop(1,p.col+'00');c.fillStyle=glow;c.beginPath();c.arc(q.x,q.y,active?34:22,0,Math.PI*2);c.fill();
+ c.shadowColor=p.col;c.shadowBlur=active?22:13;c.fillStyle=p.col;c.beginPath();c.arc(q.x,q.y,r+Math.sin(t*.004+p.x*4)*.8,0,Math.PI*2);c.fill();c.shadowBlur=0;
+ c.strokeStyle=p.col;c.globalAlpha=.22+Math.sin(t*.003+p.y*4)*.1;c.lineWidth=1;c.beginPath();c.arc(q.x,q.y,r+7+(t*.012%9),0,Math.PI*2);c.stroke();c.globalAlpha=1;
+ if(showLabels||active){c.font='600 11px system-ui,sans-serif';let w=c.measureText(p.n).width,lx=q.x+12,ly=q.y-12;if(lx+w+15>W)lx=q.x-w-18;if(ly<60)ly=q.y+22;rounded(lx-6,ly-13,w+12,21,6,'rgba(4,16,15,.86)','rgba(160,235,206,.26)');c.fillStyle='#e8fff3';c.fillText(p.n,lx,ly+1)}
+ c.restore()}
+function render(t){c.clearRect(0,0,W,H);let bg=c.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#102923');bg.addColorStop(.52,'#091d19');bg.addColorStop(1,'#040d0d');c.fillStyle=bg;c.fillRect(0,0,W,H);
+ stars.forEach(s=>{c.globalAlpha=s.a*(.75+.25*Math.sin(t*.001+s.p));c.fillStyle='#c8f7dd';c.beginPath();c.arc(s.x,s.y,s.r,0,Math.PI*2);c.fill()});c.globalAlpha=1;
+ let light=c.createRadialGradient(W*.46,H*.45,4,W*.46,H*.45,Math.max(W,H)*.7);light.addColorStop(0,'rgba(80,166,113,.19)');light.addColorStop(.6,'rgba(36,98,78,.08)');light.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=light;c.fillRect(0,0,W,H);
+ drawTerrain(t);
+ fireflies.forEach(f=>{let x=f.x*W,y=((f.y+t*.000006)%1)*H;c.globalAlpha=.12+.22*(.5+.5*Math.sin(t*.0015+f.p));c.fillStyle='#a8f6cf';c.beginPath();c.arc(x,y,f.r*.45,0,Math.PI*2);c.fill()});c.globalAlpha=1;
+ P.forEach(p=>marker(p,t));
+ // selected target rings and compass-like guide
+ const sp=P.find(p=>p.id===selected);if(sp){let q=pos(sp.x,sp.y);c.strokeStyle='rgba(210,255,236,.32)';c.lineWidth=1;c.beginPath();c.arc(q.x,q.y,19+Math.sin(t*.003)*2,0,Math.PI*2);c.stroke()}
 }
-function tick(now){let dt=Math.min(.04,(now-last)/1000||0);last=now;if(auto&&!drag&&now>interactingUntil){targetY-=dt*.12;$('liveStatus').textContent='地球正在缓慢自转'}rotY+=(targetY-rotY)*Math.min(1,dt*4);rotX+=(targetX-rotX)*Math.min(1,dt*4);zoom+=(targetZoom-zoom)*Math.min(1,dt*4);draw();requestAnimationFrame(tick)}
-function nearest(x,y){let cx=innerWidth>620?W*.43:W*.5,cy=innerWidth>620?H*.49:H*.39,r=Math.min(innerWidth>620?Math.min(W*.32,H*.40):Math.min(W*.42,H*.29),Math.min(W*.34,H*.37))*zoom;let best=-1,bd=Infinity;places.forEach((p,i)=>{let v=rotate(vec(p.lat,p.lon));if(v.z<-.02)return;let dx=cx+v.x*r-x,dy=cy-v.y*r-y,d=Math.hypot(dx,dy);if(d<Math.max(18,r*.075)&&d<bd){best=i;bd=d}});return best}
-canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,dx:0,dy:0,moved:false,ry:rotY,rx:rotX};interactingUntil=performance.now()+5000});
-canvas.addEventListener('pointermove',e=>{if(!drag)return;let dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.dx=dx;drag.dy=dy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;targetY=drag.ry+dx*.008;targetX=Math.max(-1.3,Math.min(1.3,drag.rx+dy*.008));rotY=targetY;rotX=targetX;auto=false;$('auto').textContent='自动旋转：关';$('auto').classList.remove('active');$('liveStatus').textContent='手动探索中'});
-canvas.addEventListener('pointerup',e=>{if(!drag)return;let d=drag;drag=null;interactingUntil=performance.now()+5000;if(!d.moved){let i=nearest(e.clientX,e.clientY);if(i>=0)focusPlace(i)}});
-canvas.addEventListener('pointercancel',()=>drag=null);
-canvas.addEventListener('wheel',e=>{e.preventDefault();targetZoom=Math.max(.72,Math.min(1.55,targetZoom*(e.deltaY>0?.92:1.08)));interactingUntil=performance.now()+5000},{passive:false});
-let pinchDist=0;
-canvas.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY)},{passive:true});
-canvas.addEventListener('touchmove',e=>{if(e.touches.length===2){let d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(pinchDist){targetZoom=Math.max(.72,Math.min(1.55,targetZoom*d/pinchDist))}pinchDist=d;interactingUntil=performance.now()+5000}},{passive:true});
-$('auto').onclick=()=>{auto=!auto;$('auto').textContent='自动旋转：'+(auto?'开':'关');$('auto').classList.toggle('active',auto);if(auto){interactingUntil=performance.now()+500;$('liveStatus').textContent='自动旋转即将恢复'}else $('liveStatus').textContent='自动旋转已关闭'};
-$('home').onclick=()=>{selected=-1;targetY=-.4;targetX=.15;targetZoom=1;$('selectedName').textContent='太平洋 · 初始视角';$('selectedCoords').textContent='拖动地球，探索世界';updateList();interactingUntil=performance.now()+5000;toast('已回到初始视角')};
-$('hidePanel').onclick=()=>{hidden=!hidden;document.querySelector('.panel').style.display=hidden?'none':'flex';toast(hidden?'地点列表已收起':'地点列表已展开')};
-list();starfield();resize();buildTexture();$('loading').style.opacity='0';setTimeout(()=>$('loading').remove(),450);requestAnimationFrame(tick);
+function tick(t){frameId=requestAnimationFrame(tick);if(!drag){if(auto&&performance.now()-lastAction>1600){camX+=(tx-camX)*.035;camY+=(ty-camY)*.035;zoom+=(tz-zoom)*.035;if(selected==='river'){camX+=Math.sin(t*.00013)*.00015;camY+=Math.cos(t*.0001)*.0001}}else{camX+=vx;camY+=vy;vx*=.91;vy*=.91;if(Math.abs(vx)<.000008)vx=0;if(Math.abs(vy)<.000008)vy=0}}render(t)}
+let vx=0,vy=0;
+function pause(){lastAction=performance.now();$('state').textContent='● 手动探索中'}
+function focus(id){let p=P.find(v=>v.id===id);if(!p)return;selected=id;tx=-p.x;ty=-p.y;tz=1.12;lastAction=performance.now();auto=true;$('state').textContent='● 镜头聚焦中';$('focusName').textContent=p.n;$('focusDesc').textContent=p.d;$('auto').textContent='自动巡游：开';document.querySelectorAll('.place').forEach(b=>b.classList.toggle('active',b.dataset.id===id));setTimeout(()=>{if(auto)$('state').textContent='● 自动巡游中'},1800)}
+function build(){let list=$('list');P.forEach(p=>{let b=document.createElement('button');b.className='place'+(p.id===selected?' active':'');b.dataset.id=p.id;b.innerHTML=`<i class="gem" style="--c:${p.col}"></i><span><b>${p.n}</b><small>${p.s}</small></span>`;b.addEventListener('click',()=>focus(p.id));list.appendChild(b)})}
+canvas.addEventListener('pointerdown',e=>{pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===1){drag=true;px=downX=e.clientX;py=downY=e.clientY;moved=false;vx=vy=0;try{canvas.setPointerCapture(e.pointerId)}catch{}pause()}else if(pointers.size===2){let a=[...pointers.values()];pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);drag=false;pause()}});
+canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size>=2){let a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(pinch>0){zoom=clamp(zoom*d/pinch,.65,1.75);tz=zoom;pinch=d;pause()}return}if(!drag)return;let dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;if(Math.abs(e.clientX-downX)+Math.abs(e.clientY-downY)>4)moved=true;let s=Math.min(W,H)*.43*zoom;camX+=dx/s;camY+=dy/s;tx=camX;ty=camY;vx=dx/s*.14;vy=dy/s*.14;});
+function pointerEnd(e){pointers.delete(e.pointerId);if(pointers.size<2)pinch=0;if(pointers.size===0)drag=false}
+canvas.addEventListener('pointerup',e=>{if(!moved&&pointers.size<=1){let best=null,dist=1e9;P.forEach(p=>{let q=pos(p.x,p.y),d=Math.hypot(q.x-e.clientX,q.y-e.clientY);if(d<dist){dist=d;best=p}});if(best&&dist<32)focus(best.id)}pointerEnd(e)});
+canvas.addEventListener('pointercancel',pointerEnd);
+canvas.addEventListener('wheel',e=>{e.preventDefault();pause();zoom=clamp(zoom*(e.deltaY>0?.92:1.08),.65,1.75);tz=zoom},{passive:false});
+$('auto').onclick=()=>{auto=!auto;lastAction=performance.now();$('auto').textContent='自动巡游：'+(auto?'开':'关');$('state').textContent=auto?'● 自动巡游中':'● 巡游已暂停'};
+$('reset').onclick=()=>{camX=camY=tx=ty=0;zoom=tz=1;focus('river')};
+$('labels').onclick=()=>{showLabels=!showLabels;$('labels').textContent='标记名称：'+(showLabels?'开':'关')};
+$('hide').onclick=()=>{$('panel').style.display='none';$('show').style.display='block'};
+$('show').onclick=()=>{$('panel').style.display='block';$('show').style.display='none'};
+build();resize();addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(frameId);else frameId=requestAnimationFrame(tick)});frameId=requestAnimationFrame(tick);
 })();
-</script></body></html>
+</script>
+</body>
+</html>
